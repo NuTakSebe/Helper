@@ -1,1 +1,1 @@
-Welcome
+Welcome to Recipe!
