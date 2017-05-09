@@ -15,6 +15,7 @@
     "serve-favicon": "~2.4.2",
     "nconf": "latest",
     "winston": "latest",
-    "request": "latest"
+    "request": "latest",
+    "config": "latest"
   }
 }

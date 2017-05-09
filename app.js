@@ -5,7 +5,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     config = require('config'),
-    log = require("libs/log")(module),
+    //log = require("libs/log")(module),
     request = require('request'),
     fs = require('fs');
 
@@ -31,7 +31,8 @@ if (app.get("env") === 'development') {
 
 
 app.listen(config.get("port"), function () {
-    log.info("Server started");
+    //log.info("Server started");
+    console.log("Server started");
 });
 
 //EXAMPLE of request to Evotor Cloud
