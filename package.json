@@ -18,6 +18,7 @@
     "nconf": "latest",
     "request": "latest",
     "serve-favicon": "~2.4.2",
+    "tether": "^1.4.0",
     "winston": "latest"
   }
 }

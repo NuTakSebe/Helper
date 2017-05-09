@@ -8,6 +8,22 @@
     <script src="/assets/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <h1>Welcome!</h1>
+    <form id="add">
+     <input type="text" name="goodsData"/>
+     <input type="submit" value="Save Changes"/>
+   </form>
+
+   <%
+   add.onsubmit=function () {
+     var http = require("http");
+     var express = require("express");
+     var app = require('../app');
+     var xhr = new XMLHttpReaquest();
+     var request = "https://api.evotor.ru/api/v1/inventories/stores/" + app.getStoreUUID(1,res) + "/products";
+     var goodsJSON = this.elements.goodsData.value; //здесь много таких считываний, нужно суметь объединить в один json
+     xhr.open("POST",request, true);
+     xhr.send(goodsJSON);
+   }
+   %>
   </body>
 </html>

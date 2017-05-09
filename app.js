@@ -39,6 +39,7 @@ app.use('/assets', express.static('assets')); // redirect our CSS
 app.use('/assets/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 app.use('/assets/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/assets/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
+app.use('/assets/js', express.static(__dirname + '/node_modules/tether/dist/js')); // redirect JS Tether
 
 //EXAMPLE of request to Evotor Cloud
 

@@ -5,9 +5,58 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel='stylesheet' href='/assets/css/style.css' />
     <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/tether.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <h1>Welcome!</h1>
+      <div class="jumbotron jumbotron-fluid bg-info text-white">
+        <div class="container">
+          <h1 class="display-4">Личный Кабинет +</h1>
+          <p class="lead">Управление товарами и прочее говно - прямо из Личного Кабинета!</p>
+        </div>
+      </div>
+
+      <div class="container text-muted" id="cards">
+        <div class="row">
+
+          <div class="col-md-4 py-2">
+            <a href="/add">
+              <div class="card">
+                <img class="card-img-top img-fluid" src="/assets/images/fill.jpg" alt="Card image cap">
+                <div class="card-block">
+                  <h3 class="card-title">Добавить товар</h3>
+                  <p>Добавление нового товара в магазины</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+
+          <div class="col-md-4 py-2">
+            <a href="#">
+              <div class="card">
+                <img class="card-img-top img-fluid" src="/assets/images/fill.jpg" alt="Card image cap">
+                <div class="card-block">
+                  <h3 class="card-title">Изменить товар</h3>
+                  <p>Изменение параметров товара</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 py-2">
+            <a href="#">
+              <div class="card">
+                <img class="card-img-top img-fluid" src="/assets/images/fill.jpg" alt="Card image cap">
+                <div class="card-block">
+                  <h3 class="card-title">Импорт Excel</h3>
+                  <p>Импорт товаров из Excel</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+        </div><!-- .row -->
+      </div><!-- #cards -->
   </body>
 </html>
