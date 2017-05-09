@@ -7,15 +7,17 @@
   },
   "dependencies": {
     "body-parser": "~1.17.1",
+    "bootstrap": "^4.0.0-alpha.4",
+    "config": "latest",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "ejs": "~2.5.6",
     "express": "~4.15.2",
+    "jquery": "^3.2.1",
     "morgan": "~1.8.1",
-    "serve-favicon": "~2.4.2",
     "nconf": "latest",
-    "winston": "latest",
     "request": "latest",
-    "config": "latest"
+    "serve-favicon": "~2.4.2",
+    "winston": "latest"
   }
 }

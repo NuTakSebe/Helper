@@ -4,7 +4,7 @@ var express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    config = require('config'),
+    config = require('./config'),
     //log = require("libs/log")(module),
     request = require('request'),
     fs = require('fs');
@@ -35,6 +35,11 @@ app.listen(config.get("port"), function () {
     console.log("Server started");
 });
 
+app.use('/assets', express.static('assets')); // redirect our CSS
+app.use('/assets/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+app.use('/assets/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/assets/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
+
 //EXAMPLE of request to Evotor Cloud
 
 // request('http://www.google.com', function (error, response, body) {
@@ -47,20 +52,21 @@ app.listen(config.get("port"), function () {
 
 app.get('/', function (req, res, next) {
 
-    res.sendFile(path.join(__dirname, "test.html"));
+    //res.sendFile(path.join(__dirname, "test.html"));
+    res.render('index');
 
 });
 
 
 app.get('/add', function (req, res, next) {
 
-    res.send("request arrived");
+    res.render('add');
 
 });
 
 app.get('/change', function (req, res, next) {
 
-   res.sendFile(path.join(__dirname,"test.html"));
+   res.render('change');
 
 });
 
