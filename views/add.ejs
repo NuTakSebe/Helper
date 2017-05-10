@@ -5,26 +5,174 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel='stylesheet' href='/assets/css/style.css' />
     <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/tether.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <h1>Welcome!</h1>
-    <form id="add">
-      <input type="text" name="goodsData"/>
-      <input type="submit" value="Save Changes"/>
-    </form>
+      <div class="jumbotron jumbotron-fluid bg-info text-white">
+        <div class="container">
+          <h1 class="display-4">Добавление товара</h1>
+        </div>
+      </div>
 
-    <%
-    add.onsubmit=function () {
-      var http = require("http");
-      var express = require("express");
-      var app = require('../app');
-      var xhr = new XMLHttpReaquest();
-      var request = "https://api.evotor.ru/api/v1/inventories/stores/" + app.getStoreUUID(1,res) + "/products";
-      var goodsJSON = this.elements.goodsData.value; //здесь много таких считываний, нужно суметь объединить в один json
-      xhr.open("POST",request, true);
-      xhr.send(goodsJSON);
-    }
-    %>
+      <div class="container">
+        <nav class="breadcrumb">
+          <a class="breadcrumb-item" href="/">Главная</a>
+          <span class="breadcrumb-item active">Добавление товара</span>
+        </nav>
+      </div>
+
+
+      <div class="container pb-4">
+        <form>
+
+          <div class="form-group">
+            <label for="uuid">UUID товара</label>
+            <input type="text" class="form-control" id="uuid" placeholder="В формате uuid4">
+          </div>
+
+          <div class="form-group has-danger">
+            <label for="code">Код товара</label>
+            <input type="text" class="form-control form-control-danger" id="code" placeholder="Строка">
+            <div class="form-control-feedback">Пример ошибки</div>
+          </div>
+
+          <div class="form-group">
+            <label>Штрихкоды товара</label>
+            <input type="text" class="form-control" id="barCode1" placeholder="Значение штрихкода">
+            <input type="text" class="form-control mt-2" id="barCode2" placeholder="Значение штрихкода">
+          </div>
+
+          <div class="form-group">
+            <label class="form-check-label">
+               <input type="checkbox" id="alcoCheck" class="form-check-input">
+               Алкогольная продукция?
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label>Коды алкогольной продукции ЕГАИС</label>
+            <input type="text" class="form-control" id="alcoCode1" placeholder="Значение алкокода" disabled>
+            <input type="text" class="form-control mt-2" id="alcoCode2" placeholder="Значение алкокода" disabled>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Название товара</label>
+            <input type="text" class="form-control" id="name" placeholder="Название товара">
+          </div>
+
+          <div class="form-group">
+            <label for="price">Отпускная цена</label>
+            <input type="number" class="form-control" id="price" placeholder="Цена товара">
+          </div>
+
+          <div class="form-group">
+            <label for="quantity">Остаток товара в наличии</label>
+            <input type="number" class="form-control" id="quantity" placeholder="Остаток товара">
+          </div>
+
+          <div class="form-group">
+            <label for="costPrice">Закупочная цена</label>
+            <input type="number" class="form-control" id="costPrice" placeholder="Закупочная цена товара">
+          </div>
+
+          <div class="form-group">
+            <label for="measureName">Единица измерения</label>
+            <select class="form-control" id="measureName">
+              <option>шт</option>
+              <option>кг</option>
+              <option>л</option>
+              <option>м</option>
+              <option>км</option>
+              <option>м2</option>
+              <option>м3</option>
+              <option>компл</option>
+              <option>упак</option>
+              <option>ед</option>
+              <option>дроб</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tax">Ставка НДС</label>
+            <select class="form-control" id="tax">
+              <option>VAT_10</option>
+              <option>VAT_18</option>
+              <option>VAT_0</option>
+              <option>VAT_18_118</option>
+              <option>VAT_10_110</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-check-label">
+               <input type="checkbox" id="allowToSell" class="form-check-input">
+               Товар доступен для продажи?
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Описание товара</label>
+            <input type="text" class="form-control" id="description" placeholder="Описание товара">
+          </div>
+
+          <div class="form-group">
+            <label for="articleNumber">Артикул товара</label>
+            <input type="text" class="form-control" id="articleNumber" placeholder="Артикул">
+          </div>
+
+          <div class="form-group">
+            <label for="parentUuid">UUID родителя</label>
+            <input type="text" class="form-control" id="parentUuid" placeholder="В формате uuid4" disabled>
+          </div>
+
+          <div class="form-group">
+            <label class="form-check-label">
+               <input type="checkbox" id="group" class="form-check-input" disabled>
+               Это группа?
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="type">Тип товара</label>
+            <select class="form-control" id="type">
+              <option>NORMAL</option>
+              <option>ALCOHOL_MARKED</option>
+              <option>ALCOHOL_NOT_MARKED</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="alcoholByVolume">Крепость алкогольной продукции</label>
+            <input type="number" class="form-control" id="alcoholByVolume" placeholder="Крепость">
+          </div>
+
+          <div class="form-group">
+            <label for="alcoholProductKindCode">Код вида алкогольной продукции ФСРАР</label>
+            <input type="number" class="form-control" id="alcoholProductKindCode" placeholder="Вид алкоголя">
+          </div>
+
+          <div class="form-group">
+            <label for="tareVolume">Ёмкость тары алкогольной продукции в литрах</label>
+            <input type="number" class="form-control" id="tareVolume" placeholder="Ёмкость тары">
+          </div>
+
+          <div class="form-group">
+            <label for="shops">Магазины, в которые будет добавлен товар</label>
+            <select multiple class="form-control" id="shops">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+            <small class="form-text text-muted">Зажмите Ctrl, чтобы выбрать несколько магазинов</small>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Добавить товар</button>
+
+        </form>
+      </div><!-- .container -->
+
   </body>
 </html>
