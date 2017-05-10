@@ -7,6 +7,7 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/tether.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/add.js"></script>
   </head>
   <body>
       <div class="jumbotron jumbotron-fluid bg-info text-white">
@@ -22,24 +23,22 @@
         </nav>
       </div>
 
-
       <div class="container pb-4">
         <form>
 
           <div class="form-group">
             <label for="name">Название товара</label>
-            <input type="text" class="form-control" id="name" placeholder="Название товара">
+            <input type="text" class="form-control" id="name" placeholder="От 1 до 100 символов включительно">
           </div>
 
-          <div class="form-group has-danger">
+          <div class="form-group">
             <label for="code">Код товара</label>
-            <input type="text" class="form-control form-control-danger" id="code" placeholder="Строка">
-            <div class="form-control-feedback">Пример ошибки</div>
+            <input type="text" class="form-control" id="code" placeholder="Пока хз, что с ней делать, пока оставлю так" disabled>
           </div>
 
           <div class="form-group">
             <label for="articleNumber">Артикул товара</label>
-            <input type="text" class="form-control" id="articleNumber" placeholder="Артикул">
+            <input type="text" class="form-control" id="articleNumber" placeholder="От 0 до 20 символов включительно">
           </div>
 
           <div class="form-group">
@@ -61,34 +60,34 @@
           <div class="form-group">
             <label for="tax">Ставка НДС</label>
             <select class="form-control" id="tax">
-              <option>VAT_10</option>
-              <option>VAT_18</option>
-              <option>VAT_0</option>
-              <option>VAT_18_118</option>
-              <option>VAT_10_110</option>
+              <option value="VAT_0">НДС 0%</option>
+              <option value="VAT_10">НДС 10%</option>
+              <option value="VAT_18">НДС 18%</option>
+              <option value="VAT_10_110">НДС с расчётной ставкой 10%</option>
+              <option value="VAT_18_118">НДС с расчётной ставкой 18%</option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="measureName">Единица измерения</label>
             <select class="form-control" id="measureName">
-              <option>шт</option>
-              <option>кг</option>
-              <option>л</option>
-              <option>м</option>
-              <option>км</option>
-              <option>м2</option>
-              <option>м3</option>
-              <option>компл</option>
-              <option>упак</option>
-              <option>ед</option>
-              <option>дроб</option>
+              <option value="шт">Штуки</option>
+              <option value="кг">Килограммы</option>
+              <option value="л">Литры</option>
+              <option value="м">Метры</option>
+              <option value="км">Километры</option>
+              <option value="м2">Квадратные метры</option>
+              <option value="м3">Кубические метры</option>
+              <option value="компл">Комплекты</option>
+              <option value="упак">Упаковки</option>
+              <option value="ед">Единицы</option>
+              <option value="дроб">Дробное</option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="description">Описание товара</label>
-            <input type="text" class="form-control" id="description" placeholder="Описание товара">
+            <input type="text" class="form-control" id="description" placeholder="От 0 символов включительно">
           </div>
 
           <div class="form-group">
@@ -101,21 +100,21 @@
           <div class="form-group">
             <label for="type">Тип товара</label>
             <select class="form-control" id="type">
-              <option>NORMAL</option>
-              <option>ALCOHOL_MARKED</option>
-              <option>ALCOHOL_NOT_MARKED</option>
+              <option value="NORMAL">Обычный (неалкогольный)</option>
+              <option value="ALCOHOL_MARKED">Алкоголь акцизный</option>
+              <option value="ALCOHOL_NOT_MARKED">Алкоголь немаркированный</option>
             </select>
           </div>
 
           <div class="form-group">
             <label>Коды алкогольной продукции ЕГАИС</label>
-            <input type="text" class="form-control" id="alcoCode1" placeholder="Значение алкокода" disabled>
-            <input type="text" class="form-control mt-2" id="alcoCode2" placeholder="Значение алкокода" disabled>
+            <input type="text" class="form-control alcoCodes" id="alcoCode1" placeholder="Значение алкокода">
+            <input type="text" class="form-control alcoCodes mt-2" id="alcoCode2" placeholder="Значение алкокода">
           </div>
 
           <div class="form-group">
             <label for="alcoholByVolume">Крепость алкогольной продукции</label>
-            <input type="number" class="form-control" id="alcoholByVolume" placeholder="Крепость">
+            <input type="number" class="form-control" id="alcoholByVolume" placeholder="В процентах">
           </div>
 
           <div class="form-group">
@@ -125,7 +124,7 @@
 
           <div class="form-group">
             <label for="tareVolume">Ёмкость тары алкогольной продукции в литрах</label>
-            <input type="number" class="form-control" id="tareVolume" placeholder="Ёмкость тары">
+            <input type="number" class="form-control" id="tareVolume" placeholder="Ёмкость тары в литрах">
           </div>
 
           <div class="form-group">
@@ -142,7 +141,7 @@
 
           <div class="form-group">
             <label for="uuid">UUID товара</label>
-            <input type="text" class="form-control" id="uuid" placeholder="В формате uuid4">
+            <input type="text" class="form-control" id="uuid" placeholder="В формате uuid4" disabled>
           </div>
 
           <div class="form-group">
@@ -161,16 +160,16 @@
           <div class="form-group">
             <label for="shops">Магазины, в которые будет добавлен товар</label>
             <select multiple class="form-control" id="shops">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
+              <option value="shop1">1</option>
+              <option value="shop2">2</option>
+              <option value="shop3">3</option>
+              <option value="shop4">4</option>
+              <option value="shop5">5</option>
             </select>
             <small class="form-text text-muted">Зажмите Ctrl, чтобы выбрать несколько магазинов</small>
           </div>
 
-          <button type="submit" class="btn btn-primary">Добавить товар</button>
+          <button type="submit" id="submit" class="btn btn-primary">Добавить товар</button>
 
         </form>
       </div><!-- .container -->
