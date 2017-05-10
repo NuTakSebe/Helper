@@ -5,7 +5,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     config = require('./config'),
-    //log = require("libs/log")(module),
+    log = require("libs/log")(module),
     request = require('request'),
     fs = require('fs');
 
@@ -32,7 +32,7 @@ if (app.get("env") === 'development') {
 
 app.listen(config.get("port"), function () {
     //log.info("Server started");
-    console.log("Server started");
+    console.log("Server started"); // Хрень
 });
 
 app.use('/assets', express.static('assets')); // redirect our CSS
@@ -41,19 +41,10 @@ app.use('/assets/js', express.static(__dirname + '/node_modules/bootstrap/dist/j
 app.use('/assets/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/assets/js', express.static(__dirname + '/node_modules/tether/dist/js')); // redirect JS Tether
 
-//EXAMPLE of request to Evotor Cloud
-
-// request('http://www.google.com', function (error, response, body) {
-//     log.info('error:', error); // Print the error if one occurred
-//     log.info('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-//     log.info('body:', body); // Print the HTML for the Google homepage.
-// });
-
 // OUR requests
 
 app.get('/', function (req, res, next) {
 
-    //res.sendFile(path.join(__dirname, "test.html"));
     res.render('index');
 
 });
@@ -111,3 +102,10 @@ function sendFile(fileName, res) {
 
 
 module.exports = app;
+
+
+function getItemsFromStore(storeUuid) {
+
+
+    return null;
+}
