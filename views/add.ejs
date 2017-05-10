@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Index Page</title>
+    <title>Add Page</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel='stylesheet' href='/assets/css/style.css' />
     <script src="/assets/js/jquery.min.js"></script>
@@ -27,8 +27,8 @@
         <form>
 
           <div class="form-group">
-            <label for="uuid">UUID товара</label>
-            <input type="text" class="form-control" id="uuid" placeholder="В формате uuid4">
+            <label for="name">Название товара</label>
+            <input type="text" class="form-control" id="name" placeholder="Название товара">
           </div>
 
           <div class="form-group has-danger">
@@ -38,27 +38,14 @@
           </div>
 
           <div class="form-group">
+            <label for="articleNumber">Артикул товара</label>
+            <input type="text" class="form-control" id="articleNumber" placeholder="Артикул">
+          </div>
+
+          <div class="form-group">
             <label>Штрихкоды товара</label>
             <input type="text" class="form-control" id="barCode1" placeholder="Значение штрихкода">
             <input type="text" class="form-control mt-2" id="barCode2" placeholder="Значение штрихкода">
-          </div>
-
-          <div class="form-group">
-            <label class="form-check-label">
-               <input type="checkbox" id="alcoCheck" class="form-check-input">
-               Алкогольная продукция?
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label>Коды алкогольной продукции ЕГАИС</label>
-            <input type="text" class="form-control" id="alcoCode1" placeholder="Значение алкокода" disabled>
-            <input type="text" class="form-control mt-2" id="alcoCode2" placeholder="Значение алкокода" disabled>
-          </div>
-
-          <div class="form-group">
-            <label for="name">Название товара</label>
-            <input type="text" class="form-control" id="name" placeholder="Название товара">
           </div>
 
           <div class="form-group">
@@ -67,13 +54,19 @@
           </div>
 
           <div class="form-group">
-            <label for="quantity">Остаток товара в наличии</label>
-            <input type="number" class="form-control" id="quantity" placeholder="Остаток товара">
+            <label for="costPrice">Закупочная цена</label>
+            <input type="number" class="form-control" id="costPrice" placeholder="Закупочная цена товара">
           </div>
 
           <div class="form-group">
-            <label for="costPrice">Закупочная цена</label>
-            <input type="number" class="form-control" id="costPrice" placeholder="Закупочная цена товара">
+            <label for="tax">Ставка НДС</label>
+            <select class="form-control" id="tax">
+              <option>VAT_10</option>
+              <option>VAT_18</option>
+              <option>VAT_0</option>
+              <option>VAT_18_118</option>
+              <option>VAT_10_110</option>
+            </select>
           </div>
 
           <div class="form-group">
@@ -94,42 +87,14 @@
           </div>
 
           <div class="form-group">
-            <label for="tax">Ставка НДС</label>
-            <select class="form-control" id="tax">
-              <option>VAT_10</option>
-              <option>VAT_18</option>
-              <option>VAT_0</option>
-              <option>VAT_18_118</option>
-              <option>VAT_10_110</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-check-label">
-               <input type="checkbox" id="allowToSell" class="form-check-input">
-               Товар доступен для продажи?
-            </label>
-          </div>
-
-          <div class="form-group">
             <label for="description">Описание товара</label>
             <input type="text" class="form-control" id="description" placeholder="Описание товара">
           </div>
 
           <div class="form-group">
-            <label for="articleNumber">Артикул товара</label>
-            <input type="text" class="form-control" id="articleNumber" placeholder="Артикул">
-          </div>
-
-          <div class="form-group">
-            <label for="parentUuid">UUID родителя</label>
-            <input type="text" class="form-control" id="parentUuid" placeholder="В формате uuid4" disabled>
-          </div>
-
-          <div class="form-group">
             <label class="form-check-label">
-               <input type="checkbox" id="group" class="form-check-input" disabled>
-               Это группа?
+               <input type="checkbox" id="alcoCheck" class="form-check-input">
+               Это алкогольная продукция?
             </label>
           </div>
 
@@ -140,6 +105,12 @@
               <option>ALCOHOL_MARKED</option>
               <option>ALCOHOL_NOT_MARKED</option>
             </select>
+          </div>
+
+          <div class="form-group">
+            <label>Коды алкогольной продукции ЕГАИС</label>
+            <input type="text" class="form-control" id="alcoCode1" placeholder="Значение алкокода" disabled>
+            <input type="text" class="form-control mt-2" id="alcoCode2" placeholder="Значение алкокода" disabled>
           </div>
 
           <div class="form-group">
@@ -156,6 +127,36 @@
             <label for="tareVolume">Ёмкость тары алкогольной продукции в литрах</label>
             <input type="number" class="form-control" id="tareVolume" placeholder="Ёмкость тары">
           </div>
+
+          <div class="form-group">
+            <label for="quantity">Остаток товара в наличии</label>
+            <input type="number" class="form-control" id="quantity" placeholder="Остаток товара">
+          </div>
+
+          <div class="form-group">
+            <label class="form-check-label">
+               <input type="checkbox" id="allowToSell" class="form-check-input">
+               Товар доступен для продажи?
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="uuid">UUID товара</label>
+            <input type="text" class="form-control" id="uuid" placeholder="В формате uuid4">
+          </div>
+
+          <div class="form-group">
+            <label for="parentUuid">UUID родителя</label>
+            <input type="text" class="form-control" id="parentUuid" placeholder="В формате uuid4" disabled>
+          </div>
+
+          <div class="form-group">
+            <label class="form-check-label">
+               <input type="checkbox" id="group" class="form-check-input" disabled>
+               Это группа?
+            </label>
+          </div>
+
 
           <div class="form-group">
             <label for="shops">Магазины, в которые будет добавлен товар</label>
