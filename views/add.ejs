@@ -29,11 +29,12 @@
           <div class="form-group">
             <label for="name">Название товара</label>
             <input type="text" class="form-control" id="name" placeholder="От 1 до 100 символов включительно">
+            
           </div>
 
           <div class="form-group">
             <label for="code">Код товара</label>
-            <input type="text" class="form-control" id="code" placeholder="Пока хз, что с ней делать, пока оставлю так" disabled>
+            <input type="text" class="form-control" id="code" placeholder="Пока хз, что с этим делать, пока оставлю так" disabled>
           </div>
 
           <div class="form-group">
@@ -43,8 +44,9 @@
 
           <div class="form-group">
             <label>Штрихкоды товара</label>
-            <input type="text" class="form-control" id="barCode1" placeholder="Значение штрихкода">
-            <input type="text" class="form-control mt-2" id="barCode2" placeholder="Значение штрихкода">
+            <small class="form-text text-muted pb-3">Если оставить штрихкоды пустыми, в терминале будет доступен только визуальный поиск товара</small>
+            <input type="text" class="form-control barCodes" id="barCode1" placeholder="Значение штрихкода">
+            <input type="text" class="form-control barCodes mt-2" id="barCode2" placeholder="Значение штрихкода">
           </div>
 
           <div class="form-group">
@@ -134,7 +136,7 @@
 
           <div class="form-group">
             <label class="form-check-label">
-               <input type="checkbox" id="allowToSell" class="form-check-input">
+               <input type="checkbox" id="allowToSell" class="form-check-input" disabled>
                Товар доступен для продажи?
             </label>
           </div>
@@ -155,7 +157,6 @@
                Это группа?
             </label>
           </div>
-
 
           <div class="form-group">
             <label for="shops">Магазины, в которые будет добавлен товар</label>

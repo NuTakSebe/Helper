@@ -5,7 +5,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     config = require('./config'),
-    log = require("libs/log")(module),
+    //log = require("libs/log")(module),
     request = require('request'),
     fs = require('fs');
 
