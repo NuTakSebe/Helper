@@ -5,7 +5,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     config = require('./config'),
-    //log = require("libs/log")(module),
+    log = require("./libs/log")(module),
     request = require('request'),
     fs = require('fs');
 
@@ -52,8 +52,16 @@ app.get('/', function (req, res, next) {
 
 app.get('/add', function (req, res, next) {
 
-    res.render('add');
+    res.render('add', {item: req.query});
 
+});
+
+var evotorRequest = require('./requests');
+
+app.post('/add', function(req, res, next) {
+    console.log(req.body);
+    //evotorRequest.postItemsToStore(store, token, req.body);
+    res.render('add', {item: req.query});
 });
 
 app.get('/change', function (req, res, next) {
@@ -102,10 +110,3 @@ function sendFile(fileName, res) {
 
 
 module.exports = app;
-
-
-function getItemsFromStore(storeUuid) {
-
-
-    return null;
-}

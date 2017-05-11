@@ -24,12 +24,12 @@
       </div>
 
       <div class="container pb-4">
-        <form>
+        <form id="item-form" method="POST" action="/add">
 
           <div class="form-group">
             <label for="name">Название товара</label>
-            <input type="text" class="form-control" id="name" placeholder="От 1 до 100 символов включительно">
-            
+            <input type="text" class="form-control" id="name" value="<%=item.name%>" placeholder="От 1 до 100 символов включительно">
+
           </div>
 
           <div class="form-group">
