@@ -52,17 +52,18 @@ app.get('/', function (req, res, next) {
 
 app.get('/add', function (req, res, next) {
 
-    res.render('add', {item: req.query});
+    res.render('add');
 
 });
 
-var evotorRequest = require('./requests');
-
-app.post('/add', function(req, res, next) {
-    console.log(req.body);
-    //evotorRequest.postItemsToStore(store, token, req.body);
-    res.render('add', {item: req.query});
-});
+// рудимент
+// var evotorRequest = require('./requests');
+//
+// app.post('/add', function(req, res, next) {
+//     console.log(req.body);
+//     //evotorRequest.postItemsToStore(store, token, req.body);
+//     res.render('add', {item: req.query});
+// });
 
 app.get('/change', function (req, res, next) {
 

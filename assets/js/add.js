@@ -246,8 +246,10 @@ window.onload = function() {
   // обработка кнопки нажатия
   submit.onclick = function() {
     clearControls();
+    console.log('submit started');
 
     if (validate() === true) {
+      console.log('validate past');
       var barCodesArray = [];
       for (var i = 0; i < barCodes.length; i++) {
         barCodesArray.push(barCodes[i].value)
@@ -280,7 +282,10 @@ window.onload = function() {
         tareVolume: tareVolume.value,
         fields: {}
       }
-      console.log(item);
+      console.log(JSON.stringify(item));
+      let storeUuid = "expampleStore";
+      let token = "expampleToken";
+      postItemsToStore(storeUuid, token, item);
     }
 
     return false;
