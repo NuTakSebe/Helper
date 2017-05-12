@@ -1,6 +1,4 @@
 window.onload = function() {
-  var submit = document.getElementById("submit"); // кнопка Добавить товар
-
   // поля
   var name = document.getElementById("name"); // название
   var code = document.getElementById("code"); // код
@@ -14,11 +12,6 @@ window.onload = function() {
   var quantity = document.getElementById("quantity"); // остаток
   var allowToSell = document.getElementById("allowToSell"); // доступность продажи
   var shops = document.getElementById("shops"); // список магазинов
-
-  // пока пусть будет
-  var uuid = document.getElementById("uuid");
-  var parentUuid = document.getElementById("parentUuid");
-  var group = document.getElementById("group"); // это группа?
 
   // алкополя
   var alcoCheck = document.getElementById("alcoCheck"); // алкогалочка
@@ -34,6 +27,8 @@ window.onload = function() {
 
   var addAlcoCode = document.getElementById("addAlcoCode");
   var removeAlcoCode = document.getElementById("removeAlcoCode");
+
+  var submit = document.getElementById("submit");
 
 
   // активация/деактивация алкополей
@@ -92,7 +87,7 @@ window.onload = function() {
   // удаление дополнительных полей для штрихкодов
   removeBarCode.onclick = function() {
     if ($("#addBarCode").prev().hasClass('barCodes') && $("#addBarCode").prev().prop("id") != "barCode1") {
-        $("#addBarCode").prev().remove();
+      $("#addBarCode").prev().remove();
     }
   }
 
@@ -104,7 +99,7 @@ window.onload = function() {
   // удаление дополнительных полей для алкокодов
   removeAlcoCode.onclick = function() {
     if ($("#addAlcoCode").prev().hasClass('alcoCodes') && $("#addAlcoCode").prev().prop("id") != "alcoCode1") {
-        $("#addAlcoCode").prev().remove();
+      $("#addAlcoCode").prev().remove();
     }
   }
 
@@ -149,11 +144,19 @@ window.onload = function() {
       console.log("name");
     }
 
+    if (code.value.length > 10) {
+      validated = false;
+      $("#code").parent().addClass("has-danger");
+      $("#code").addClass("form-control-danger");
+      $("#code").parent().append('<div class="form-control-feedback">Поле должно содержать не более 10 символов</div>');
+      console.log("code");
+    }
+
     if (articleNumber.value.length > 20) {
       validated = false;
       $("#articleNumber").parent().addClass("has-danger");
       $("#articleNumber").addClass("form-control-danger");
-      $("#articleNumber").parent().append('<div class="form-control-feedback">Поле должно содержать не более 29 символов</div>');
+      $("#articleNumber").parent().append('<div class="form-control-feedback">Поле должно содержать не более 20 символов</div>');
       console.log("articleNumber");
     }
 
@@ -228,11 +231,57 @@ window.onload = function() {
     return validated;
   }
 
+  var getUUID = function() { // Public Domain/MIT
+    var d = new Date().getTime();
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+      d += performance.now(); //use high-precision timer if available
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+
   // обработка кнопки нажатия
   submit.onclick = function() {
-    //console.log(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test('12345678-1234-5678-1234-567812345678'));
     clearControls();
-    validate();
+
+    if (validate() === true) {
+      var barCodesArray = [];
+      for (var i = 0; i < barCodes.length; i++) {
+        barCodesArray.push(barCodes[i].value)
+      }
+
+      var alcoCodesArray = [];
+      for (var i = 0; i < alcoCodes.length; i++) {
+        alcoCodesArray.push(alcoCodes[i].value)
+      }
+
+      var item = {
+        uuid: getUUID(),
+        code: code.value,
+        barCodes: barCodesArray,
+        alcoCodes: alcoCodesArray,
+        name: name.value,
+        price: price.value,
+        quantity: quantity.value,
+        costPrice: costPrice.value,
+        measureName: measureName.value,
+        tax: tax.value,
+        allowToSell: allowToSell.checked,
+        description: description.value,
+        articleNumber: articleNumber.value,
+        parentUuid: null,
+        group: false,
+        type: type.value,
+        alcoholByVolume: alcoholByVolume.value,
+        alcoholProductKindCode: alcoholProductKindCode.value,
+        tareVolume: tareVolume.value,
+        fields: {}
+      }
+      console.log(item);
+    }
 
     return false;
   }
