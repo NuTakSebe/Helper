@@ -28,9 +28,17 @@ window.onload = function() {
   var alcoholProductKindCode = document.getElementById("alcoholProductKindCode"); // крепость алкоголя
   var tareVolume = document.getElementById("tareVolume"); // крепость алкоголя
 
+  // кнопки
+  var addBarCode = document.getElementById("addBarCode");
+  var removeBarCode = document.getElementById("removeBarCode");
+
+  var addAlcoCode = document.getElementById("addAlcoCode");
+  var removeAlcoCode = document.getElementById("removeAlcoCode");
+
+
   // активация/деактивация алкополей
   var alcoOff = function() {
-    type.value="NORMAL";
+    type.value = "NORMAL";
     type.disabled = true;
 
     for (var i = 0; i < alcoCodes.length; i++) {
@@ -38,12 +46,14 @@ window.onload = function() {
       alcoCodes[i].value = "0";
     }
 
-    alcoholByVolume.disabled= true;
+    alcoholByVolume.disabled = true;
     alcoholByVolume.value = "0";
-    alcoholProductKindCode.disabled= true;
+    alcoholProductKindCode.disabled = true;
     alcoholProductKindCode.value = "0";
-    tareVolume.disabled= true;
+    tareVolume.disabled = true;
     tareVolume.value = "0";
+    addAlcoCode.disabled = true;
+    removeAlcoCode.disabled = true;
   }
 
   var alcoOn = function() {
@@ -55,12 +65,14 @@ window.onload = function() {
       alcoCodes[i].value = "";
     }
 
-    alcoholByVolume.disabled= false;
+    alcoholByVolume.disabled = false;
     alcoholByVolume.value = "";
-    alcoholProductKindCode.disabled= false;
+    alcoholProductKindCode.disabled = false;
     alcoholProductKindCode.value = "";
-    tareVolume.disabled= false;
+    tareVolume.disabled = false;
     tareVolume.value = "";
+    addAlcoCode.disabled = false;
+    removeAlcoCode.disabled = false;
   }
 
   // изменение алкополей при установке алкогалочки
@@ -69,6 +81,30 @@ window.onload = function() {
       alcoOn();
     } else {
       alcoOff();
+    }
+  }
+
+  // добавление дополнительных полей для штрихкодов
+  addBarCode.onclick = function() {
+    $('<input type="text" class="form-control barCodes mt-2" placeholder="Значение штрихкода">').insertBefore("#addBarCode");
+  }
+
+  // удаление дополнительных полей для штрихкодов
+  removeBarCode.onclick = function() {
+    if ($("#addBarCode").prev().hasClass('barCodes') && $("#addBarCode").prev().prop("id") != "barCode1") {
+        $("#addBarCode").prev().remove();
+    }
+  }
+
+  // добавление дополнительных полей для алкокодов
+  addAlcoCode.onclick = function() {
+    $('<input type="text" class="form-control alcoCodes mt-2" placeholder="Значение алкокода">').insertBefore("#addAlcoCode");
+  }
+
+  // удаление дополнительных полей для алкокодов
+  removeAlcoCode.onclick = function() {
+    if ($("#addAlcoCode").prev().hasClass('alcoCodes') && $("#addAlcoCode").prev().prop("id") != "alcoCode1") {
+        $("#addAlcoCode").prev().remove();
     }
   }
 
@@ -109,7 +145,7 @@ window.onload = function() {
       validated = false;
       $("#name").parent().addClass("has-danger");
       $("#name").addClass("form-control-danger");
-      $("#name").parent().append( '<div class="form-control-feedback">Поле должно содержать от 1 до 100 символов</div>' );
+      $("#name").parent().append('<div class="form-control-feedback">Поле должно содержать от 1 до 100 символов</div>');
       console.log("name");
     }
 
@@ -117,7 +153,7 @@ window.onload = function() {
       validated = false;
       $("#articleNumber").parent().addClass("has-danger");
       $("#articleNumber").addClass("form-control-danger");
-      $("#articleNumber").parent().append( '<div class="form-control-feedback">Поле должно содержать не более 29 символов</div>' );
+      $("#articleNumber").parent().append('<div class="form-control-feedback">Поле должно содержать не более 29 символов</div>');
       console.log("articleNumber");
     }
 
@@ -125,7 +161,7 @@ window.onload = function() {
       validated = false;
       $("#price").parent().addClass("has-danger");
       $("#price").addClass("form-control-danger");
-      $("#price").parent().append( '<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0 до 9999999.99; не более двух десятичных цифр</div>' );
+      $("#price").parent().append('<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0 до 9999999.99; не более двух десятичных цифр</div>');
       console.log("price");
     }
 
@@ -133,7 +169,7 @@ window.onload = function() {
       validated = false;
       $("#costPrice").parent().addClass("has-danger");
       $("#costPrice").addClass("form-control-danger");
-      $("#costPrice").parent().append( '<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0 до 9999999.99; не более двух десятичных цифр</div>' );
+      $("#costPrice").parent().append('<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0 до 9999999.99; не более двух десятичных цифр</div>');
       console.log("costPrice");
     }
 
@@ -141,14 +177,14 @@ window.onload = function() {
       validated = false;
       $("#quantity").parent().addClass("has-danger");
       $("#quantity").addClass("form-control-danger");
-      $("#quantity").parent().append( '<div class="form-control-feedback">Не более трёх десятичных цифр</div>' );
+      $("#quantity").parent().append('<div class="form-control-feedback">Не более трёх десятичных цифр</div>');
       console.log("quantity");
     }
 
     if (getShopsList().length == 0) {
       validated = false;
       $("#shops").parent().addClass("has-danger");
-      $("#shops").parent().append( '<div class="form-control-feedback">Выберите хотя бы один магазин из списка</div>' );
+      $("#shops").parent().append('<div class="form-control-feedback">Выберите хотя бы один магазин из списка</div>');
       console.log("shops");
     }
 
@@ -159,7 +195,7 @@ window.onload = function() {
           validated = false;
           $("#alcoCode1").parent().addClass("has-danger");
           $(".alcoCodes").addClass("form-control-danger");
-          $("#alcoCode1").parent().append( '<div class="form-control-feedback">Поле не может быть пустым</div>' );
+          $("#alcoCode1").parent().append('<div class="form-control-feedback">Поле не может быть пустым</div>');
           console.log("alcoCodes");
         }
       }
@@ -168,7 +204,7 @@ window.onload = function() {
         validated = false;
         $("#alcoholByVolume").parent().addClass("has-danger");
         $("#alcoholByVolume").addClass("form-control-danger");
-        $("#alcoholByVolume").parent().append( '<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0 до 99.999; не более трёх десятичных цифр</div>' );
+        $("#alcoholByVolume").parent().append('<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0 до 99.999; не более трёх десятичных цифр</div>');
         console.log("alcoholByVolume");
       }
 
@@ -176,7 +212,7 @@ window.onload = function() {
         validated = false;
         $("#alcoholProductKindCode").parent().addClass("has-danger");
         $("#alcoholProductKindCode").addClass("form-control-danger");
-        $("#alcoholProductKindCode").parent().append( '<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0 до 999</div>' );
+        $("#alcoholProductKindCode").parent().append('<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0 до 999</div>');
         console.log("alcoholProductKindCode");
       }
 
@@ -184,7 +220,7 @@ window.onload = function() {
         validated = false;
         $("#tareVolume").parent().addClass("has-danger");
         $("#tareVolume").addClass("form-control-danger");
-        $("#tareVolume").parent().append( '<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0.001 до 999.999; не более трёх десятичных цифр</div>' );
+        $("#tareVolume").parent().append('<div class="form-control-feedback">Значение поля должно лежать в диапазоне от 0.001 до 999.999; не более трёх десятичных цифр</div>');
         console.log("tareVolume");
       }
     }
