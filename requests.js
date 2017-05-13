@@ -43,20 +43,22 @@ module.exports = function getItemsFromStore(storeUuid, token) {
     return null;
   };
 
-module.exports = function postItemsToStore(storeUuid, token, itemObj){
-    let reqString = "/api/v1/inventories/stores/"+storeUuid+"/products";
-    const options = {
-        hostname: "api.evotor.ru",
-        path: reqString,
-        method: 'POST',
-        headers: {"X-Authorization" : token }
-    };
-    let response  = "";
-    https.request(options, (res) => {
-        console.log('STATUS:'+ res.statusCode);
-    });
-    request.write(JSON.stringify(itemObj));
-    request.end();
 
-    return null;
-  };
+
+// module.exports = function postItemsToStore(storeUuid, token, itemObj){
+//     let reqString = "/api/v1/inventories/stores/"+storeUuid+"/products";
+//     const options = {
+//         hostname: "api.evotor.ru",
+//         path: reqString,
+//         method: 'POST',
+//         headers: {"X-Authorization" : token }
+//     };
+//     let response  = "";
+//     https.request(options, (res) => {
+//         console.log('STATUS:'+ res.statusCode);
+//     });
+//     request.write(JSON.stringify(itemObj));
+//     request.end();
+//
+//     return null;
+//   };
