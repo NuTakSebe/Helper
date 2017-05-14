@@ -30,7 +30,7 @@ if (app.get("env") === 'development') {
 }
 
 
-app.listen(config.get("port"), function () {
+app.listen(config.get("port") || process.env.PORT, function () {
     //log.info("Server started");
     console.log("Server started"); // Хрень
 });
