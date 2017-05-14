@@ -11,7 +11,7 @@ function postItemsToStore(storeUuid, token, itemObj){
       console.log(xhr.responseText);
       handleError(xhr.statusText);
     }
-  }
+  };
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.setRequestHeader('X-Authorization', token);
   xhr.send(JSON.stringify(itemObj));

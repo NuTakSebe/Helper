@@ -41,8 +41,8 @@ app.use('/assets/js', express.static(__dirname + '/node_modules/bootstrap/dist/j
 app.use('/assets/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/assets/js', express.static(__dirname + '/node_modules/tether/dist/js')); // redirect JS Tether
 
-// OUR requests
 
+// our paths
 app.get('/', function (req, res, next) {
 
     res.render('index');
@@ -56,14 +56,6 @@ app.get('/add', function (req, res, next) {
 
 });
 
-// рудимент
-// var evotorRequest = require('./requests');
-//
-// app.post('/add', function(req, res, next) {
-//     console.log(req.body);
-//     //evotorRequest.postItemsToStore(store, token, req.body);
-//     res.render('add', {item: req.query});
-// });
 
 app.get('/change', function (req, res, next) {
 
