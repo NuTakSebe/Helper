@@ -11,3 +11,17 @@
 #cards a:hover {
   color: #5bc0de;
 }
+
+#shopsContainer tbody tr {
+  transition: 0.5s ease;
+}
+
+#itemsContainer {
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s ease;
+}
+
+#itemsContainer tbody tr {
+  transition: 0.2s ease;
+}

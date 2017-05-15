@@ -9,8 +9,6 @@ var express = require('express'),
     request = require('request'),
     fs = require('fs');
 
-
-
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -25,10 +23,9 @@ app.use(express.static(path.join(__dirname, 'public')));    // статик, е�
 
 if (app.get("env") === 'development') {
     app.use(logger('dev'));                 // log development
-}else {
+} else {
     app.use(logger('default'));             // стандартный
 }
-
 
 app.listen(config.get("port") || process.env.PORT, function () {
     //log.info("Server started");
@@ -41,26 +38,21 @@ app.use('/assets/js', express.static(__dirname + '/node_modules/bootstrap/dist/j
 app.use('/assets/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/assets/js', express.static(__dirname + '/node_modules/tether/dist/js')); // redirect JS Tether
 
+app.use('/assets/fonts', express.static(__dirname + '/node_modules/font-awesome/fonts')); // redirect Font Awesome Fonts
+app.use('/assets/css', express.static(__dirname + '/node_modules/font-awesome/css')); // redirect Font Awesome CSS
 
 // our paths
 app.get('/', function (req, res, next) {
-
     res.render('index');
+});
 
+app.get('/addItem', function (req, res, next) {
+    res.render('addItem');
 });
 
 
-app.get('/add', function (req, res, next) {
-
-    res.render('add');
-
-});
-
-
-app.get('/change', function (req, res, next) {
-
-   res.render('change');
-
+app.get('/editItem', function (req, res, next) {
+   res.render('editItem');
 });
 
 // catch 404 and forward to error handler
@@ -69,8 +61,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -84,6 +74,19 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+//Additional
+function sendFile(fileName, res) {
+    var fileStream = fs.createReadStream(fileName);
+    fileStream
+        .on("error",function () {
+            res.statusCode = 404;
+            res.end("Not Found");
+        })
+        .pipe(res)
+        .on("close", function () {
+            fileStream.destroy();
+        })
 
+}
 
 module.exports = app;
