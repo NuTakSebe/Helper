@@ -149,12 +149,12 @@ window.onload = function() {
         fields: {}
       }
 
-      console.log(JSON.stringify(item));
+      console.log(item);
 
       var storeUuid = "expampleStore";
       var token = "expampleToken";
 
-      postItemsToStore(storeUuid, token, item);
+      postItem(storeUuid, token, item);
     }
 
     return false;
