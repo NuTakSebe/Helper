@@ -156,7 +156,7 @@ window.onload = function() {
 
       postItem(storeUuid, token, item);
     }
-
+    console.log("submit ended");
     return false;
   }
 

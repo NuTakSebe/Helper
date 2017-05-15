@@ -85,21 +85,5 @@ app.use(function(err, req, res, next) {
 });
 
 
-//Additional
-
-function sendFile(fileName, res) {
-    var fileStream = fs.createReadStream(fileName);
-    fileStream
-        .on("error",function () {
-            res.statusCode = 404;
-            res.end("Not Found");
-        })
-        .pipe(res)
-        .on("close", function () {
-            fileStream.destroy();
-        })
-
-}
-
 
 module.exports = app;
