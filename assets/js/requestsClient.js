@@ -1,10 +1,16 @@
+function updateItem(storeUuid, token, itemObj) {
+  let itemUuid = itemObj.uuid;
+  deleteItem(storeUuid, token, itemUuid);
+  postItem(storeUuid, token, itemObj);
+}
+
 function postItem(storeUuid, token, itemObj){
   let reqString = "http://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products";
   let xhr = new XMLHttpRequest();
   console.log("req open");
   xhr.open("POST", reqString , true);
   xhr.onreadystatechange = function() {
-    //if(xhr.readyState!=4) return;
+    if(xhr.readyState!=4) return;
     if(xhr.status == 200){
       console.log(xhr.responseText);
     }else {
@@ -13,7 +19,7 @@ function postItem(storeUuid, token, itemObj){
   };
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.setRequestHeader('X-Authorization', token);
-  xhr.send(JSON.stringify(itemObj));
+  xhr.send([itemObj]);
 }
 
 function deleteItem(storeUuid, token, itemUuid) {
@@ -32,7 +38,7 @@ function deleteItem(storeUuid, token, itemUuid) {
   }
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.setRequestHeader('X-Authorization', token);
-  xhr.send(itemUuid);
+  xhr.send([itemUuid]);
 }
 
 function getStores(token){
