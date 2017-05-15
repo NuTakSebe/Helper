@@ -10,6 +10,7 @@ params.split('&').forEach(function(item) {
     }
 });
 
+
 console.log(token);
 
 if (token === null) {
