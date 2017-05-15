@@ -10,6 +10,8 @@ params.split('&').forEach(function(item) {
     }
 });
 
+console.log(token);
+
 if (token === null) {
     console.error("Token is null!");
 }
