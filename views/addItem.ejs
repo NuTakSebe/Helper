@@ -11,7 +11,7 @@
 <body>
   <div class="container mt-2">
     <nav class="breadcrumb">
-      <a class="breadcrumb-item" href=<%tokenMain%>>Главная</a>
+      <a class="breadcrumb-item" href="/?token=<%=qs.token%>">Главная</a>
       <span class="breadcrumb-item active">Добавление товара</span>
     </nav>
   </div>
@@ -41,6 +41,7 @@
   <script src="/assets/js/requestsClient.js"></script>
   <script src="/assets/js/formItem.js"></script>
   <script src="/assets/js/addItem.js"></script>
+  <script src="/assets/js/getToken.js"></script>
 
 </body>
 
