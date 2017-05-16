@@ -208,8 +208,7 @@ window.onload = function() {
       var storeUuid = shopsList[lastShop].uuid;
       var itemUuid = itemsList[lastItem].uuid;
 
-      deleteItem(storeUuid, token, item);
-      postItem(storeUuid, token, item);
+      updateItem(storeUuid, token, item);
       clearItemForm();
       fillItemsTalbe(shopsList[lastShop].uuid);
       alert("Запросы выполнены");
