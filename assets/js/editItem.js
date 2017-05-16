@@ -2,64 +2,25 @@ window.onload = function() {
   var lastShop; // сохраняем выбранный магазин для доступа к его uuid в массиве товаров
   var lastItem; // сохраняем выбранный товар для доступа к его uuid в массиве товаров
 
-  var shopsExampleList = [
-    {
-      "uuid": "string",
-      "name": "Name",
-      "address": "string"
-    },{
-      "uuid": "string",
-      "name": "Name2",
-      "address": "strin2g"
-    }
-  ];
+  var shopsList = [];
 
-  var itemsExampleList = [
-    {
-      "uuid": "string",
-      "code": "string",
-      "barCodes": [123, 64564],
-      "alcoCodes": [],
-      "name": "string",
-      "price": 0,
-      "quantity": 0,
-      "costPrice": 0,
-      "measureName": "шт",
-      "tax": "VAT_0",
-      "allowToSell": true,
-      "description": "string",
-      "articleNumber": "string",
-      "parentUuid": "string",
-      "group": false,
-      "type": "NORMAL",
-      "alcoholByVolume": 0,
-      "alcoholProductKindCode": 0,
-      "tareVolume": 0
-    }, {
-      "uuid": "strin2g",
-      "code": "strin2g",
-      "barCodes": [],
-      "alcoCodes": [],
-      "name": "str123ing",
-      "price": 0,
-      "quantity": 0,
-      "costPrice": 0,
-      "measureName": "",
-      "tax": "NO_VAT",
-      "allowToSell": true,
-      "description": "string",
-      "articleNumber": "string",
-      "parentUuid": "string",
-      "group": true,
-      "type": "NORMAL",
-      "alcoholByVolume": 0,
-      "alcoholProductKindCode": 0,
-      "tareVolume": 0
-    }
-  ];
+  var itemsList = [];
 
   var fillShopsTable = function() {
-    shopsExampleList.forEach(function(shop, i, array) {
+    // TODO: запрос на получение списка магазинов
+    shopsList = [
+      {
+        "uuid": "string",
+        "name": "Name",
+        "address": "string"
+      },{
+        "uuid": "string",
+        "name": "Name2",
+        "address": "strin2g"
+      }
+    ];
+
+    shopsList.forEach(function(shop, i, array) {
       var tr = $("<tr/>").appendTo($("#shopsContainer tbody"));
       tr.attr("id", i);
       tr.append("<td>" + shop.name + "</td>");
@@ -67,9 +28,54 @@ window.onload = function() {
     });
   };
 
-  var fillItemsTalbe = function() {
+  var fillItemsTalbe = function(storeUuid) {
+    // TODO: запрос на получение списка товаров
+    itemsList = [
+      {
+        "uuid": "string",
+        "code": "string",
+        "barCodes": [123, 64564],
+        "alcoCodes": [],
+        "name": "string",
+        "price": 0,
+        "quantity": 0,
+        "costPrice": 0,
+        "measureName": "шт",
+        "tax": "VAT_0",
+        "allowToSell": true,
+        "description": "string",
+        "articleNumber": "string",
+        "parentUuid": "string",
+        "group": false,
+        "type": "NORMAL",
+        "alcoholByVolume": 0,
+        "alcoholProductKindCode": 0,
+        "tareVolume": 0
+      }, {
+        "uuid": "strin2g",
+        "code": "strin2g",
+        "barCodes": [],
+        "alcoCodes": [],
+        "name": "str123ing",
+        "price": 0,
+        "quantity": 0,
+        "costPrice": 0,
+        "measureName": "",
+        "tax": "NO_VAT",
+        "allowToSell": true,
+        "description": "string",
+        "articleNumber": "string",
+        "parentUuid": "string",
+        "group": true,
+        "type": "NORMAL",
+        "alcoholByVolume": 0,
+        "alcoholProductKindCode": 0,
+        "tareVolume": 0
+      }
+    ];
+
     $("#itemsContainer tbody").empty();
-    itemsExampleList.forEach(function(item, i, array) {
+    itemsList.forEach(function(item, i, array) {
       var tr = $("<tr/>").appendTo($("#itemsContainer tbody"));
       tr.append("<td>" + item.code + "</td>");
       tr.append("<td>" + item.name + "</td>");
@@ -96,55 +102,66 @@ window.onload = function() {
   };
 
   var clearItemForm = function() {
+    $("#name").val("");
     $("#code").val("");
     $("#articleNumber").val("");
     $("#barCode1").val("");
     $("#alcoCode1").val("");
     $(".barCode").remove();
     $(".alcoCode").remove();
+    $("#alcoCode1").val("");
+    $("#alcoholByVolume").val(0);
+    $("#alcoholProductKindCode").val(0);
+    $("#type").val("NORMAL");
+    $("#price").val(0);
+    $("#costPrice").val(0);
+    $("#quantity").val(0);
+    $("#tareVolume").val(0);
     $("#description").val("");
     $("#quantity").val("");
+    $("#measureName").val("шт");
+    $("#tax").val("VAT_0");
   };
 
   var fillItemForm = function(id) {
-    if (itemsExampleList[id].type !== 'NORMAL') {
+    if (itemsList[id].type !== 'NORMAL') {
       alcoOn();
     } else {
       alcoOff();
     }
-    $("#name").val(itemsExampleList[id].name);
-    $("#code").val(itemsExampleList[id].code);
-    $("#articleNumber").val(itemsExampleList[id].articleNumber);
+    $("#name").val(itemsList[id].name);
+    $("#code").val(itemsList[id].code);
+    $("#articleNumber").val(itemsList[id].articleNumber);
 
-    $("#name").val(itemsExampleList[id].name);// barCodes
+    $("#name").val(itemsList[id].name);// barCodes
 
-    itemsExampleList[id].barCodes.forEach(function(code, i, array) {
+    itemsList[id].barCodes.forEach(function(code, i, array) {
       $('<p class="barCode mb-2">' + code + ' <i class="fa fa-times codeRemove"></p>').appendTo("#barCodes");
       $(".codeRemove").click(function() {
         $(this).parent().remove();
       });
     });
 
-    $("#price").val(itemsExampleList[id].price);
-    $("#costPrice").val(itemsExampleList[id].costPrice);
-    $("#tax").val(itemsExampleList[id].tax);
-    $("#measureName").val(itemsExampleList[id].measureName);
-    $("#description").val(itemsExampleList[id].description);
-    $("#alcoCheck").prop("checked", itemsExampleList[id].alcoCheck);//
-    $("#type").val(itemsExampleList[id].type);
+    $("#price").val(itemsList[id].price);
+    $("#costPrice").val(itemsList[id].costPrice);
+    $("#tax").val(itemsList[id].tax);
+    $("#measureName").val(itemsList[id].measureName);
+    $("#description").val(itemsList[id].description);
+    $("#alcoCheck").prop("checked", itemsList[id].alcoCheck);//
+    $("#type").val(itemsList[id].type);
 
-    itemsExampleList[id].alcoCodes.forEach(function(code, i, array) {
+    itemsList[id].alcoCodes.forEach(function(code, i, array) {
       $('<p class="alcoCode mb-2">' + code + ' <i class="fa fa-times codeRemove"></p>').appendTo("#alcoCodes");
       $(".codeRemove").click(function() {
         $(this).parent().remove();
       });
     });
 
-    $("#alcoholByVolume").val(itemsExampleList[id].alcoholByVolume);
-    $("#alcoholProductKindCode").val(itemsExampleList[id].alcoholProductKindCode);
-    $("#tareVolume").val(itemsExampleList[id].tareVolume);
-    $("#quantity").val(itemsExampleList[id].quantity);
-    $("#allowToSell").prop("checked", itemsExampleList[id].allowToSell);
+    $("#alcoholByVolume").val(itemsList[id].alcoholByVolume);
+    $("#alcoholProductKindCode").val(itemsList[id].alcoholProductKindCode);
+    $("#tareVolume").val(itemsList[id].tareVolume);
+    $("#quantity").val(itemsList[id].quantity);
+    $("#allowToSell").prop("checked", itemsList[id].allowToSell);
 
   };
 
@@ -156,15 +173,15 @@ window.onload = function() {
     $("#itemsContainer").css("opacity", "1");
     $(".table-active").removeClass("table-active");
     $(this).addClass("table-active");
-    fillItemsTalbe();
     lastShop = $(this).attr("id");
+    fillItemsTalbe(shopsList[lastShop].uuid);
   });
 
   $('#btnSave').click(function (event) {
     clearControls();
     if (validateItem() === true) {
       var item = {
-        uuid: itemsExampleList[lastItem].uuid,
+        uuid: itemsList[lastItem].uuid,
         code: $("#code").val(),
         barCodes: getBarCodes(),
         alcoCodes: getAlcoCodes(),
@@ -186,7 +203,16 @@ window.onload = function() {
         fields: {}
       };
 
-      console.log(item);
+      console.log(JSON.stringify(item));
+
+      var storeUuid = shopsList[lastShop].uuid;
+      var itemUuid = itemsList[lastItem].uuid;
+
+      deleteItem(storeUuid, token, item);
+      postItem(storeUuid, token, item);
+      clearItemForm();
+      fillItemsTalbe(shopsList[lastShop].uuid);
+      alert("Запросы выполнены");
     }
   });
 

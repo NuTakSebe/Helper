@@ -1,12 +1,21 @@
 window.onload = function() {
-  // выдернуть список магазинов из выбора
-  var getShopsList = function() {
-    var shopsList = $.map($('#shops option:selected'), function(option) {
-      return option.value;
-    });
+  // TODO: запрос на получение списка магазинов
+  var shopsList = [
+    {
+      "uuid": "string",
+      "name": "Name",
+      "address": "string"
+    },{
+      "uuid": "string12323",
+      "name": "Name2",
+      "address": "strin2g"
+    }
+  ];
 
-    return shopsList;
-  }
+  shopsList.forEach(function(item, i, array) {
+    $("#shops").append("<option value='" + item.uuid + "'>" + item.name + "</option>");
+    console.log(item.uuid);
+  });
 
   var generateUUID = function() {
     var d = new Date().getTime();
@@ -22,7 +31,6 @@ window.onload = function() {
 
   // обработка кнопки нажатия
   submit.onclick = function() {
-    getShopsList();
     clearControls();
     console.log('submit started');
 
@@ -39,7 +47,7 @@ window.onload = function() {
         quantity: $("#quantity").val(),
         costPrice: $("#costPrice").val(),
         measureName: $("#measureName").val(),
-        tax: $("#name").val(),
+        tax: $("#tax").val(),
         allowToSell: $("#allowToSell").val(),
         description: $("#description").val(),
         articleNumber: $("#articleNumber").val(),
@@ -54,10 +62,9 @@ window.onload = function() {
 
       console.log(JSON.stringify(item));
 
-      var storeUuid = "expampleStore";
-      var token = "expampleToken";
-
+      var storeUuid = $("#shops").val();
       postItem(storeUuid, token, item);
+      alert("Запросы выполнены");
     }
 
     return false;
