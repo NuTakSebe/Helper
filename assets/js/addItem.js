@@ -1,16 +1,14 @@
 window.onload = function() {
   // TODO: запрос на получение списка магазинов
-  var shopsList = [
-    {
-      "uuid": "string",
-      "name": "Name",
-      "address": "string"
-    },{
-      "uuid": "string12323",
-      "name": "Name2",
-      "address": "strin2g"
-    }
-  ];
+  var shopsList = [{
+    "uuid": "string",
+    "name": "Name",
+    "address": "string"
+  }, {
+    "uuid": "string12323",
+    "name": "Name2",
+    "address": "strin2g"
+  }];
 
   shopsList.forEach(function(item, i, array) {
     $("#shops").append("<option value='" + item.uuid + "'>" + item.name + "</option>");
@@ -60,6 +58,9 @@ window.onload = function() {
         fields: {}
       }
 
+      let token = getToken();
+      let storeUuid = "expampleStore";
+      console.log(token);
       console.log(JSON.stringify(item));
 
       var storeUuid = $("#shops").val();
