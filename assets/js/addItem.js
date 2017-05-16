@@ -48,7 +48,7 @@ window.onload = function() {
         costPrice: $("#costPrice").val(),
         measureName: $("#measureName").val(),
         tax: $("#tax").val(),
-        allowToSell: $("#allowToSell").val(),
+        allowToSell: $("#allowToSell").prop('checked'),
         description: $("#description").val(),
         articleNumber: $("#articleNumber").val(),
         parentUuid: null,
