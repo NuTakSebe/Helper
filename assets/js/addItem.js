@@ -1,21 +1,22 @@
 window.onload = function() {
-  // TODO: запрос на получение списка магазинов
-  var shopsList = [
-    {
-      "uuid": "string",
-      "name": "Name",
-      "address": "string"
-    },{
-      "uuid": "string12323",
-      "name": "Name2",
-      "address": "strin2g"
-    }
-  ];
+    let token = "expampleToken";
+    console.log("function arrived");
+    let params = window.location.search.replace('?','');
+    params.split('&').forEach(function(item) {
+        item = item.split('=');
+        if (item[0] === 'token'){
+            token = item[1];
+        }
+    });
+    console.log("Token1:" + token);
+  // выдернуть список магазинов из выбора
+  var getShopsList = function() {
+    var shopsList = $.map ($('#shops option:selected'), function(option) {
+      return option.value;
+    });
 
-  shopsList.forEach(function(item, i, array) {
-    $("#shops").append("<option value='" + item.uuid + "'>" + item.name + "</option>");
-    console.log(item.uuid);
-  });
+    return shopsList;
+  }
 
   var generateUUID = function() {
     var d = new Date().getTime();
@@ -31,6 +32,7 @@ window.onload = function() {
 
   // обработка кнопки нажатия
   submit.onclick = function() {
+    getShopsList();
     clearControls();
     console.log('submit started');
 
@@ -47,8 +49,8 @@ window.onload = function() {
         quantity: $("#quantity").val(),
         costPrice: $("#costPrice").val(),
         measureName: $("#measureName").val(),
-        tax: $("#tax").val(),
-        allowToSell: $("#allowToSell").prop('checked'),
+        tax: $("#name").val(),
+        allowToSell: $("#allowToSell").val(),
         description: $("#description").val(),
         articleNumber: $("#articleNumber").val(),
         parentUuid: null,
@@ -60,11 +62,13 @@ window.onload = function() {
         fields: {}
       }
 
+        let storeUuid = "expampleStore";
+
+
+        console.log(token);
       console.log(JSON.stringify(item));
 
-      var storeUuid = $("#shops").val();
       postItem(storeUuid, token, item);
-      alert("Запросы выполнены");
     }
 
     return false;
