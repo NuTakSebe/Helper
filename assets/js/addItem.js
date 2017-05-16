@@ -1,5 +1,14 @@
 window.onload = function() {
-
+    let token = "expampleToken";
+    console.log("function arrived");
+    let params = window.location.search.replace('?','');
+    params.split('&').forEach(function(item) {
+        item = item.split('=');
+        if (item[0] === 'token'){
+            token = item[1];
+        }
+    });
+    console.log("Token1:" + token);
   // выдернуть список магазинов из выбора
   var getShopsList = function() {
     var shopsList = $.map ($('#shops option:selected'), function(option) {
@@ -54,16 +63,7 @@ window.onload = function() {
       }
 
         let storeUuid = "expampleStore";
-        let token = "expampleToken";
 
-        console.log("function arrived");
-        let params = window.location.search.replace('?','');
-        params.split('&').forEach(function(item) {
-            item = item.split('=');
-            if (item[0] === 'token'){
-                token = item[1];
-            }
-        });
 
         console.log(token);
       console.log(JSON.stringify(item));

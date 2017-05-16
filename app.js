@@ -50,7 +50,9 @@ app.get('/', function (req, res, next) {
 });
 
 app.get('/addItem', function (req, res, next) {
-    res.render('addItem');
+    let tokenMain = "/?token=" + req.query.token;
+    log.info(tokenMain);
+    res.render('addItem', {tokenMain: tokenMain});
 });
 
 
