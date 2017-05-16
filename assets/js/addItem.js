@@ -1,7 +1,8 @@
 window.onload = function() {
+
   // выдернуть список магазинов из выбора
   var getShopsList = function() {
-    var shopsList = $.map($('#shops option:selected'), function(option) {
+    var shopsList = $.map ($('#shops option:selected'), function(option) {
       return option.value;
     });
 
@@ -52,10 +53,20 @@ window.onload = function() {
         fields: {}
       }
 
-      console.log(JSON.stringify(item));
+        let storeUuid = "expampleStore";
+        let token = "expampleToken";
 
-      var storeUuid = "expampleStore";
-      var token = "expampleToken";
+        console.log("function arrived");
+        let params = window.location.search.replace('?','');
+        params.split('&').forEach(function(item) {
+            item = item.split('=');
+            if (item[0] === 'token'){
+                token = item[1];
+            }
+        });
+
+        console.log(token);
+      console.log(JSON.stringify(item));
 
       postItem(storeUuid, token, item);
     }

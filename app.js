@@ -43,7 +43,10 @@ app.use('/assets/css', express.static(__dirname + '/node_modules/font-awesome/cs
 
 // our paths
 app.get('/', function (req, res, next) {
-    res.render('index');
+    console.log(req.query);
+    let tokenAdd = "/addItem?token="+req.query.token;
+    let tokenEdit = "/editItem?token="+req.query.token;
+    res.render('index',{tokenAdd:tokenAdd, tokenEdit:tokenEdit});
 });
 
 app.get('/addItem', function (req, res, next) {

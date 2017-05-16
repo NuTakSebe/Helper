@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>ЛК+ | Главная страница</title>
+  <title>ЛК+ | Главная страница </title>
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
@@ -19,9 +19,8 @@
   <div class="container text-muted text-center py-2" id="cards">
     <div class="card-group">
       <div class="card">
-       <!-- <a href="/addItem"> -->
-        <a href=<%tokenAdd%>>
-          <div class="card-header">
+        <a href=<%=tokenAdd%>>
+        <div class="card-header">
             <i class="fa fa-plus fa-3x"></i>
           </div>
           <div class="card-block">
@@ -33,7 +32,7 @@
 
       <div class="card">
        <!--<a href="/editItem">-->
-        <a href=<%tokenEdit%>>
+        <a href=<%=tokenEdit%>>
           <div class="card-header text-center">
             <i class="fa fa-pencil fa-3x"></i>
           </div>
