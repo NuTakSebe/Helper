@@ -29,19 +29,11 @@ window.onload = function() {
     if (validateItem() === true) {
       console.log('validate past');
 
-      var barCodesArray = $.map($('.barCodes'), function(code) {
-        return code.value;
-      });
-
-      var alcoCodesArray = $.map($('.alcoCodes'), function(code) {
-        return code.value;
-      });
-
       var item = {
         uuid: generateUUID(),
         code: $("#code").val(),
-        barCodes: barCodesArray,
-        alcoCodes: alcoCodesArray,
+        barCodes: getBarCodes(),
+        alcoCodes: getAlcoCodes(),
         name: $("#name").val(),
         price: $("#price").val(),
         quantity: $("#quantity").val(),

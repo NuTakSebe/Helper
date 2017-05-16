@@ -77,6 +77,9 @@ window.onload = function() {
       tr.append(
         "<td><button type='button' class='btn btn-primary btn-sm btnEdit' id='" + i + "'data-toggle='modal' data-target='#itemModal'>Изменить</button></td>"
       );
+      tr.append(
+        "<td><button type='button' class='btn btn-secondary btn-sm btnDelete' id='" + i + "'>Удалить</button></td>"
+      );
     });
 
     // обработчик кнопки "изменить"
@@ -85,6 +88,11 @@ window.onload = function() {
       fillItemForm($(this).attr("id"));
       lastItem = $(this).attr("id");
     });
+
+    // обработчик кнопки "удалить"
+    $('.btnDelete').click(function (event) {
+      console.log($(this).attr("id"))
+    });
   };
 
   var clearItemForm = function() {
@@ -92,13 +100,18 @@ window.onload = function() {
     $("#articleNumber").val("");
     $("#barCode1").val("");
     $("#alcoCode1").val("");
-    $(".barCodes").not("#barCode1").remove();
-    $(".alcoCodes").not("#barCode1").remove();
+    $(".barCode").remove();
+    $(".alcoCode").remove();
     $("#description").val("");
     $("#quantity").val("");
   };
 
   var fillItemForm = function(id) {
+    if (itemsExampleList[id].type !== 'NORMAL') {
+      alcoOn();
+    } else {
+      alcoOff();
+    }
     $("#name").val(itemsExampleList[id].name);
     $("#code").val(itemsExampleList[id].code);
     $("#articleNumber").val(itemsExampleList[id].articleNumber);
@@ -106,13 +119,11 @@ window.onload = function() {
     $("#name").val(itemsExampleList[id].name);// barCodes
 
     itemsExampleList[id].barCodes.forEach(function(code, i, array) {
-      if (i > 0) {
-        $('<input type="text" class="form-control barCodes mt-2" placeholder="Значение штрихкода">').val(array[i]).insertBefore("#addBarCode");
-      } else {
-        $("#barCode1").val(itemsExampleList[id].barCodes[0]);
-      }
+      $('<p class="barCode mb-2">' + code + ' <i class="fa fa-times codeRemove"></p>').appendTo("#barCodes");
+      $(".codeRemove").click(function() {
+        $(this).parent().remove();
+      });
     });
-
 
     $("#price").val(itemsExampleList[id].price);
     $("#costPrice").val(itemsExampleList[id].costPrice);
@@ -122,7 +133,12 @@ window.onload = function() {
     $("#alcoCheck").prop("checked", itemsExampleList[id].alcoCheck);//
     $("#type").val(itemsExampleList[id].type);
 
-    $("#name").val(itemsExampleList[id].name); //alcoCodes
+    itemsExampleList[id].alcoCodes.forEach(function(code, i, array) {
+      $('<p class="alcoCode mb-2">' + code + ' <i class="fa fa-times codeRemove"></p>').appendTo("#alcoCodes");
+      $(".codeRemove").click(function() {
+        $(this).parent().remove();
+      });
+    });
 
     $("#alcoholByVolume").val(itemsExampleList[id].alcoholByVolume);
     $("#alcoholProductKindCode").val(itemsExampleList[id].alcoholProductKindCode);
@@ -147,19 +163,11 @@ window.onload = function() {
   $('#btnSave').click(function (event) {
     clearControls();
     if (validateItem() === true) {
-      var barCodesArray = $.map($('.barCodes'), function(code) {
-        return code.value;
-      });
-
-      var alcoCodesArray = $.map($('.alcoCodes'), function(code) {
-        return code.value;
-      });
-
       var item = {
         uuid: itemsExampleList[lastItem].uuid,
         code: $("#code").val(),
-        barCodes: barCodesArray,
-        alcoCodes: alcoCodesArray,
+        barCodes: getBarCodes(),
+        alcoCodes: getAlcoCodes(),
         name: $("#name").val(),
         price: $("#price").val(),
         quantity: $("#quantity").val(),

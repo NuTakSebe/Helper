@@ -47,28 +47,42 @@ $("#alcoCheck").click(function() {
   }
 });
 
-// добавление дополнительных полей для штрихкодов
+// добавлениеx штрихкодов
 $("#addBarCode").click(function() {
-  $('<input type="text" class="form-control barCodes mt-2" placeholder="Значение штрихкода">').insertBefore("#addBarCode");
-});
-
-// удаление дополнительных полей для штрихкодов
-$("#removeBarCode").click(function() {
-  if ($("#addBarCode").prev().hasClass('barCodes') && $("#addBarCode").prev().prop("id") != "barCode1") {
-    $("#addBarCode").prev().remove();
+  if ($("#barCodeInput").val()){
+    clearControls();
+    $('<p class="barCode mb-2">' + $("#barCodeInput").val() + ' <i class="fa fa-times codeRemove"></p>').appendTo("#barCodes");
+    $("#barCodeInput").val("");
+  } else {
+    clearControls();
+    $("#barCodeInput").parent().addClass("has-danger");
+    $("#barCodeInput").addClass("form-control-danger");
+    $("#barCodeInput").parent().append('<div class="form-control-feedback">Штрих-код не может быть пустым</div>');
   }
+  // удаление штрихкодов
+  $(".codeRemove").click(function() {
+    $(this).parent().remove();
+  });
 });
 
-// добавление дополнительных полей для алкокодов
+
+// добавление алкокодов
 $("#addAlcoCode").click(function() {
-  $('<input type="text" class="form-control alcoCodes mt-2" placeholder="Значение алкокода">').insertBefore("#addAlcoCode");
-});
 
-// удаление дополнительных полей для алкокодов
-$("#removeAlcoCode").click(function() {
-  if ($("#addAlcoCode").prev().hasClass('alcoCodes') && $("#addAlcoCode").prev().prop("id") != "alcoCode1") {
-    $("#addAlcoCode").prev().remove();
+  if ($("#alcoCodeInput").val()){
+    clearControls();
+    $('<p class="alcoCode mb-2">' + $("#alcoCodeInput").val() + ' <i class="fa fa-times codeRemove"></p>').appendTo("#alcoCodes");
+    $("#alcoCodeInput").val("");
+  } else {
+    clearControls();
+    $("#alcoCodeInput").parent().addClass("has-danger");
+    $("#alcoCodeInput").addClass("form-control-danger");
+    $("#alcoCodeInput").parent().append('<div class="form-control-feedback">Алкокод не может быть пустым</div>');
   }
+  // удаление штрихкодов
+  $(".codeRemove").click(function() {
+    $(this).parent().remove();
+  });
 });
 
 // валидация
@@ -175,4 +189,23 @@ var clearControls = function() {
   $(".form-control-feedback").each(function() {
     $(this).remove();
   });
+}
+
+// получение штрих и алкокодов
+var getBarCodes = function() {
+  var barCodesArray = [];
+  $(".barCode").each(function() {
+    barCodesArray.push($(this).text());
+  });
+
+  return barCodesArray;
+}
+
+var getAlcoCodes = function() {
+  var alcoCodesArray = [];
+  $(".alcoCode").each(function() {
+    alcoCodesArray.push($(this).text());
+  });
+
+  return alcoCodesArray;
 }
