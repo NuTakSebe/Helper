@@ -57,7 +57,9 @@ app.get('/addItem', function (req, res, next) {
 
 
 app.get('/editItem', function (req, res, next) {
-   res.render('editItem');
+    let tokenMain = "/?token=" + req.query.token;
+    log.info(tokenMain);
+   res.render('editItem', {tokenMain:tokenMain});
 });
 
 // catch 404 and forward to error handler
