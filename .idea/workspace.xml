@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5e23a90d-87e0-47e6-a4a0-01c36d082fcc" name="Default" comment="Switch btwn ejs saving token">
+    <list default="true" id="5e23a90d-87e0-47e6-a4a0-01c36d082fcc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/addItem.ejs" afterPath="$PROJECT_DIR$/views/addItem.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/editItem.ejs" afterPath="$PROJECT_DIR$/views/editItem.ejs" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -115,7 +112,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-1" />
-    <option name="y" value="-4" />
+    <option name="y" value="1076" />
     <option name="width" value="1922" />
     <option name="height" value="1022" />
   </component>
@@ -488,7 +485,7 @@
       <workItem from="1494877201621" duration="709000" />
       <workItem from="1494939415987" duration="2390000" />
       <workItem from="1494941828431" duration="3000" />
-      <workItem from="1494945319274" duration="14042000" />
+      <workItem from="1494945319274" duration="14109000" />
     </task>
     <task id="LOCAL-00001" summary="Ну хоть начать:&#10;костяк сервера, чутка запросов">
       <created>1494175377382</created>
@@ -567,11 +564,18 @@
       <option name="project" value="LOCAL" />
       <updated>1494963943820</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Switch btwn ejs saving token">
+      <created>1494964837653</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1494964837653</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48629000" />
+    <option name="totallyTimeSpent" value="48696000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -583,7 +587,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="-4" width="1922" height="1022" extended-state="6" />
+    <frame x="-1" y="1076" width="1922" height="1022" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12018977" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
