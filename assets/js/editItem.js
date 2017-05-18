@@ -2,24 +2,22 @@ window.onload = function() {
   var lastShop; // сохраняем выбранный магазин для доступа к его uuid в массиве товаров
   var lastItem; // сохраняем выбранный товар для доступа к его uuid в массиве товаров
 
-  var shopsList = [];
+//Ильшат, замени на то, что посчитаешь нужным
+  function failFunc(){
+    console.log("ERROR");
+  };
+
+  //Ильшат, замени на то, что посчитаешь нужным
+    function succesFunc(){
+      console.log("SUCCESS");
+    };
+
+  var shopsList = getStores(token, failFunc);
+
 
   var itemsList = [];
 
   var fillShopsTable = function() {
-    // TODO: запрос на получение списка магазинов
-    shopsList = [
-      {
-        "uuid": "string",
-        "name": "Name",
-        "address": "string"
-      },{
-        "uuid": "string",
-        "name": "Name2",
-        "address": "strin2g"
-      }
-    ];
-
     shopsList.forEach(function(shop, i, array) {
       var tr = $("<tr/>").appendTo($("#shopsContainer tbody"));
       tr.attr("id", i);
@@ -29,50 +27,8 @@ window.onload = function() {
   };
 
   var fillItemsTalbe = function(storeUuid) {
-    // TODO: запрос на получение списка товаров
-    itemsList = [
-      {
-        "uuid": "string",
-        "code": "string",
-        "barCodes": [123, 64564],
-        "alcoCodes": [],
-        "name": "string",
-        "price": 0,
-        "quantity": 0,
-        "costPrice": 0,
-        "measureName": "шт",
-        "tax": "VAT_0",
-        "allowToSell": true,
-        "description": "string",
-        "articleNumber": "string",
-        "parentUuid": "string",
-        "group": false,
-        "type": "NORMAL",
-        "alcoholByVolume": 0,
-        "alcoholProductKindCode": 0,
-        "tareVolume": 0
-      }, {
-        "uuid": "strin2g",
-        "code": "strin2g",
-        "barCodes": [],
-        "alcoCodes": [],
-        "name": "str123ing",
-        "price": 0,
-        "quantity": 0,
-        "costPrice": 0,
-        "measureName": "",
-        "tax": "NO_VAT",
-        "allowToSell": true,
-        "description": "string",
-        "articleNumber": "string",
-        "parentUuid": "string",
-        "group": true,
-        "type": "NORMAL",
-        "alcoholByVolume": 0,
-        "alcoholProductKindCode": 0,
-        "tareVolume": 0
-      }
-    ];
+
+    itemsList = getItems(storeUuid, token, failFunc);
 
     $("#itemsContainer tbody").empty();
     itemsList.forEach(function(item, i, array) {
@@ -204,11 +160,8 @@ window.onload = function() {
       };
 
       console.log(JSON.stringify(item));
-
       var storeUuid = shopsList[lastShop].uuid;
-      var itemUuid = itemsList[lastItem].uuid;
-
-      updateItem(storeUuid, token, item);
+      updateItem(storeUuid, token, item, succesFunc, failFunc);
       clearItemForm();
       fillItemsTalbe(shopsList[lastShop].uuid);
       alert("Запросы выполнены");

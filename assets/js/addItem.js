@@ -1,14 +1,14 @@
 window.onload = function() {
-  // TODO: запрос на получение списка магазинов
-  var shopsList = [{
-    "uuid": "string",
-    "name": "Name",
-    "address": "string"
-  }, {
-    "uuid": "string12323",
-    "name": "Name2",
-    "address": "strin2g"
-  }];
+  //Ильшат, замени на то, что посчитаешь нужным
+    function failFunc(){
+      console.log("ERROR");
+    };
+    //Ильшат, замени на то, что посчитаешь нужным
+      function succesFunc(){
+        console.log("SUCCESS");
+      };
+
+  var shopsList = getStores(token, failFunc);
 
   shopsList.forEach(function(item, i, array) {
     $("#shops").append("<option value='" + item.uuid + "'>" + item.name + "</option>");
@@ -59,13 +59,11 @@ window.onload = function() {
       }
 
       let token = getToken();
-      let storeUuid = "expampleStore";
       console.log(token);
       console.log(JSON.stringify(item));
 
       var storeUuid = $("#shops").val();
-      postItem(storeUuid, token, item);
-      alert("Запросы выполнены");
+      postItem(storeUuid, token, item, succesFunc, failFunc);
     }
 
     return false;
