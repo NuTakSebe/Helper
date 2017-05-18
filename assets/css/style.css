@@ -1,0 +1,74 @@
+#mainJumbotron {
+  color: #fff;
+  background-color: #ff7800;
+}
+
+#cards a {
+  color: inherit;
+  text-decoration: inherit;
+  transition: 0.5s ease;
+}
+
+#cards a:hover {
+  color: #e86d00;
+}
+
+.breadcrumb a {
+  color: #ff7800;
+  text-decoration: inherit;
+}
+
+.breadcrumb a:hover {
+  color: #e86d00;
+}
+
+.btn-primary, .btn-primary:active  {
+  background-color: #ff7800;
+  border-color: #ff7800;
+}
+
+.btn-primary:hover {
+  background-color: #e86d00;
+  border-color: #ff7800;
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 2px rgba(255,120,0,.5);
+}
+
+.form-control:focus {
+  border-color: #666;
+}
+
+.codeRemove {
+  transition: 0.5s ease;
+}
+
+.codeRemove:hover {
+  color: #e86d00;
+}
+
+#shopsContainer .table tbody tr:hover {
+  background-color: rgba(255,120,0,.8);
+  color: #fff;
+  cursor: pointer;
+}
+
+#shopsContainer .table-active, #shopsContainer .table .table-active:hover {
+  background-color: #ff7800;
+  color: #fff;
+}
+
+#shopsContainer tbody tr {
+  transition: 0.5s ease;
+}
+
+#itemsContainer {
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s ease;
+}
+
+#itemsContainer tbody tr {
+  transition: 0.2s ease;
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ЛК+ | Главная страница </title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
+</head>
+
+<body>
+  <div class="container text-muted text-center py-2" id="cards">
+    <div class="card-group">
+      <div class="card">
+        <a href="/addItem?token=<%=qs.token%>">
+        <div class="card-header">
+            <i class="fa fa-plus fa-3x"></i>
+          </div>
+          <div class="card-block">
+            <h3 class="card-title">Добавить товар</h3>
+            <p>Добавление нового товара в магазины</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="card">
+       <!--<a href="/editItem">-->
+        <a href="/editItem?token=<%=qs.token%>">
+          <div class="card-header text-center">
+            <i class="fa fa-pencil fa-3x"></i>
+          </div>
+          <div class="card-block">
+            <h3 class="card-title">Изменить товар</h3>
+            <p>Изменение параметров товара</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="#">
+          <div class="card-header text-center">
+            <i class="fa fa-file-excel-o fa-3x"></i>
+          </div>
+          <div class="card-block">
+            <h3 class="card-title">Импорт Excel</h3>
+            <p>Импорт товаров из Excel - в будущих релизах</p>
+          </div>
+        </a>
+      </div>
+
+    </div><!-- .card-group -->
+  </div><!-- .container -->
+
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/tether.min.js"></script>
+  <script src="/assets/js/bootstrap.min.js"></script>
+</body>
+
+</html>

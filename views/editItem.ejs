@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Item Page</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel='stylesheet' href='/assets/css/style.css' />
+    <link rel='stylesheet' href='/assets/css/font-awesome.css' />
+  </head>
+  <body>
+    <div class="container mt-2">
+      <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="/?token=<%=qs.token%>">Главная</a>
+        <span class="breadcrumb-item active">Редактирование товара</span>
+      </nav>
+    </div>
+
+    <div class="container" id="shopsContainer">
+      <h3 class="pb-2">Магазины</h2>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Название</th>
+            <th>Адрес</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      </h3>
+    </div><!-- #shopsContainer -->
+
+    <div class="container" id="itemsContainer">
+      <h3 class="pb-2">Товары</h3>
+      <table class="table table-hover table-responsive">
+        <thead>
+          <tr>
+            <th>Код</th>
+            <th class="w-50">Название</th>
+            <th class="w-50">Описание</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div><!-- #shopsContainer -->
+
+    <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="itemModalLongTitle">Форма редактирования товара</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <%- include formItem.ejs %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            <button type="button" class="btn btn-primary" id="btnSave">Сохранить изменения</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- #itemModal -->
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/tether.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/getToken.js"></script>
+    <script src="/assets/js/requestsClient.js"></script>
+    <script src="/assets/js/formItem.js"></script>
+    <script src="/assets/js/editItem.js"></script>
+    <script src="/assets/js/getToken.js"></script>
+  </body>
+</html>

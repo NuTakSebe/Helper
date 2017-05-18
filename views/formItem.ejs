@@ -1,0 +1,140 @@
+<form id="item-form">
+
+  <div class="form-group">
+    <label for="name">Название товара <span class="badge badge-default">Обязательное поле</span></label>
+    <input type="text" class="form-control" id="name" placeholder="От 1 до 100 символов включительно">
+
+  </div>
+
+  <div class="form-group">
+    <label for="code">Код товара</label>
+    <small class="form-text text-muted pb-3">Служит для дополнительной идентификации товара, заполните по своему желанию</small>
+    <input type="text" class="form-control" id="code" placeholder="От 0 до 10 символов включительно">
+  </div>
+
+  <div class="form-group">
+    <label for="articleNumber">Артикул товара</label>
+    <input type="text" class="form-control" id="articleNumber" placeholder="От 0 до 20 символов включительно">
+  </div>
+
+  <div class="form-group">
+    <label>Штрихкоды товара</label>
+
+    <div id="barCodes">
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-8">
+        <input type="text" class="form-control barCodes" id="barCodeInput" placeholder="Значение штрихкода">
+        <small class="form-text text-muted" id="barCodeSmall">Если оставить штрихкоды пустыми, в терминале будет доступен только визуальный поиск товара</small>
+      </div>
+      <div class="col-sm-4">
+        <button type="button" id="addBarCode" class="btn btn-secondary btn-block">Добавить штрихкод</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="price">Отпускная цена <span class="badge badge-default">Обязательное поле</span></label>
+    <input type="number" step="0.01" class="form-control" id="price" placeholder="Цена товара">
+  </div>
+
+  <div class="form-group">
+    <label for="costPrice">Закупочная цена <span class="badge badge-default">Обязательное поле</span></label>
+    <input type="number" step="0.01" class="form-control" id="costPrice" placeholder="Закупочная цена товара">
+  </div>
+
+  <div class="form-group">
+    <label for="tax">Ставка НДС</label>
+    <select class="form-control" id="tax">
+      <option value="VAT_0">НДС 0%</option>
+      <option value="VAT_10">НДС 10%</option>
+      <option value="VAT_18">НДС 18%</option>
+      <option value="VAT_10_110">НДС с расчётной ставкой 10%</option>
+      <option value="VAT_18_118">НДС с расчётной ставкой 18%</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="measureName">Единица измерения</label>
+    <select class="form-control" id="measureName">
+      <option value="шт">Штуки</option>
+      <option value="кг">Килограммы</option>
+      <option value="л">Литры</option>
+      <option value="м">Метры</option>
+      <option value="км">Километры</option>
+      <option value="м2">Квадратные метры</option>
+      <option value="м3">Кубические метры</option>
+      <option value="компл">Комплекты</option>
+      <option value="упак">Упаковки</option>
+      <option value="ед">Единицы</option>
+      <option value="дроб">Дробное</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Описание товара</label>
+    <input type="text" class="form-control" id="description" placeholder="От 0 символов включительно">
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-label">
+           <input type="checkbox" id="alcoCheck" class="form-check-input">
+           Это алкогольная продукция?
+        </label>
+  </div>
+
+  <div class="form-group">
+    <label for="type">Тип товара</label>
+    <select class="form-control" id="type">
+      <option value="NORMAL">Обычный (неалкогольный)</option>
+      <option value="ALCOHOL_MARKED">Алкоголь акцизный</option>
+      <option value="ALCOHOL_NOT_MARKED">Алкоголь немаркированный</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Коды алкогольной продукции ЕГАИС <span class="badge badge-default">Обязательное поле для алкоголя</span></label>
+
+    <div id="alcoCodes">
+
+    </div>
+
+    <div class="form-group row">
+      <div class="col-8">
+        <input type="text" class="form-control alcoCodes" id="alcoCodeInput" placeholder="Значение алкокода">
+      </div>
+      <div class="col-4">
+        <button type="button" id="addAlcoCode" class="btn btn-secondary btn-block">Добавить алкокод</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="alcoholByVolume">Крепость алкогольной продукции <span class="badge badge-default">Обязательное поле для алкоголя</span></label>
+    <input type="number" step="0.001" class="form-control" id="alcoholByVolume" placeholder="В процентах">
+  </div>
+
+  <div class="form-group">
+    <label for="alcoholProductKindCode">Код вида алкогольной продукции ФСРАР <span class="badge badge-default">Обязательное поле для алкоголя</span></label>
+    <input type="number" class="form-control" id="alcoholProductKindCode" placeholder="Вид алкоголя">
+  </div>
+
+  <div class="form-group">
+    <label for="tareVolume">Ёмкость тары алкогольной продукции в литрах <span class="badge badge-default">Обязательное поле для алкоголя</span></label>
+    <input type="number" step="0.001" class="form-control" id="tareVolume" placeholder="Ёмкость тары в литрах">
+  </div>
+
+  <div class="form-group">
+    <label for="quantity">Остаток товара в наличии</label>
+    <input type="number" class="form-control" id="quantity" placeholder="Остаток товара">
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-label">
+           <input type="checkbox" id="allowToSell" class="form-check-input">
+           Товар доступен для продажи?
+        </label>
+  </div>
+
+</form>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Add Item Page</title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+  <link rel='stylesheet' href='/assets/css/style.css' />
+  <link rel='stylesheet' href='/assets/css/font-awesome.min.css' />
+</head>
+
+<body>
+  <div class="container mt-2">
+    <nav class="breadcrumb">
+      <a class="breadcrumb-item" href="/?token=<%=qs.token%>">Главная</a>
+      <span class="breadcrumb-item active">Добавление товара</span>
+    </nav>
+  </div>
+
+  <div class="container pb-4">
+    <%- include formItem.ejs %>
+
+    <div class="form-group">
+      <label for="shops">Магазины, в которые будет добавлен товар</label>
+      <select class="form-control" id="shops">
+      </select>
+      <small class="form-text text-muted">Зажмите Ctrl, чтобы выбрать несколько магазинов</small>
+    </div>
+
+    <button type="submit" id="submit" class="btn btn-primary">Добавить товар</button>
+  </div>
+
+
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/tether.min.js"></script>
+  <script src="/assets/js/bootstrap.min.js"></script>
+  <script src="/assets/js/getToken.js"></script>
+  <script src="/assets/js/requestsClient.js"></script>
+  <script src="/assets/js/formItem.js"></script>
+  <script src="/assets/js/addItem.js"></script>
+
+</body>
+
+</html>
