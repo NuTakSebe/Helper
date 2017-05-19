@@ -176,8 +176,31 @@ var validateItem = function() {
   return validated;
 }
 
+// очистка полей
+var clearForm = function() {
+  $("#name").val("");
+  $("#code").val("");
+  $("#articleNumber").val("");
+  $("#barCode1").val("");
+  $("#alcoCode1").val("");
+  $(".barCode").remove();
+  $(".alcoCode").remove();
+  $("#alcoCode1").val("");
+  $("#alcoholByVolume").val(0);
+  $("#alcoholProductKindCode").val(0);
+  $("#type").val("NORMAL");
+  $("#price").val(0);
+  $("#costPrice").val(0);
+  $("#quantity").val(0);
+  $("#tareVolume").val(0);
+  $("#description").val("");
+  $("#quantity").val("");
+  $("#measureName").val("шт");
+  $("#tax").val("VAT_0");
+};
+
 // убираем сообщения об ошибке перед валидацией
-var clearControls = function() {
+var clearValidation = function() {
   $(".has-danger").each(function() {
     $(this).removeClass("has-danger");
   });

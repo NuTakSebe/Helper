@@ -1,35 +1,28 @@
 window.onload = function() {
-  var lastShop; // сохраняем выбранный магазин для доступа к его uuid в массиве товаров
+  var laststore; // сохраняем выбранный магазин для доступа к его uuid в массиве товаров
   var lastItem; // сохраняем выбранный товар для доступа к его uuid в массиве товаров
 
-//Ильшат, замени на то, что посчитаешь нужным
-  function failFunc(){
-    console.log("ERROR");
+  function failFunc() {
+    alert("Произошла ошибка, попробуйте снова");
   };
 
-  //Ильшат, замени на то, что посчитаешь нужным
-    function succesFunc(){
-      console.log("SUCCESS");
-    };
+  function successFunc() {
+    alert("Запрос выполнен");
+  };
 
-  var shopsList = getStores(token, failFunc);
-
-
+  var storesList = [];
   var itemsList = [];
 
-  var fillShopsTable = function() {
-    shopsList.forEach(function(shop, i, array) {
-      var tr = $("<tr/>").appendTo($("#shopsContainer tbody"));
+  var fillstoresTable = function(stores) {
+    storesList.forEach(function(store, i, array) {
+      var tr = $("<tr/>").appendTo($("#storesContainer tbody"));
       tr.attr("id", i);
-      tr.append("<td>" + shop.name + "</td>");
-      tr.append("<td>" + shop.address + "</td>");
+      tr.append("<td>" + store.name + "</td>");
+      tr.append("<td>" + store.address + "</td>");
     });
   };
 
-  var fillItemsTalbe = function(storeUuid) {
-
-    itemsList = getItems(storeUuid, token, failFunc);
-
+  var fillItemstable = function(storeUuid, items) {
     $("#itemsContainer tbody").empty();
     itemsList.forEach(function(item, i, array) {
       var tr = $("<tr/>").appendTo($("#itemsContainer tbody"));
@@ -45,38 +38,17 @@ window.onload = function() {
     });
 
     // обработчик кнопки "изменить"
-    $('.btnEdit').click(function (event) {
-      clearItemForm();
+    $('.btnEdit').click(function(event) {
+      clearForm();
       fillItemForm($(this).attr("id"));
       lastItem = $(this).attr("id");
     });
 
     // обработчик кнопки "удалить"
-    $('.btnDelete').click(function (event) {
-      console.log($(this).attr("id"))
+    $('.btnDelete').click(function(event) {
+      deleteItem(storesList[laststore].uuid, token, itemsList[$(this).attr("id")].uuid, successFunc, failFunc);
+      getItems(storesList[laststore].uuid, token, itemsList, fillItemstable, failFunc);
     });
-  };
-
-  var clearItemForm = function() {
-    $("#name").val("");
-    $("#code").val("");
-    $("#articleNumber").val("");
-    $("#barCode1").val("");
-    $("#alcoCode1").val("");
-    $(".barCode").remove();
-    $(".alcoCode").remove();
-    $("#alcoCode1").val("");
-    $("#alcoholByVolume").val(0);
-    $("#alcoholProductKindCode").val(0);
-    $("#type").val("NORMAL");
-    $("#price").val(0);
-    $("#costPrice").val(0);
-    $("#quantity").val(0);
-    $("#tareVolume").val(0);
-    $("#description").val("");
-    $("#quantity").val("");
-    $("#measureName").val("шт");
-    $("#tax").val("VAT_0");
   };
 
   var fillItemForm = function(id) {
@@ -89,7 +61,7 @@ window.onload = function() {
     $("#code").val(itemsList[id].code);
     $("#articleNumber").val(itemsList[id].articleNumber);
 
-    $("#name").val(itemsList[id].name);// barCodes
+    $("#name").val(itemsList[id].name); // barCodes
 
     itemsList[id].barCodes.forEach(function(code, i, array) {
       $('<p class="barCode mb-2">' + code + ' <i class="fa fa-times codeRemove"></p>').appendTo("#barCodes");
@@ -103,7 +75,7 @@ window.onload = function() {
     $("#tax").val(itemsList[id].tax);
     $("#measureName").val(itemsList[id].measureName);
     $("#description").val(itemsList[id].description);
-    $("#alcoCheck").prop("checked", itemsList[id].alcoCheck);//
+    $("#alcoCheck").prop("checked", itemsList[id].alcoCheck); //
     $("#type").val(itemsList[id].type);
 
     itemsList[id].alcoCodes.forEach(function(code, i, array) {
@@ -121,20 +93,20 @@ window.onload = function() {
 
   };
 
-  fillShopsTable();
+  getStores(token, storesList, fillstoresTable, failFunc);
 
   // обработчик нажатия на магазин
-  $('#shopsContainer tbody tr').click(function (event) {
+  $('#storesContainer tbody tr').click(function(event) {
     $("#itemsContainer").css("visibility", "visible");
     $("#itemsContainer").css("opacity", "1");
     $(".table-active").removeClass("table-active");
     $(this).addClass("table-active");
-    lastShop = $(this).attr("id");
-    fillItemsTalbe(shopsList[lastShop].uuid);
+    laststore = $(this).attr("id");
+    getItems(storesList[laststore].uuid, token, itemsList, fillItemstable, failFunc);
   });
 
-  $('#btnSave').click(function (event) {
-    clearControls();
+  $('#btnSave').click(function(event) {
+    clearValidation();
     if (validateItem() === true) {
       var item = {
         uuid: itemsList[lastItem].uuid,
@@ -160,11 +132,10 @@ window.onload = function() {
       };
 
       console.log(JSON.stringify(item));
-      var storeUuid = shopsList[lastShop].uuid;
-      updateItem(storeUuid, token, item, succesFunc, failFunc);
-      clearItemForm();
-      fillItemsTalbe(shopsList[lastShop].uuid);
-      alert("Запросы выполнены");
+      var storeUuid = storesList[laststore].uuid;
+      updateItem(storeUuid, token, item, successFunc, failFunc);
+      clearForm();
+      getItems(storesList[laststore].uuid, token, itemsList, fillItemstable, failFunc);
     }
   });
 

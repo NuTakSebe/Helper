@@ -1,19 +1,25 @@
 window.onload = function() {
-  //Ильшат, замени на то, что посчитаешь нужным
-    function failFunc(){
-      console.log("ERROR");
-    };
-    //Ильшат, замени на то, что посчитаешь нужным
-      function succesFunc(){
-        console.log("SUCCESS");
-      };
 
-  var shopsList = getStores(token, failFunc);
+  function failFunc() {
+    alert("Произошла ошибка, попробуйте снова");
+    console.log('test');
+  };
 
-  shopsList.forEach(function(item, i, array) {
-    $("#shops").append("<option value='" + item.uuid + "'>" + item.name + "</option>");
-    console.log(item.uuid);
-  });
+  function successFunc() {
+    clearForm();
+    alert("Товар добавлен!");
+  };
+
+  var storesList = [];
+
+  var fillStores = function(stores) {
+    storesList.forEach(function(item, i, array) {
+      $("#stores").append("<option value='" + item.uuid + "'>" + item.name + "</option>");
+      console.log(item.uuid);
+    });
+  };
+
+  getStores(token, storesList, fillStores, failFunc);
 
   var generateUUID = function() {
     var d = new Date().getTime();
@@ -29,7 +35,7 @@ window.onload = function() {
 
   // обработка кнопки нажатия
   submit.onclick = function() {
-    clearControls();
+    clearValidation();
     console.log('submit started');
 
     if (validateItem() === true) {
@@ -62,8 +68,8 @@ window.onload = function() {
       console.log(token);
       console.log(JSON.stringify(item));
 
-      var storeUuid = $("#shops").val();
-      postItem(storeUuid, token, item, succesFunc, failFunc);
+      var storeUuid = $("#stores").val();
+      postItem(storeUuid, token, item, successFunc, failFunc);
     }
 
     return false;
