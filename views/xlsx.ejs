@@ -1,0 +1,43 @@
+<html>
+<head>Test XLSX</head>
+<body>
+<!--<div class="main">
+    <progress id="progress"></progress>
+    <div class="filedrag" id="comps">Перетащите файл <span class="red">сюда</span></div>
+    <div class="result"></div>
+</div> -->
+<div>
+    <form name="upload">
+        <input type="file" name="myfile">
+        <input type="submit" value="Download">
+    </form>
+</div>
+<script>
+    document.forms.upload.onsubmit = function () {
+        var input = this.elements.myfile;
+        let file = input.files[0];
+        if (file){
+            upload(file);
+        }
+        return false;
+    };
+
+    function upload(file) {
+        console.log("Upload Started")
+        let xhr = new XMLHttpRequest();
+        xhr.upload.onprogress = function (event) {
+            if (this.statusCode === 200) {
+                console.log("Successful")
+            }else {
+                console.log("Error " + this.statusCode);
+            }
+        }
+        xhr.open("POST","/upload",true);
+        console.log("file started to send")
+        xhr.send(file);
+        xhr.statusMessage = "Ok";
+        console.log("File sent")
+    }
+</script>
+</body>
+</html>

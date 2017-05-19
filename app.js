@@ -56,6 +56,42 @@ app.get('/editItem', function (req, res, next) {
    res.render('editItem',{qs: req.query});
 });
 
+app.get('/excel', function( req, res, next){
+  res.render('xlsx');
+});
+
+app.post("/upload", function (req, res, next) {
+    log.info("Request Arrived");
+    let length = 0;
+    let file = null;
+    let json;
+
+    req.on("data", function (data) {
+        if (data !== null) {
+            if (file === null) file = data;
+            else {
+                file += data;
+            }
+            length += data.length;
+            log.info("Length:" + length + " : " + data);
+        }
+    })
+        .on("end", function () {
+            log.info("Data Fully Arrived");
+            res.statusCode = 200;
+            res.end("ok");
+            try {
+                jsonP = JSON.parse(file);
+                log.info("JSON from request\n" + jsonP.name);
+            }catch (error) {
+                console.log(error);
+            }
+        })
+        .on("error", function (error) {
+            log.info("Error: " + error.toString());
+        });
+
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

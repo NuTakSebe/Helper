@@ -86,4 +86,4 @@ var validateItem = function() {
   }
 
   return validated;
-}
+};

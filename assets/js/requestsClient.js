@@ -35,7 +35,7 @@ function deleteItem(storeUuid, token, itemUuid) {
       console.log(xhr.responseText);
       handleError(xhr.statusText);
     }
-  }
+  };
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.setRequestHeader('X-Authorization', token);
   xhr.send([itemUuid]);
@@ -54,7 +54,7 @@ function getStores(token){
     }else {
       handleError(xhr.statusText);
     }
-  }
+  };
   xhr.setRequestHeader('X-Authorization', token);
   xhr.send(null);
   return JSON.parse(stores);
@@ -78,7 +78,7 @@ function getItems(storeUuid, token){
     }else {
       handleError(xhr.statusText);
     }
-  }
+  };
   xhr.setRequestHeader('X-Authorization', token);
   xhr.send(null);
   return items;
@@ -102,7 +102,7 @@ function getGroups(storeUuid, token){
     }else {
       handleError(xhr.statusText);
     }
-  }
+  };
   xhr.setRequestHeader('X-Authorization', token);
   xhr.send(null);
   return groups;
@@ -122,7 +122,7 @@ function getAllFromStore(storeUuid, token){
 
       handleError(xhr.statusText);
     }
-  }
+  };
   xhr.setRequestHeader('X-Authorization', token);
   xhr.send(null);
   return JSON.parse(itemsAndGroups);

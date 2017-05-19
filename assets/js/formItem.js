@@ -16,7 +16,7 @@ var alcoOff = function() {
   $("#tareVolume").val(0);
   $("#addAlcoCode").prop("disabled", true);
   $("#removeAlcoCode").prop("disabled", true);
-}
+};
 
 // деактивация алкополей
 var alcoOn = function() {
@@ -36,7 +36,7 @@ var alcoOn = function() {
   $("#tareVolume").val("");
   $("#addAlcoCode").prop("disabled", false);
   $("#removeAlcoCode").prop("disabled", false);
-}
+};
 
 // включение/выключение алкополей при установке алкогалочки
 $("#alcoCheck").click(function() {
@@ -174,7 +174,7 @@ var validateItem = function() {
   }
 
   return validated;
-}
+};
 
 // убираем сообщения об ошибке перед валидацией
 var clearControls = function() {
@@ -189,7 +189,7 @@ var clearControls = function() {
   $(".form-control-feedback").each(function() {
     $(this).remove();
   });
-}
+};
 
 // получение штрих и алкокодов
 var getBarCodes = function() {
@@ -199,7 +199,7 @@ var getBarCodes = function() {
   });
 
   return barCodesArray;
-}
+};
 
 var getAlcoCodes = function() {
   var alcoCodesArray = [];
@@ -208,4 +208,4 @@ var getAlcoCodes = function() {
   });
 
   return alcoCodesArray;
-}
+};

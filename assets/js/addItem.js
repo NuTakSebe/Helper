@@ -25,7 +25,7 @@ window.onload = function() {
       d = Math.floor(d / 16);
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
-  }
+  };
 
   // обработка кнопки нажатия
   submit.onclick = function() {
@@ -56,7 +56,7 @@ window.onload = function() {
         alcoholProductKindCode: $("#alcoholProductKindCode").val(),
         tareVolume: $("#tareVolume").val(),
         fields: {}
-      }
+      };
 
       let token = getToken();
       let storeUuid = "expampleStore";
@@ -69,8 +69,8 @@ window.onload = function() {
     }
 
     return false;
-  }
+  };
 
   // отключение алкополей
   alcoOff();
-}
+};
