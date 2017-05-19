@@ -64,10 +64,6 @@ window.onload = function() {
         fields: {}
       }
 
-      let token = getToken();
-      console.log(token);
-      console.log(JSON.stringify(item));
-
       var storeUuid = $("#stores").val();
       postItem(storeUuid, token, item, successFunc, failFunc);
     }

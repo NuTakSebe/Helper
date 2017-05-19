@@ -1,7 +1,7 @@
-function updateItem(storeUuid, token, itemObj, succesFunc, failFunc) {
+function updateItem(storeUuid, token, itemObj, successFunc, failFunc) {
   let itemUuid = itemObj.uuid;
-  deleteItem(storeUuid, token, itemUuid, succesFunc, failFunc);
-  postItem(storeUuid, token, itemObj, succesFunc, failFunc);
+  deleteItem(storeUuid, token, itemUuid, successFunc, failFunc);
+  postItem(storeUuid, token, itemObj, successFunc, failFunc);
 }
 
 function postItem(storeUuid, token, itemObj, succesFunc, failFunc){
@@ -18,14 +18,14 @@ function postItem(storeUuid, token, itemObj, succesFunc, failFunc){
   })
     .done((status)=>{
       if(status==200){
-        succesFunc();
+        successFunc();
       }else{
         failFunc();
       }
     });
 }
 
-function deleteItem(storeUuid, token, itemUuid, succesFunc, failFunc) {
+function deleteItem(storeUuid, token, itemUuid, successFunc, failFunc) {
   let reqString = "http://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products/delete";
   $.ajax({
     url: reqString,
@@ -37,11 +37,16 @@ function deleteItem(storeUuid, token, itemUuid, succesFunc, failFunc) {
     dataType: 'json',
     data: [itemUuid],
   })
-    .done(succesFunc())
-    .fail(failFunc());
+    .done((status)=>{
+        if(status==200){
+          successFunc();
+        }else{
+          failFunc();
+        }
+      });
 }
 
-function getStores(token, failFunc){
+function getStores(token, stores, fillFunc, failFunc){
   let reqString = "https://api.evotor.ru/api/v1/inventories/stores/search";
   $.ajax({
     url: reqString,
@@ -50,16 +55,21 @@ function getStores(token, failFunc){
     },
     method: 'GET',
     dataType: 'json',
-    success: function(data){
-      return JSON.parse(data);
+    success: (data)=>{
+      $.each(data, (index, value)=>{
+        stores.push(data[index]);
+      });
     }
-  })
-    .fail(failFunc());
+  }).done(()=>{
+      fillFunc(stores);
+    })
+    .fail(()=>{
+      failFunc();
+    });
 }
 
-function getItems(storeUuid, token, failFunc){
+function getItems(storeUuid, token, items, fillFunc, failFunc){
   let reqString = "https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products";
-  var items = [];
   $.ajax({
     url: reqString,
     headers: {
@@ -67,22 +77,24 @@ function getItems(storeUuid, token, failFunc){
     },
     method: 'GET',
     dataType: 'json',
-    success: function(data){
-      var itemsArray = JSON.parse(data);
-      $.each(itemsArray, function (index, value) {
-          if (!itemsArray[index].group){
-              items.push(itemsArray[index]);
+    success: (data)=>{
+      $.each(data, (index, value)=> {
+          if (!data[index].group){
+              items.push(data[index]);
           }
       });
-      return items;
     }
-  })
-    .fail(failFunc());
+  }).done(()=>{
+      fillFunc(items);
+    })
+    .fail(()=>{
+      failFunc();
+    });
 }
 
-function getGroups(storeUuid, token, failFunc){
+function getGroups(storeUuid, token, groups, fillFunc, failFunc){
   let reqString = "https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products";
-  var groups = [];
+
   $.ajax({
     url: reqString,
     headers: {
@@ -90,20 +102,22 @@ function getGroups(storeUuid, token, failFunc){
     },
     method: 'GET',
     dataType: 'json',
-    success: function(data){
-      var itemsArray = JSON.parse(data);
-      $.each(itemsArray, function (index, value) {
-          if (itemsArray[index].group){
-              items.push(itemsArray[index]);
+    success: (data)=>{
+      $.each(data, (index, value)=> {
+          if (!data[index].group){
+              groups.push(data[index]);
           }
       });
-      return groups;
     }
-  })
-    .fail(failFunc());
+  }).done(()=>{
+      fillFunc(groups);
+    })
+    .fail(()=>{
+      failFunc();
+    });
 }
 
-function getAllFromStore(storeUuid, token, failFunc){
+function getAllFromStore(storeUuid, token, items, fillFunc, failFunc){
   let reqString = "https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products";
   $.ajax({
     url: reqString,
@@ -112,9 +126,15 @@ function getAllFromStore(storeUuid, token, failFunc){
     },
     method: 'GET',
     dataType: 'json',
-    success: function(data){
-      return JSON.parse(data);
+    success: (data)=>{
+      $.each(data, (index, value)=> {
+          items.push(data[index]);
+      });
     }
-  })
-    .fail(failFunc());
+  }).done(()=>{
+      fillFunc(items);
+    })
+    .fail(()=>{
+      failFunc();
+    });
 }

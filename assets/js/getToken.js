@@ -1,5 +1,5 @@
-let params = window.location.search.replace('?','');
-let token = "";
+var params = window.location.search.replace('?','');
+var token = "";
 
 params.split('&').forEach(function(item) {
     item = item.split('=');
