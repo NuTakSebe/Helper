@@ -43,16 +43,17 @@ app.use('/assets/css', express.static(__dirname + '/node_modules/font-awesome/cs
 
 // our paths
 app.get('/', function (req, res, next) {
-    res.render('index');
+    console.log(req.query);
+    res.render('index',{qs: req.query});
 });
 
 app.get('/addItem', function (req, res, next) {
-    res.render('addItem');
+    res.render('addItem',{qs: req.query});
 });
 
 
 app.get('/editItem', function (req, res, next) {
-   res.render('editItem');
+   res.render('editItem',{qs: req.query});
 });
 
 // catch 404 and forward to error handler

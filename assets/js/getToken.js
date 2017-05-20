@@ -1,7 +1,5 @@
-// Обращение просто к token для его получения.
-// let keys= {};
-let params = window.location.search.replace('?','');
-let token = null;
+var params = window.location.search.replace('?','');
+var token = "";
 
 params.split('&').forEach(function(item) {
     item = item.split('=');
@@ -10,8 +8,6 @@ params.split('&').forEach(function(item) {
     }
 });
 
-
-console.log(token);
 
 if (token === null) {
     console.error("Token is null!");

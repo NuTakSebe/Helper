@@ -1,75 +1,30 @@
 window.onload = function() {
-  var lastShop; // сохраняем выбранный магазин для доступа к его uuid в массиве товаров
+  var laststore; // сохраняем выбранный магазин для доступа к его uuid в массиве товаров
   var lastItem; // сохраняем выбранный товар для доступа к его uuid в массиве товаров
 
-  var shopsExampleList = [
-    {
-      "uuid": "string",
-      "name": "Name",
-      "address": "string"
-    },{
-      "uuid": "string",
-      "name": "Name2",
-      "address": "strin2g"
-    }
-  ];
+  function failFunc() {
+    alert("Произошла ошибка, попробуйте снова");
+  };
 
-  var itemsExampleList = [
-    {
-      "uuid": "string",
-      "code": "string",
-      "barCodes": [123, 64564],
-      "alcoCodes": [],
-      "name": "string",
-      "price": 0,
-      "quantity": 0,
-      "costPrice": 0,
-      "measureName": "шт",
-      "tax": "VAT_0",
-      "allowToSell": true,
-      "description": "string",
-      "articleNumber": "string",
-      "parentUuid": "string",
-      "group": false,
-      "type": "NORMAL",
-      "alcoholByVolume": 0,
-      "alcoholProductKindCode": 0,
-      "tareVolume": 0
-    }, {
-      "uuid": "strin2g",
-      "code": "strin2g",
-      "barCodes": [],
-      "alcoCodes": [],
-      "name": "str123ing",
-      "price": 0,
-      "quantity": 0,
-      "costPrice": 0,
-      "measureName": "",
-      "tax": "NO_VAT",
-      "allowToSell": true,
-      "description": "string",
-      "articleNumber": "string",
-      "parentUuid": "string",
-      "group": true,
-      "type": "NORMAL",
-      "alcoholByVolume": 0,
-      "alcoholProductKindCode": 0,
-      "tareVolume": 0
-    }
-  ];
+  function successFunc() {
+    alert("Запрос выполнен");
+  };
 
-  var fillShopsTable = function() {
-    shopsExampleList.forEach(function(shop, i, array) {
-      var tr = $("<tr/>").appendTo($("#shopsContainer tbody"));
+  var storesList = [];
+  var itemsList = [];
+
+  var fillstoresTable = function(stores) {
+    storesList.forEach(function(store, i, array) {
+      var tr = $("<tr/>").appendTo($("#storesContainer tbody"));
       tr.attr("id", i);
-      tr.append("<td>" + shop.name + "</td>");
-      tr.append("<td>" + shop.address + "</td>");
+      tr.append("<td>" + store.name + "</td>");
+      tr.append("<td>" + store.address + "</td>");
     });
   };
 
-  var fillItemsTalbe = function() {
+  var fillItemstable = function(storeUuid, items) {
     $("#itemsContainer tbody").empty();
-    itemsExampleList.forEach(function(item, i, array) {
+    itemsList.forEach(function(item, i, array) {
       var tr = $("<tr/>").appendTo($("#itemsContainer tbody"));
       tr.append("<td>" + item.code + "</td>");
       tr.append("<td>" + item.name + "</td>");
@@ -77,96 +32,94 @@ window.onload = function() {
       tr.append(
         "<td><button type='button' class='btn btn-primary btn-sm btnEdit' id='" + i + "'data-toggle='modal' data-target='#itemModal'>Изменить</button></td>"
       );
+      tr.append(
+        "<td><button type='button' class='btn btn-secondary btn-sm btnDelete' id='" + i + "'>Удалить</button></td>"
+      );
     });
 
     // обработчик кнопки "изменить"
-    $('.btnEdit').click(function (event) {
-      clearItemForm();
+    $('.btnEdit').click(function(event) {
+      clearForm();
       fillItemForm($(this).attr("id"));
       lastItem = $(this).attr("id");
     });
-  };
 
-  var clearItemForm = function() {
-    $("#code").val("");
-    $("#articleNumber").val("");
-    $("#barCode1").val("");
-    $("#alcoCode1").val("");
-    $(".barCodes").not("#barCode1").remove();
-    $(".alcoCodes").not("#barCode1").remove();
-    $("#description").val("");
-    $("#quantity").val("");
+    // обработчик кнопки "удалить"
+    $('.btnDelete').click(function(event) {
+      deleteItem(storesList[laststore].uuid, token, itemsList[$(this).attr("id")].uuid, successFunc, failFunc);
+      getItems(storesList[laststore].uuid, token, itemsList, fillItemstable, failFunc);
+    });
   };
 
   var fillItemForm = function(id) {
-    $("#name").val(itemsExampleList[id].name);
-    $("#code").val(itemsExampleList[id].code);
-    $("#articleNumber").val(itemsExampleList[id].articleNumber);
+    if (itemsList[id].type !== 'NORMAL') {
+      alcoOn();
+    } else {
+      alcoOff();
+    }
+    $("#name").val(itemsList[id].name);
+    $("#code").val(itemsList[id].code);
+    $("#articleNumber").val(itemsList[id].articleNumber);
 
-    $("#name").val(itemsExampleList[id].name);// barCodes
+    $("#name").val(itemsList[id].name); // barCodes
 
-    itemsExampleList[id].barCodes.forEach(function(code, i, array) {
-      if (i > 0) {
-        $('<input type="text" class="form-control barCodes mt-2" placeholder="Значение штрихкода">').val(array[i]).insertBefore("#addBarCode");
-      } else {
-        $("#barCode1").val(itemsExampleList[id].barCodes[0]);
-      }
+    itemsList[id].barCodes.forEach(function(code, i, array) {
+      $('<p class="barCode mb-2">' + code + ' <i class="fa fa-times codeRemove"></p>').appendTo("#barCodes");
+      $(".codeRemove").click(function() {
+        $(this).parent().remove();
+      });
     });
 
+    $("#price").val(itemsList[id].price);
+    $("#costPrice").val(itemsList[id].costPrice);
+    $("#tax").val(itemsList[id].tax);
+    $("#measureName").val(itemsList[id].measureName);
+    $("#description").val(itemsList[id].description);
+    $("#alcoCheck").prop("checked", itemsList[id].alcoCheck); //
+    $("#type").val(itemsList[id].type);
 
-    $("#price").val(itemsExampleList[id].price);
-    $("#costPrice").val(itemsExampleList[id].costPrice);
-    $("#tax").val(itemsExampleList[id].tax);
-    $("#measureName").val(itemsExampleList[id].measureName);
-    $("#description").val(itemsExampleList[id].description);
-    $("#alcoCheck").prop("checked", itemsExampleList[id].alcoCheck);//
-    $("#type").val(itemsExampleList[id].type);
+    itemsList[id].alcoCodes.forEach(function(code, i, array) {
+      $('<p class="alcoCode mb-2">' + code + ' <i class="fa fa-times codeRemove"></p>').appendTo("#alcoCodes");
+      $(".codeRemove").click(function() {
+        $(this).parent().remove();
+      });
+    });
 
-    $("#name").val(itemsExampleList[id].name); //alcoCodes
-
-    $("#alcoholByVolume").val(itemsExampleList[id].alcoholByVolume);
-    $("#alcoholProductKindCode").val(itemsExampleList[id].alcoholProductKindCode);
-    $("#tareVolume").val(itemsExampleList[id].tareVolume);
-    $("#quantity").val(itemsExampleList[id].quantity);
-    $("#allowToSell").prop("checked", itemsExampleList[id].allowToSell);
+    $("#alcoholByVolume").val(itemsList[id].alcoholByVolume);
+    $("#alcoholProductKindCode").val(itemsList[id].alcoholProductKindCode);
+    $("#tareVolume").val(itemsList[id].tareVolume);
+    $("#quantity").val(itemsList[id].quantity);
+    $("#allowToSell").prop("checked", itemsList[id].allowToSell);
 
   };
 
-  fillShopsTable();
+  getStores(token, storesList, fillstoresTable, failFunc);
 
   // обработчик нажатия на магазин
-  $('#shopsContainer tbody tr').click(function (event) {
+  $('#storesContainer tbody tr').click(function(event) {
     $("#itemsContainer").css("visibility", "visible");
     $("#itemsContainer").css("opacity", "1");
     $(".table-active").removeClass("table-active");
     $(this).addClass("table-active");
-    fillItemsTalbe();
-    lastShop = $(this).attr("id");
+    laststore = $(this).attr("id");
+    getItems(storesList[laststore].uuid, token, itemsList, fillItemstable, failFunc);
   });
 
-  $('#btnSave').click(function (event) {
-    clearControls();
+  $('#btnSave').click(function(event) {
+    clearValidation();
     if (validateItem() === true) {
-      var barCodesArray = $.map($('.barCodes'), function(code) {
-        return code.value;
-      });
-
-      var alcoCodesArray = $.map($('.alcoCodes'), function(code) {
-        return code.value;
-      });
-
       var item = {
-        uuid: itemsExampleList[lastItem].uuid,
+        uuid: itemsList[lastItem].uuid,
         code: $("#code").val(),
-        barCodes: barCodesArray,
-        alcoCodes: alcoCodesArray,
+        barCodes: getBarCodes(),
+        alcoCodes: getAlcoCodes(),
         name: $("#name").val(),
         price: $("#price").val(),
         quantity: $("#quantity").val(),
         costPrice: $("#costPrice").val(),
         measureName: $("#measureName").val(),
-        tax: $("#name").val(),
-        allowToSell: $("#allowToSell").val(),
+        tax: $("#tax").val(),
+        allowToSell: $("#allowToSell").prop('checked'),
         description: $("#description").val(),
         articleNumber: $("#articleNumber").val(),
         parentUuid: null,
@@ -178,7 +131,11 @@ window.onload = function() {
         fields: {}
       };
 
-      console.log(item);
+      console.log(JSON.stringify(item));
+      var storeUuid = storesList[laststore].uuid;
+      updateItem(storeUuid, token, item, successFunc, failFunc);
+      clearForm();
+      getItems(storesList[laststore].uuid, token, itemsList, fillItemstable, failFunc);
     }
   });
 

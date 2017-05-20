@@ -2,19 +2,18 @@
 <html>
 
 <head>
-  <title>Index Page</title>
+  <title>ЛК+ | Главная страница </title>
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
 </head>
 
 <body>
-  <div class="container text-muted py-2" id="cards">
-
+  <div class="container text-muted text-center py-2" id="cards">
     <div class="card-group">
       <div class="card">
-        <a href="/addItem">
-          <div class="card-header text-center">
+        <a href="/addItem?token=<%=qs.token%>">
+        <div class="card-header">
             <i class="fa fa-plus fa-3x"></i>
           </div>
           <div class="card-block">
@@ -25,7 +24,8 @@
       </div>
 
       <div class="card">
-        <a href="/editItem">
+       <!--<a href="/editItem">-->
+        <a href="/editItem?token=<%=qs.token%>">
           <div class="card-header text-center">
             <i class="fa fa-pencil fa-3x"></i>
           </div>
