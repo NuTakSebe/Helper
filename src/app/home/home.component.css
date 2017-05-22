@@ -1,0 +1,9 @@
+.card a {
+  color: inherit;
+  text-decoration: inherit;
+  transition: 0.5s ease;
+}
+
+.card a:hover {
+  color: #e86d00;
+}
