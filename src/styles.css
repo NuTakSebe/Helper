@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+/*
+цвета
+ff7800 - основной оранжевый Эвотора
+e86d00 - вторичный оранжевый (для hover на элементах и пр)
+*/
+
+.breadcrumb a {
+  color: #ff7800 !important;
+  text-decoration: inherit;
+}
+
+.breadcrumb a:hover {
+  color: #e86d00 !important;
+}
+
+.btn-primary, .btn-primary[disabled], .btn-primary:active  {
+  background-color: #ff7800;
+  border-color: #ff7800;
+}
+
+.btn-primary:hover {
+  background-color: #e86d00;
+  border-color: #ff7800;
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 2px rgba(255,120,0,.5);
+}

@@ -1,0 +1,11 @@
+.form-control[required] {
+  border: 1px solid #a94442;
+}
+
+.ng-valid:not(form):not(.skip):not(select) {
+  border: 1px solid #42A948 !important; /* green */
+}
+
+.ng-invalid.ng-dirty:not(form)  {
+  border: 1px solid #a94442; /* red */
+}
