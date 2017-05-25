@@ -1,0 +1,49 @@
+<html>
+<body>
+    <script src="simple-excel.js"></script>
+  <div>
+    <form name="upload">
+      <input type="file" name='myfile' />
+      <input type="submit" value="Download" />
+    </form>
+  </div>
+
+  <script>
+    document.forms.upload.onsubmit = function() {
+    try{  var input = this.elements.myfile;
+      var file = input.files[0];
+      var data = new Uint8Array(file);
+      console.log(data);
+      var arr = new Array();
+      for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+      var bstr = arr.join("");
+
+      /* Call XLSX */
+      var workbook = XLSX.read(bstr, {type:"binary"});
+      console.log("Succesfull");
+      // return false;
+    }catch(err) {
+      console.log("Error: " + err);
+    }
+    };
+
+    function upload(file) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/upload", true);
+      //обработчик закачаки
+      xhr.upload.onprogress = function(event) {
+        if (xhr.readyState == 4) {
+          if (xhr.upload.status == 200) {
+            console.log("success");
+          } else {
+            console.log("error1" + xhr.upload.status);
+          }
+        }
+      };
+      xhr.send(file);
+      xhr.end("All");
+    }
+  </script>
+</body>
+
+</html>

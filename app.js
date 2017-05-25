@@ -9,6 +9,7 @@ var express = require('express'),
     request = require('request'),
     fs = require('fs');
 
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -57,41 +58,55 @@ app.get('/editItem', function (req, res, next) {
 });
 
 app.get('/excel', function( req, res, next){
-  res.render('xlsx');
+  res.render('parser');
 });
 
-app.post("/upload", function (req, res, next) {
-    log.info("Request Arrived");
-    let length = 0;
-    let file = null;
-    let json;
-
-    req.on("data", function (data) {
-        if (data !== null) {
-            if (file === null) file = data;
-            else {
-                file += data;
-            }
-            length += data.length;
-            log.info("Length:" + length + " : " + data);
-        }
-    })
-        .on("end", function () {
-            log.info("Data Fully Arrived");
-            res.statusCode = 200;
-            res.end("ok");
-            try {
-                jsonP = JSON.parse(file);
-                log.info("JSON from request\n" + jsonP.name);
-            }catch (error) {
-                console.log(error);
-            }
-        })
-        .on("error", function (error) {
-            log.info("Error: " + error.toString());
-        });
-
-});
+// app.post("/upload", function (req, res, next) {
+//     log.info("Request Arrived");
+//     let length = 0;
+//     let file = null;
+//     let json;
+//
+//     req.on("data", function (data) {
+//         if (data !== null) {
+//             if (file === null) file = data;
+//             else {
+//                 file += data;
+//             }
+//             length += data.length;
+//             log.info("Length:" + length + " : " + data);
+//         }
+//     })
+//         .on("end", function () {
+//             log.info("Data Fully Arrived");
+//             res.statusCode = 200;
+//             res.end("ok");
+//             try {
+//                 jsonP = JSON.parse(file);
+//                 log.info("JSON from request\n" + jsonP.name);
+//             }catch (error) {
+//                 console.log(error);
+//             }
+//         })
+//         .on("error", function (error) {
+//             log.info("Error: " + error.toString());
+//         });
+//         var jsonObjectTest = null;
+//
+//         excel2Json(fileName, {
+//           'convert_all_sheet': true,
+//           'return_type': 'Object'
+//         }, function (err, output) {
+//           if (err) {
+//             console.log("An error appear!")
+//             return;
+//           }
+//           jsonObjectTest = output;
+//         })
+//         module.exports = jsonObjectTest;
+//
+//         console.log("Json parsed" + jsonObjectTest);
+// });
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
