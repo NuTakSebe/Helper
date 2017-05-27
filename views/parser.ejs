@@ -10,56 +10,12 @@
   </div>
 
   <script src="/assets/js/excel/js-xlsx-master/dist/xlsx.full.min.js"></script>
-  <script>
-  var rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
-
-     function handleFile(event) {
-        // var input = this.elements.myfile;
-        // var file = input.files[0];
-        var files = event.target.files; // Забираем у event( нажатие ) список выбранных файлов. Возвращает ArrayList of Files
-        var i, file;                        // Объявляем переменные для итерации и сам file
-        for (i = 0; i != files.length; ++i) {
-          file = files[i];
-          var reader = new FileReader();
-          var name = file.name;
-          console.log("file name:" + name);
-          reader.onload = function(event) {
-            var data = event.target.result;  // Результат чтения объекта ( FileReader сделан по анологии с XMLHttpRequest ( метод send ) )
-
-            var workbook;
-            if (rABS) {
-              /* if binary string, read with type 'binary' */
-              workbook = XLSX.read(data, {
-                type: 'binary'
-              });
-            } else {
-              /* if array buffer, convert to base64 */
-              var arr = fixdata(data);
-              workbook = XLSX.read(btoa(arr), {
-                type: 'base64'
-              });
-            }
-            console.log(workbook);
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!reached this point");
-          };
-          reader.readAsBinaryString(file);
-        }
-      }
-        /* processing array
-        buffers, only required for readAsArrayBuffer */
-        function fixdata(data) {
-          var o = "",
-            l = 0,
-            w = 10240;
-          for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
-          o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
-          return o;
-        }
-
-
-        InputFiles.addEventListener('change', handleFile, false); // По id вешаем eventListner на change, ф-ия,
-  </script>
-
+  <script src="/assets/js/excel/parse&upload.js"></script>
+  <!--  <script>
+    XMLHttpRequest = new XMLHttpRequest();
+    XMLHttpRequest.open("POST","/upload",true);
+    XMLHttpRequest.send("Body");
+  </script> -->
 </body>
 
 </html>
