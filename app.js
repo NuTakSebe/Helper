@@ -69,7 +69,7 @@ app.get('/excel', function(req, res, next) {
   res.render('parser');
 });
 
-app.post("/upload", function(req, res, next) {
+app.post("/excel/upload", function(req, res, next) {
   console.log("Request Arrived");
   let length = 0;
   let file = null;
@@ -88,6 +88,11 @@ app.post("/upload", function(req, res, next) {
     .on("error", function(error) {
       console.log(error.toString());
     });
+});
+
+app.post('excel/download', function(req, res){
+  var file = __dirname + '/upload-folder/dramaticpenguin.MOV';
+  res.download("template.xlsx"); // Set disposition and send it.
 });
 
 // catch 404 and forward to error handler

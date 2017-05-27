@@ -1,21 +1,80 @@
 <html>
+<style>
+  .btn-file {
+    position: relative;
+    overflow: hidden;
+    color: blue;
+  }
+
+  .btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: red;
+    cursor: inherit;
+    display: block;
+    color: blue;
+  }
+</style>
+
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href="css/styles.css" rel="stylesheet">
+  <title> Загружай! </title>
+
+</head>
 
 <body>
-
-  <div>
-    <form name="upload">
-      <input type="file" name='myfile' id="InputFiles" />
-      <input type="submit" value="Download" />
-    </form>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+    <div class="jumbotron">
+      <h2> Ваш помошник по загрузке большого количества таваров в несколько кликов </p>
+    </div>
   </div>
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <div class="center-block">
+      <h3 style="font:Monospace"> Please download our excel template:</h3>
+      <p> Choose your file extention & download</p>
+      <form name="download">
+        <div class="row">
+          <div class="col-md-5">
+            <label><input type="radio" name="format"> Microsoft Excel 2003-2009 </label>
+            <label><input type="radio" name="format" checked> Microsoft Excel 2009-2017</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="downL">Download&hellip; </button>
+      </form>
+    </div>
+  </div>
+      <div class="col-md-6">
+        <div class="center-block">
+        <h3 style="font:Monospace"> Please upload your edited file:</h3>
+        <p> Upload your file </p>
+        <form name="upload">
+          <label class="btn btn-primary">Browse&hellip;
+            <input type="file" name='myfile' id="InputFiles" style="display:none"/>
+          </label>
+        </form>
+      </div>
+      </div>
+    </div>
+</div>
+</div>
 
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="/assets/js/excel/js-xlsx-master/dist/xlsx.full.min.js"></script>
   <script src="/assets/js/excel/parse&upload.js"></script>
-  <!--  <script>
-    XMLHttpRequest = new XMLHttpRequest();
-    XMLHttpRequest.open("POST","/upload",true);
-    XMLHttpRequest.send("Body");
-  </script> -->
+
 </body>
 
 </html>

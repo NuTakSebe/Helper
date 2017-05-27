@@ -1,7 +1,7 @@
 function upload(file) {
   console.log("Upload Started");
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "/upload", true);
+  xhr.open("POST", "/excel/upload", true);
   console.log("Sending file Started");
   console.log(file);
   xhr.send(file);
@@ -55,3 +55,16 @@ function fixdata(data) {
 }
 
 InputFiles.addEventListener('change', handleFile, false); // По id вешаем eventListner на change, ф-ия,
+
+function download() {
+  xlsxFlag=true;
+  $.ajax({
+    type: "POST",
+    url: "/excel/download",
+    data: "xlsx=true",
+    success: function(data) {
+      alert("Прибыли данные: " + data);
+    }
+  });
+
+}
