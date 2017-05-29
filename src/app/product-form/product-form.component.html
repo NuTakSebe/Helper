@@ -1,16 +1,27 @@
 <!-- TODO: УБРАТЬ -->
-{{ product | json }}
+<p>{{ product | json }}</p>
+<p>mode {{ mode }}</p>
+<p>oldProduct {{ oldProduct | json }}</p>
+<p>storeUUID {{ storeUUID }}</p>
 
-<form  #productForm="ngForm">
+<form #productForm="ngForm">
 
-  <div class="form-group">
-    <label for="name">Название товара <span class="badge badge-default">Обязательное поле</span></label>
-    <input type="text" class="form-control" id="name" [(ngModel)]="product.name" name="name" #name="ngModel"
-    required maxlength="100" placeholder="От 1 до 100 символов">
-    <p class="alert alert-danger mt-3" [hidden]="!name.hasError('required') || name.pristine">Название не может быть пустым</p>
+  <div class="btn-group" data-toggle="buttons" [hidden]="mode=='edit'">
+    <label class="btn btn-primary radio" [class.active]="!product.group">
+      <input type="radio" name="isGroup" [value]=false autocomplete="off" (click)="this.product.group = !this.product.group; updateGroup()" [(ngModel)]="product.group" [checked]="!product.group"> Товар
+    </label>
+    <label class="btn btn-primary radio" [class.active]="product.group">
+      <input type="radio" name="isGroup" [value]=true autocomplete="off" (click)="this.product.group = !this.product.group; updateGroup()" [(ngModel)]="product.group" [checked]="product.group"> Группа
+    </label>
   </div>
 
   <div class="form-group">
+    <label for="name">Название товара<span class="badge badge-default ml-2">Обязательное поле</span></label>
+    <input type="text" class="form-control" id="name" [(ngModel)]="product.name" name="name" #name="ngModel" required maxlength="100" placeholder="От 1 до 100 символов">
+    <p class="alert alert-danger mt-3" [hidden]="!name.hasError('required') || name.pristine">Название не может быть пустым</p>
+  </div>
+
+  <div class="form-group" [hidden]="this.product.group">
     <label for="description">Описание товара</label>
     <input type="text" class="form-control" id="description" [(ngModel)]="product.description" name="description" #description="ngModel">
   </div>
@@ -18,75 +29,69 @@
   <div class="form-group">
     <label for="code">Код товара</label>
     <small class="form-text text-muted pb-3">Служит для дополнительной идентификации товара, заполните по своему желанию</small>
-    <input type="text" class="form-control" id="code" [(ngModel)]="product.code" name="code" #code="ngModel"
-    maxlength="10" placeholder="До 10 символов">
+    <input type="text" class="form-control" id="code" [(ngModel)]="product.code" name="code" #code="ngModel" maxlength="10" placeholder="До 10 символов">
   </div>
 
-  <div class="form-group">
+  <div class="form-group" [hidden]="this.product.group">
     <label for="articleNumber">Артикул</label>
-    <input type="text" class="form-control" id="articleNumber" [(ngModel)]="product.articleNumber" name="articleNumber" #articleNumber="ngModel"
-    maxlength="20" placeholder="До 20 символов">
+    <input type="text" class="form-control" id="articleNumber" [(ngModel)]="product.articleNumber" name="articleNumber" #articleNumber="ngModel" maxlength="20" placeholder="До 20 символов">
   </div>
 
-  <div class="form-group">
+  <div class="form-group" [hidden]="this.product.group">
     <label for="barCodes">Штрихкоды</label>
     <small class="form-text text-muted pb-3">Если оставить штрихкоды пустыми, в терминале будет доступен только визуальный поиск товара</small>
 
     <div class="form-group row">
       <div class="col-sm-8">
-        <input type="text" class="form-control skip" id="barCodeInput" [(ngModel)]="barCodeInput" [ngModelOptions]="{standalone: true}"
-        placeholder="Не может быть пустой строкой">
+        <input type="text" class="form-control skip" id="barCodeInput" [(ngModel)]="barCodeInput" [ngModelOptions]="{standalone: true}" placeholder="Не может быть пустой строкой">
       </div>
 
       <div class="col-sm-4">
-        <button type="button" id="addBarCode" class="btn btn-secondary btn-block" [disabled]="!barCodeInput"
-        (click)="barCodes.push(barCodeInput); barCodeInput = null">Добавить штрихкод</button>
+        <button type="button" id="addBarCode" class="btn btn-secondary btn-block" [disabled]="!barCodeInput" (click)="product.barCodes.push(barCodeInput); barCodeInput = null">Добавить штрихкод</button>
       </div>
     </div>
 
-    <section id="barCodesList" *ngIf="barCodes[0]">
-      <label>Штрихкоды товара</label>
+    <section id="barCodesList" *ngIf="product.barCodes[0]">
+      <p class="text-muted">Список добавленных штрихкодов</p>
       <ul class="list-group">
-        <li class="list-group-item" *ngFor="let barCode of barCodes; let i = index" [id]="barCode">{{ barCode }}<i class="fa fa-close mx-2" (click)="barCodes.splice(i, 1)"></i></li>
+        <li class="list-group-item" *ngFor="let barCode of product.barCodes; let i = index" [id]="barCode">{{ barCode }}<i class="fa fa-close mx-2" (click)="product.barCodes.splice(i, 1)"></i></li>
       </ul>
     </section>
   </div>
 
-  <div class="form-group">
-    <label for="price">Отпускная цена <span class="badge badge-default">Обязательное поле</span></label>
-    <input type="number" class="form-control" id="price" [(ngModel)]="product.price" name="price" #price="ngModel"
-    required min="0" max="9999999.99" step="0.01" pattern="^\d{0,7}(\.\d{1,3})?$" placeholder="От 0 до 9999999.99">
+  <div class="form-group" [hidden]="this.product.group">
+    <label for="price">Отпускная цена<span class="badge badge-default ml-2">Обязательное поле</span></label>
+    <input type="number" class="form-control" id="price" [(ngModel)]="product.price" name="price" #price="ngModel" required min="0" max="9999999.99" step="0.01" pattern="^\d{0,7}(\.\d{1,2})?$" placeholder="От 0 до 9999999.99">
     <p class="alert alert-danger mt-3" [hidden]="!price.hasError('required') || price.pristine">Цена не может быть пустой</p>
     <p class="alert alert-danger mt-3" [hidden]="!(price.hasError('pattern') && (price.value < 0)) || price.pristine">Цена не может быть меньше нуля</p>
     <p class="alert alert-danger mt-3" [hidden]="!(price.hasError('pattern') && (price.value > 9999999.99)) || price.pristine">Цена не может быть больше 9999999.99</p>
     <p class="alert alert-danger mt-3" [hidden]="!(price.hasError('pattern') && (price.value <= 9999999.99) && (price.value >= 0)) || price.pristine">Поле не может содержать больше двух десятичных знаков</p>
   </div>
 
-  <div class="form-group">
-    <label for="costPrice">Закупочная цена <span class="badge badge-default">Обязательное поле</span></label>
-    <input type="number" class="form-control" id="costPrice" [(ngModel)]="product.costPrice" name="costPrice" #costPrice="ngModel"
-    required min="0" max="9999999.99" step="0.01" pattern="^\d{0,7}(\.\d{1,3})?$" placeholder="От 0 до 9999999.99">
+  <div class="form-group" [hidden]="this.product.group">
+    <label for="costPrice">Закупочная цена<span class="badge badge-default ml-2">Обязательное поле</span></label>
+    <input type="number" class="form-control" id="costPrice" [(ngModel)]="product.costPrice" name="costPrice" #costPrice="ngModel" required min="0" max="9999999.99" step="0.01" pattern="^\d{0,7}(\.\d{1,2})?$" placeholder="От 0 до 9999999.99">
     <p class="alert alert-danger mt-3" [hidden]="!costPrice.hasError('required') || costPrice.pristine">Цена не может быть пустой</p>
     <p class="alert alert-danger mt-3" [hidden]="!(costPrice.hasError('pattern') && (costPrice.value < 0)) || costPrice.pristine">Цена не может быть меньше нуля</p>
     <p class="alert alert-danger mt-3" [hidden]="!(costPrice.hasError('pattern') && (costPrice.value > 9999999.99)) || costPrice.pristine">Цена не может быть больше 9999999.99</p>
     <p class="alert alert-danger mt-3" [hidden]="!(costPrice.hasError('pattern') && (costPrice.value <= 9999999.99) && (costPrice.value >= 0)) || costPrice.pristine">Поле не может содержать больше двух десятичных знаков</p>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" [hidden]="this.product.group">
     <label for="tax">Ставка НДС</label>
     <select class="form-control" id="tax" [(ngModel)]="product.tax" name="tax">
       <option *ngFor="let tax of taxes | slice:1" [value]="tax.value">{{tax.displayName}}</option>
     </select>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" [hidden]="this.product.group">
     <label for="measureName">Единица измерения</label>
     <select class="form-control" id="measureName" [(ngModel)]="product.measureName" name="measureName">
       <option *ngFor="let measure of measures | slice:1" [value]="measure.value">{{measure.displayName}}</option>
     </select>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" [hidden]="this.product.group">
     <label class="form-check-label">
       <input type="checkbox" id="alcoCheck" class="form-check-input" (change)="isAlco = !isAlco; updateAlco(isAlco)">
       Это алкогольная продукция?
@@ -95,58 +100,54 @@
 
   <section id="alco" *ngIf="isAlco">
 
-    <div class="form-group">
+    <div class="form-group" [hidden]="this.product.group">
       <label for="type">Тип товара</label>
       <select class="form-control" id="type" [(ngModel)]="product.type" name="type">
         <option *ngFor="let type of types | slice:1" [value]="type.value">{{type.displayName}}</option>
       </select>
     </div>
 
-    <div class="form-group">
-      <label for="alcoCodes">Коды алкогольной продукции ЕГАИС</label>
-
+    <div class="form-group" [hidden]="this.product.group">
+      <label for="alcoCodes">Коды алкогольной продукции ЕГАИС<span class="badge badge-default ml-2">Обязательное поле для алкоголя</span></label>
       <div class="form-group row">
         <div class="col-sm-8">
-          <input type="text" class="form-control skip" id="alcoCodeInput" [(ngModel)]="alcoCodeInput" [ngModelOptions]="{standalone: true}"
-          placeholder="Не может быть пустой строкой">
+          <input type="text" class="form-control skip" id="alcoCodeInput" [(ngModel)]="alcoCodeInput" [ngModelOptions]="{standalone: true}" placeholder="Не может быть пустой строкой">
         </div>
 
         <div class="col-sm-4">
-          <button type="button" id="addAlcoCode" class="btn btn-secondary btn-block" [disabled]="!alcoCodeInput"
-          (click)="alcoCodes.push(alcoCodeInput); alcoCodeInput = null">Добавить алкокод</button>
+          <button type="button" id="addAlcoCode" class="btn btn-secondary btn-block" [disabled]="!alcoCodeInput" (click)="product.alcoCodes.push(alcoCodeInput); alcoCodeInput = null">Добавить алкокод</button>
         </div>
       </div>
 
-      <section id="alcoCodesList" *ngIf="alcoCodes[0]">
-        <label>Алкокоды товара</label>
+      <p class="alert alert-danger mt-3" [hidden]="!(isAlco && !product.alcoCodes[0])">Алкогольный товар должен содержать хотя бы один алкокод</p>
+
+      <section id="alcoCodesList" *ngIf="product.alcoCodes[0]">
+        <p class="text-muted">Список добавленных алкокодов</p>
         <ul class="list-group">
-          <li class="list-group-item" *ngFor="let alcoCode of alcoCodes; let i = index" [id]="alcoCode">{{ alcoCode }}<i class="fa fa-close mx-2" (click)="alcoCodes.splice(i, 1)"></i></li>
+          <li class="list-group-item" *ngFor="let alcoCode of product.alcoCodes; let i = index" [id]="alcoCode">{{ alcoCode }}<i class="fa fa-close mx-2" (click)="product.alcoCodes.splice(i, 1)"></i></li>
         </ul>
       </section>
     </div>
 
-    <div class="form-group">
-      <label for="alcoholByVolume">Крепость алкогольной продукции <span class="badge badge-default">Обязательное поле для алкоголя</span></label>
-      <input type="number" class="form-control" id="alcoholByVolume" [(ngModel)]="product.alcoholByVolume" name="alcoholByVolume" #alcoholByVolume="ngModel"
-      required min="0.001" max="99.999" step="0.001" pattern="^(?=.*[1-9])\d{0,2}(\.\d{1,3})?$" placeholder="От 0.001 до 99.999">
+    <div class="form-group" [hidden]="this.product.group">
+      <label for="alcoholByVolume">Крепость алкогольной продукции<span class="badge badge-default ml-2">Обязательное поле для алкоголя</span></label>
+      <input type="number" class="form-control" id="alcoholByVolume" [(ngModel)]="product.alcoholByVolume" name="alcoholByVolume" #alcoholByVolume="ngModel" required min="0.001" max="99.999" step="0.001" pattern="^(?=.*[1-9])\d{0,2}(\.\d{1,3})?$" placeholder="От 0.001 до 99.999">
       <p class="alert alert-danger mt-3" [hidden]="!alcoholByVolume.hasError('required') || alcoholByVolume.pristine">Крепость не может быть пустой</p>
       <p class="alert alert-danger mt-3" [hidden]="!(alcoholByVolume.hasError('pattern') && (alcoholByVolume.value <= 0)) || alcoholByVolume.pristine">Значение должно быть больше нуля</p>
       <p class="alert alert-danger mt-3" [hidden]="!(alcoholByVolume.hasError('pattern') && (alcoholByVolume.value > 99.999)) || alcoholByVolume.pristine">Значение не может быть больше 99.999</p>
       <p class="alert alert-danger mt-3" [hidden]="!(alcoholByVolume.hasError('pattern') && (alcoholByVolume.value <= 99.999) && (alcoholByVolume.value > 0)) || alcoholByVolume.pristine">Поле не может содержать больше трёх десятичных знаков</p>
     </div>
 
-    <div class="form-group">
-      <label for="alcoholProductKindCode">Код вида алкогольной продукции ФСРАР <span class="badge badge-default">Обязательное поле для алкоголя</span></label>
-      <input type="number" class="form-control" id="alcoholProductKindCode" [(ngModel)]="product.alcoholProductKindCode" name="alcoholProductKindCode" #alcoholProductKindCode="ngModel"
-      required min="1" max="999" pattern="((?=.*[1-9])\d{1,3})?" placeholder="От 1 до 999">
+    <div class="form-group" [hidden]="this.product.group">
+      <label for="alcoholProductKindCode">Код вида алкогольной продукции ФСРАР<span class="badge badge-default ml-2">Обязательное поле для алкоголя</span></label>
+      <input type="number" class="form-control" id="alcoholProductKindCode" [(ngModel)]="product.alcoholProductKindCode" name="alcoholProductKindCode" #alcoholProductKindCode="ngModel" required min="1" max="999" pattern="((?=.*[1-9])\d{1,3})?" placeholder="От 1 до 999">
       <p class="alert alert-danger mt-3" [hidden]="!alcoholProductKindCode.hasError('required') || alcoholProductKindCode.pristine">Поле обязательно для заполнения</p>
       <p class="alert alert-danger mt-3" [hidden]="!alcoholProductKindCode.hasError('pattern') || alcoholProductKindCode.pristine">Значение кода должно лежать в пределах от 0 до 999</p>
     </div>
 
-    <div class="form-group">
-      <label for="tareVolume">Ёмкость тары алкогольной продукции в литрах <span class="badge badge-default">Обязательное поле для алкоголя</span></label>
-      <input type="number" class="form-control" id="tareVolume" [(ngModel)]="product.tareVolume" name="tareVolume" #tareVolume="ngModel"
-      required min="0.001" max="999.999" step="0.001" pattern="^(?=.*[1-9])\d{0,3}(\.\d{1,3})?$" placeholder="От 0.001 до 999.999">
+    <div class="form-group" [hidden]="this.product.group">
+      <label for="tareVolume">Ёмкость тары алкогольной продукции в литрах<span class="badge badge-default ml-2">Обязательное поле для алкоголя</span></label>
+      <input type="number" class="form-control" id="tareVolume" [(ngModel)]="product.tareVolume" name="tareVolume" #tareVolume="ngModel" required min="0.001" max="999.999" step="0.001" pattern="^(?=.*[1-9])\d{0,3}(\.\d{1,3})?$" placeholder="От 0.001 до 999.999">
       <p class="alert alert-danger mt-3" [hidden]="!tareVolume.hasError('required') || tareVolume.pristine">Крепость не может быть пустой</p>
       <p class="alert alert-danger mt-3" [hidden]="!(tareVolume.hasError('pattern') && (tareVolume.value <= 0)) || tareVolume.pristine">Значение должно быть больше нуля</p>
       <p class="alert alert-danger mt-3" [hidden]="!(tareVolume.hasError('pattern') && (tareVolume.value > 99.999)) || tareVolume.pristine">Значение не может быть больше 999.999</p>
@@ -154,20 +155,35 @@
     </div>
   </section>
 
-  <div class="form-group">
+  <div class="form-group" [hidden]="this.product.group">
     <label for="quantity">Количество товара в наличии (остаток)</label>
-    <input type="number" class="form-control" id="quantity" [(ngModel)]="product.quantity" name="quantity" #quantity="ngModel"
-    required step="0.001" pattern="^-?\d{1,}(\.\d{1,3})?$" placeholder="До трёх десятичных знаков">
+    <input type="number" class="form-control" id="quantity" [(ngModel)]="product.quantity" name="quantity" #quantity="ngModel" required step="0.001" pattern="^-?\d{1,}(\.\d{1,3})?$" placeholder="До трёх десятичных знаков">
     <p class="alert alert-danger mt-3" [hidden]="!quantity.hasError('required') || quantity.pristine">Поле не может быть пустым</p>
     <p class="alert alert-danger mt-3" [hidden]="!quantity.hasError('pattern') || quantity.pristine">Поле не может содержать больше трёх десятичных знаков</p>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" [hidden]="this.product.group">
     <label class="form-check-label">
       <input type="checkbox" id="allowToSell" class="form-check-input" [(ngModel)]="product.allowToSell" name="allowToSell" #allowToSell="ngModel">
       Товар доступен для продажи
     </label>
   </div>
 
-  <button type="submit" class="btn btn-primary" [disabled]="!productForm.form.valid">Добавить</button>
+  <div class="form-group" *ngIf="mode==='add'">
+    <label for="type">Выберите магазин, в который хотите добавить товар</label>
+    <select class="form-control" id="store" [(ngModel)]="storeUUID" name="store" (change)="updateGroups(storeUUID)">
+      <option *ngFor="let store of stores" [value]="store.uuid">{{store.name}}</option>
+    </select>
+  </div>
+
+  <div class="form-group" *ngIf="storeGroups[0]">
+    <label for="type">Выберите группу товара</label>
+    <select class="form-control" id="group" [(ngModel)]="product.parentUuid" name="group">
+      <option value="null">Без группы</option>
+      <option *ngFor="let group of storeGroups" [value]="group.uuid">{{group.name}}</option>
+    </select>
+  </div>
+
+  <p class="alert alert-danger mt-3" [hidden]="productForm.form.valid && !(isAlco && !product.alcoCodes[0])">Корректно заполните все поля формы, чтобы продолжить</p>
+  <button type="submit" class="btn btn-primary" (click)="submitFunction()" [disabled]="!productForm.form.valid || (isAlco && !product.alcoCodes[0])">Добавить</button>
 </form>

@@ -1,11 +1,45 @@
+.badge {
+  background: #ff7800;
+}
+
+/* подсветка до активации полей*/
+/*
 .form-control[required] {
   border: 1px solid #a94442;
 }
 
 .ng-valid:not(form):not(.skip):not(select) {
-  border: 1px solid #42A948 !important; /* green */
+  border: 1px solid #42A948 !important;
 }
 
 .ng-invalid.ng-dirty:not(form)  {
-  border: 1px solid #a94442; /* red */
+  border: 1px solid #a94442;
+}
+
+*/
+
+/* подсветка после активации полей */
+
+.form-control[required]:not(.ng-pristine) {
+  border: 1px solid #a94442;
+}
+
+.ng-valid:not(.ng-pristine):not(form):not(.skip):not(select) {
+  border: 1px solid #42A948 !important;
+}
+
+.ng-invalid:not(.ng-pristine):not(form)  {
+  border: 1px solid #a94442;
+}
+
+i {
+  cursor: pointer;
+}
+
+.radio {
+  background: #333;
+}
+
+.radio.active {
+  background: #ff7800;
 }

@@ -1,1 +1,81 @@
-<a routerLink="/" routerLinkActive="active">Home</a>
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" routerLink="/" routerLinkActive="active" queryParamsHandling="preserve">Главная</a>
+  <span class="breadcrumb-item active">Редактирование товара</span>
+</nav>
+
+<div class="container" id="storesContainer">
+  <h6 class="pb-2">Магазины</h6>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Адрес</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let store of stores" id={{store.uuid}}>
+        <th>{{ store.name }}</th>
+        <th>{{ store.address }}</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container" id="itemsContainer">
+  <h6 class="pb-2">Товары</h6>
+  <table class="table table-hover table-responsive">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Код</th>
+        <th class="w-50">Название</th>
+        <th class="w-50">Описание</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of tableProducts" id={{product.uuid}}>
+        <th><i class="fa" [class.fa-folder]="product.group" [class.fa-file]="!product.group"></i></th>
+        <th>{{ product.code }}</th>
+        <th>{{ product.name }}</th>
+        <th>{{ product.description }}</th>
+        <th><button type='button' class='btn btn-primary btn-sm' (click)="openForm(editModal, product)"><i class="fa fa-pencil"></i></button></th>
+        <th><button type='button' class='btn btn-primary btn-sm' (click)="openAlert(alertModal, product)"><i class="fa fa-trash"></i></button></th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #editModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Форма редактирования товара</h4>
+    <button type="button" class="close" aria-label="Закрыть" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-product-form [mode]="mode" [storeUUID]="storeUUID" [oldProduct]="oldProduct">
+
+    </app-product-form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #alertModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Подтвердите удаление товара</h4>
+    <button type="button" class="close" aria-label="Закрыть" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Вы действително хотите удалить {{ name }}?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
