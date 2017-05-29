@@ -3,6 +3,7 @@ import { Http, Headers, Response, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class EvotorRequestsService {
@@ -50,13 +51,13 @@ export class EvotorRequestsService {
   }
 
   postItem(token: string, storeUuid: string, item: object){
+    console.log(token, storeUuid, [item]);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('X-Authorization', token);
 
-    let options = new RequestOptions({ headers: headers });
     return this.http
-      .post("http://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products", item, options)
+      .post("https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products", [item], {headers: headers})
         .map((resp:Response)=>resp.json())
           .catch((error:any) =>{return Observable.throw(error);});
 
@@ -69,7 +70,7 @@ export class EvotorRequestsService {
 
     let options = new RequestOptions({ headers: headers });
     return this.http
-      .post("http://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products/delete", {"uuid": itemUuid}, options)
+      .post("https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products/delete", {"uuid": itemUuid}, options)
         .map((resp:Response)=>resp.json())
           .catch((error:any) =>{return Observable.throw(error);});
 

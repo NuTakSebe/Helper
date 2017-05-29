@@ -1,12 +1,18 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { ActivatedRoute } from '@angular/router';
+
+import{ Response } from '@angular/http';
+
 import { GenerateUUID4Service } from '../generate-uuid4.service';
+import { GetQueryParamService } from '../get-query-param.service';
+import { EvotorRequestsService } from '../evotor-requests.service';
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.css'],
-  providers: [GenerateUUID4Service]
+  providers: [GenerateUUID4Service, GetQueryParamService, EvotorRequestsService]
 })
 export class ProductFormComponent implements OnInit {
   @Input() mode;
@@ -189,23 +195,16 @@ export class ProductFormComponent implements OnInit {
 
   submitFunction;
 
-  constructor(private generateUUID4: GenerateUUID4Service) { }
+  token;
+
+  constructor(private route : ActivatedRoute, private generateUUID4 : GenerateUUID4Service, private getQueryParam : GetQueryParamService, private evotorRequests : EvotorRequestsService) { }
 
   ngOnInit() {
-    if (this.mode === 'add') {
-      // TODO:
+    this.token = this.getQueryParam.getParamByName(this.route, 'token');
+    console.log(this.token);
 
-      // получить магазины
-      this.stores = [{
-        "uuid": "string11",
-        "name": "string1",
-        "address": "string"
-      },
-      {
-        "uuid": "string22",
-        "name": "string2",
-        "address": "string"
-      }];
+    if (this.mode === 'add') {
+      this.evotorRequests.getStores(this.token).subscribe((data: Response) => this.stores = data.json());
 
       // если магазинов нет - заблокировать форму
       if (!(this.stores[0])) {
@@ -218,12 +217,15 @@ export class ProductFormComponent implements OnInit {
 
       // на сабмит вешаем отправку
       this.submitFunction = function() {
-        alert(this.mode);
+        this.evotorRequests.postItem(this.token, this.storeUUID, this.product).subscribe((data: Response) => console.log('suc'));
+        // TODO: уведомление
+
         this.product = Object.assign({}, this.emptyProduct);
         this.isAlco = false;
         this.product.barCodes.length = 0;
         this.product.alcoCodes.length = 0;
         window.scrollTo(0,0);
+        this.product.uuid = this.generateUUID4.generate();
       }
     } else if (this.mode === 'edit') {
       // TODO:
