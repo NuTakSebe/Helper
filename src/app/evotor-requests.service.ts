@@ -38,13 +38,14 @@ export class EvotorRequestsService {
     let options = new RequestOptions({ headers: headers });
     return this.http
     .get("https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products", options)
-    .map(res => {
+    .map((res:Response)  => {
       let groups = [];
-      let itemList = res.json().data;
+      let itemList = res.json();
+      console.log(itemList);
       for(let index in itemList){
-          if(itemList[index].group){
-            groups.push(itemList[index])
-          }
+        if(itemList[index].group === true){
+          groups.push(itemList[index])
+        }
       }
       return groups;
     })

@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let store of stores" id={{store.uuid}}>
+      <tr *ngFor="let store of stores" id={{store.uuid}} (click)="getItems(store.uuid)">
         <th>{{ store.name }}</th>
         <th>{{ store.address }}</th>
       </tr>
@@ -35,7 +35,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of tableProducts" id={{product.uuid}}>
+      <tr *ngFor="let product of tableProducts" id={{product.uuid}} (click)="productClick(product, editModal)">
         <th><i class="fa" [class.fa-folder]="product.group" [class.fa-file]="!product.group"></i></th>
         <th>{{ product.code }}</th>
         <th>{{ product.name }}</th>

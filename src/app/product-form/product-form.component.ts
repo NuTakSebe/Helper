@@ -181,16 +181,7 @@ export class ProductFormComponent implements OnInit {
   errorNoGroups = false;
 
   updateGroups = function(storeUUID) {
-    this.storeGroups = [];
-    // TODO: ЗАПРОС
-    this.storeGroups = [{
-      "uuid": "group1",
-      "name": "name"
-    }];
-
-    if (!(this.storeGroups[0])) {
-      this.errorNoGropes = true;
-    }
+    this.evotorRequests.getGroups(this.token, storeUUID).subscribe((data : Response) => this.storeGroups = data);
   };
 
   submitFunction;
@@ -204,20 +195,13 @@ export class ProductFormComponent implements OnInit {
     console.log(this.token);
 
     if (this.mode === 'add') {
-      this.evotorRequests.getStores(this.token).subscribe((data: Response) => this.stores = data.json());
-
-      // если магазинов нет - заблокировать форму
-      if (!(this.stores[0])) {
-        this.errorNoStores = true;
-      } else {
-        this.storeUUID = this.stores[0].uuid;
-      }
+      this.evotorRequests.getStores(this.token).subscribe((data : Response) => this.stores = data.json());
 
       // после выбора магазина получить группы - это делает updateGroups;
 
       // на сабмит вешаем отправку
       this.submitFunction = function() {
-        this.evotorRequests.postItem(this.token, this.storeUUID, this.product).subscribe((data: Response) => console.log('suc'));
+        this.evotorRequests.postItem(this.token, this.storeUUID, this.product).subscribe((data : Response) => console.log('suc'));
         // TODO: уведомление
 
         this.product = Object.assign({}, this.emptyProduct);
@@ -228,7 +212,7 @@ export class ProductFormComponent implements OnInit {
         this.product.uuid = this.generateUUID4.generate();
       }
     } else if (this.mode === 'edit') {
-      // TODO:
+      this.evotorRequests.getStores(this.token).subscribe((data : Response) => this.stores = data.json());
 
       // запихать переданный объект в product
       this.product = Object.assign({}, this.oldProduct);

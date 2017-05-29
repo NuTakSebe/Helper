@@ -30,3 +30,7 @@ e86d00 - вторичный оранжевый (для hover на элемент
 .btn {
   cursor: pointer;
 }
+
+.table tbody th {
+  font-weight: normal;
+}
