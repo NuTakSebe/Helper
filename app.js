@@ -8,7 +8,7 @@ var express = require('express'),
   log = require("./libs/log")(module),
   request = require('request'),
   fs = require('fs');
-
+  const url = require('url');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -90,9 +90,19 @@ app.post("/excel/upload", function(req, res, next) {
     });
 });
 
-app.post('excel/download', function(req, res){
-  var file = __dirname + '/upload-folder/dramaticpenguin.MOV';
-  res.download("template.xlsx"); // Set disposition and send it.
+app.post("/excel/download", function(req, res){
+  console.log("Request Arrived");
+  console.log("Sending file");
+  query = url.parse(req.url,true);
+  console.log(query.query.for)
+  let file;
+  if(query.query.for==="xlsx") {
+    file = __dirname + '/files/template.xlsx';
+  }else {
+    file = __dirname + '/files/temp.xls';
+  }
+
+  res.download(file); // Set disposition and send it.
 });
 
 // catch 404 and forward to error handler
