@@ -1,1 +1,82 @@
-<a routerLink="/" routerLinkActive="active">Home</a>
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" routerLink="/" routerLinkActive="active" queryParamsHandling="preserve">Главная</a>
+  <span class="breadcrumb-item active">Импорт Excel</span>
+</nav>
+
+
+<div class="row">
+
+  <div class="container">
+    <div class="jumbotron">
+      <h2>TODO норм описание</h2>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-md-6">
+        <div class="center-block">
+          <h3 class="header">Шаг 1:</h3>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <h3>Cкачайте нашу заготовку Excel</h3>
+        <p>Выберете Вашу версию Excel и скачайте</p>
+        <form id="formd">
+          <div>
+            <label><input [(ngModel)]="form" type="radio" name="format" value="xls"> Расширение: .xls </label>
+          </div>
+          <div>
+            <label><input [(ngModel)]="form" type="radio" name="format" value="xlsx" checked> Расширение: .xlsx </label>
+          </div>
+          <button (click)="onSubmit(form)" type="submit" class="btn btn-primary" form="formd">Скачать</button>
+          <!-- <<button (click)="getAlert()">Нажми</button> -->
+        </form>
+      </div>
+    </div><!-- .row -->
+
+  </div><!-- .container -->
+
+  <div class="container mt-5">
+
+    <div class="row">
+
+      <div class="col-md-6">
+        <h3>Шаг 2:</h3>
+      </div>
+
+      <div class="col-md-6">
+        <h3>Заполните все столбцы в соответствии с их заголовками</h3>
+        <p>Заполните все столбцы корректно во избежание ошибок</p>
+      </div>
+
+    </div><!-- .row -->
+
+  </div><!-- .container -->
+
+  <div class="container mt-5">
+
+    <div class="row">
+
+      <div class="col-md-6">
+        <h3>Шаг 3:</h3>
+      </div>
+
+      <div class="col-md-6">
+        <h3>Выберете Ваш готовый файл</h3>
+        <p>Выберете Ваш файл</p>
+        <form name="upload">
+          <label (change)="handleFile($event)" class="btn btn-primary" >Выбрать<input type="file" id="InputFiles" style="display: none"/></label>
+        </form>
+      </div>
+
+    </div><!-- .row -->
+
+  </div><!-- .container -->
+
+  <script src="src/assets/excelP/excelDist/xlsx.full.min.js"></script>
+  <script src="src/assets/parse&upload.js"></script>
+</div>
