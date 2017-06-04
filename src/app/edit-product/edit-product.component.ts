@@ -68,8 +68,8 @@ export class EditProductComponent implements OnInit {
    token;
 
    getItems = function(storeUUID) {
-     this.evotorRequests.getItems(this.token, storeUUID).subscribe((data : Response) =>
-              {this.storeProducts = data.json(); this.tableProducts = this.storeProducts; console.log(this.evotorRequests.buildObjectTree(data.json(), "uuid", "parentUuid"))});
+     this.evotorRequests.getItems(this.token, storeUUID).subscribe((data : Response) =>  {
+       this.storeProducts = data.json(); this.tableProducts = this.storeProducts; console.log(this.evotorRequests.buildObjectTree(data.json(), "uuid", "parentUuid"))});
    }
 
    productClick = function(product, editModal) {
