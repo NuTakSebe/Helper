@@ -68,15 +68,17 @@
       <div class="col-md-6">
         <h3>Выберете Ваш готовый файл</h3>
         <p>Выберете Ваш файл</p>
-        <form name="upload">
-          <label (change)="handleFile($event)" class="btn btn-primary" >Выбрать<input type="file" id="InputFiles" style="display: none"/></label>
+        <form id="upload">
+          <label (change)="handleFile($event,jsonExcel)" class="btn btn-primary" >Выбрать<input type="file" id="InputFiles" style="display: none"/></label>
         </form>
       </div>
 
     </div><!-- .row -->
 
   </div><!-- .container -->
+<div>
 
-  <script src="src/assets/excelP/excelDist/xlsx.full.min.js"></script>
-  <script src="src/assets/parse&upload.js"></script>
+
+</div>
+
 </div>
