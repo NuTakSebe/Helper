@@ -14,9 +14,13 @@ declare var XLSX: any;
 export class ProductsImportExportComponent implements OnInit {
 
   XLSX: any;
-  form = "";
+  form: String= "";
+  jsonExcel = {
+    "name": "Developer",
+    "party": "Development"
+  };
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {}
 
   onSubmit(form: string) {
     const body = null;
@@ -64,12 +68,11 @@ export class ProductsImportExportComponent implements OnInit {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/excel/upload", true);
     console.log("Sending file Started");
-    console.log(file);
     xhr.send(file);
     return xhr.status;
   }
 
-  handleFile(event: any) {
+  handleFile(event: any, jsonExcel: any) {
     var rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
     var files = event.target.files; // Забираем у event( нажатие ) список выбранных файлов. Возвращает ArrayList of Files
     var i, file; // Объявляем переменные для итерации и сам file
@@ -94,10 +97,11 @@ export class ProductsImportExportComponent implements OnInit {
         });
       }
       var worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      var jsonExcel = XLSX.utils.sheet_to_json(worksheet);
+      jsonExcel = XLSX.utils.sheet_to_json(worksheet);
+      console.log("Tralala")
       console.log(jsonExcel);
 
-      const status = ProductsImportExportComponent.upload(jsonExcel);
+      // ProductsImportExportComponent.upload(jsonExcel);
       console.log(status);
     };
     reader.readAsBinaryString(file);
