@@ -77,4 +77,27 @@ export class EvotorRequestsService {
 
   }
 
+  buildObjectTree(treeData, key, parentKey){
+    var keys = [];
+    treeData.map(function(x){
+        x.Children = [];
+        keys.push(x[key]);
+    });
+    var roots = treeData.filter(function(x){return keys.indexOf(x[parentKey])==-1});
+    var nodes = [];
+    roots.map(function(x){nodes.push(x)});
+    while(nodes.length > 0)
+    {
+
+        var node = nodes.pop();
+        var children =  treeData.filter(function(x){return x[parentKey] == node[key]});
+        children.map(function(x){
+            node.Children.push(x);
+            nodes.push(x)
+        });
+    }
+    if (roots.length==1) return roots[0];
+    return roots;
+  }
+
 }
