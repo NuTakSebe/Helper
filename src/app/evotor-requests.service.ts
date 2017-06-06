@@ -90,8 +90,8 @@ export class EvotorRequestsService {
     {
 
         var node = nodes.pop();
-        var children =  treeData.filter(function(x){return x[parentKey] == node[key]});
-        children.map(function(x){
+        var Children =  treeData.filter(function(x){return x[parentKey] == node[key]});
+        Children.map(function(x){
             node.Children.push(x);
             nodes.push(x)
         });

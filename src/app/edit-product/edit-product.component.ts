@@ -25,6 +25,8 @@ export class EditProductComponent implements OnInit {
 
   storeUUID = "333";
 
+  path = [];
+
   oldProduct = {
     "uuid": 4234234,
     "code": "",
@@ -69,16 +71,26 @@ export class EditProductComponent implements OnInit {
 
    getItems = function(storeUUID) {
      this.evotorRequests.getItems(this.token, storeUUID).subscribe((data : Response) =>  {
-       this.storeProducts = data.json(); this.tableProducts = this.storeProducts; console.log(this.evotorRequests.buildObjectTree(data.json(), "uuid", "parentUuid"))});
+       this.storeProducts = this.evotorRequests.buildObjectTree(data.json(), "uuid", "parentUuid");
+       this.tableProducts = this.storeProducts;
+       console.log(this.storeProducts);
+     });
    }
 
    productClick = function(product, editModal) {
      if (product.group === true) {
-       console.log('test');
-     } else {
-       this.openForm(editModal, product);
+       this.tableProducts = product.Children;
+       this.path.push(product);
      }
+   }
 
+   backClick = function() {
+     if (this.path.length > 2) {
+       this.tableProducts = this.path[this.path.length-1].Children;
+     } else {
+       this.tableProducts = this.storeProducts;
+     }
+     this.path.length -= 1;
    }
 
   constructor(private modalService: NgbModal, private getQueryParam : GetQueryParamService, private evotorRequests : EvotorRequestsService, private route : ActivatedRoute) { }
