@@ -109,7 +109,39 @@ export class ProductsImportExportComponent implements OnInit {
   /* processing array
   buffers, only required for readAsArrayBuffer */
 
+send(jsonExcel) {
+  let uuid = 1234567890;
+  let name = jsonExcel["Артикул ↵(до 20 символов)"];
+  let code = jsonExcel["Код товара↵(до 10 символов)"];
+  
+  let json = {
+      "uuid": "string",
+      "code": "string",
+      "barCodes": [
+      "string"
+      ],
+      "alcoCodes": [
+      "string"
+      ],
+      "name": "string",
+      "price": 0,
+      "quantity": 0,
+      "costPrice": 0,
+      "measureName": "",
+      "tax": "NO_VAT",
+      "allowToSell": true,
+      "description": "string",
+      "articleNumber": "string",
+      "parentUuid": "string",
+      "group": true,
+      "type": "NORMAL",
+      "alcoholByVolume": 0,
+      "alcoholProductKindCode": 0,
+      "tareVolume": 0
+    }
 
+  console.log("Sended!");
+}
   ngOnInit() {
 
   }
