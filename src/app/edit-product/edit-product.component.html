@@ -23,7 +23,7 @@
   </table>
   -->
   <div>
-    <label for="type">Выберите магазин, в который хотите добавить товар</label>
+    <label for="type">Выберите магазин, в котором Вы хотите изменить товар</label>
     <select class="form-control" id="store" [(ngModel)]="storeUUID" name="store" (change)="getItems(storeUUID)">
       <option *ngFor="let store of stores" [value]="store.uuid">{{store.name}}</option>
     </select>
@@ -54,11 +54,11 @@
         <th></th>
       </tr>
       <template ngFor let-product [ngForOf]="tableProducts">
-        <tr *ngIf="product" id={{product.uuid}} (click)="productClick(product, editModal)">
-          <th><i class="fa" [class.fa-folder]="product.group" [class.fa-file]="!product.group"></i></th>
-          <th>{{ product.code }}</th>
-          <th>{{ product.name }}</th>
-          <th>{{ product.description }}</th>
+        <tr *ngIf="product" id={{product.uuid}}>
+          <th (click)="productClick(product, editModal)"><i class="fa" [class.fa-folder]="product.group" [class.fa-file]="!product.group"></i></th>
+          <th (click)="productClick(product, editModal)">{{ product.code }}</th>
+          <th (click)="productClick(product, editModal)">{{ product.name }}</th>
+          <th (click)="productClick(product, editModal)">{{ product.description }}</th>
           <th><button type='button' class='btn btn-primary btn-sm' (click)="openForm(editModal, product)"><i class="fa fa-pencil"></i></button></th>
           <th><button type='button' class='btn btn-primary btn-sm' (click)="openAlert(alertModal, product)"><i class="fa fa-trash"></i></button></th>
         </tr>
@@ -93,10 +93,10 @@
     </button>
   </div>
   <div class="modal-body">
-    <p>Вы действително хотите удалить {{ name }}?</p>
+    <p>Вы действително хотите удалить {{ tempProduct.name }}?</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Закрыть</button>
+    <button type="button" class="btn btn-primary" (click)="deleteProduct(); c('Close click')">Удалить</button>
   </div>
 </ng-template>

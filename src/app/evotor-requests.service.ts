@@ -59,7 +59,7 @@ export class EvotorRequestsService {
 
     return this.http
       .post("https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products", [item], {headers: headers})
-        .map((resp:Response)=>resp.json())
+        .map((resp:Response)=>resp)
           .catch((error:any) =>{return Observable.throw(error);});
 
   }
@@ -69,10 +69,9 @@ export class EvotorRequestsService {
     headers.append('Content-Type', 'application/json');
     headers.append('X-Authorization', token);
 
-    let options = new RequestOptions({ headers: headers });
     return this.http
-      .post("https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products/delete", {"uuid": itemUuid}, options)
-        .map((resp:Response)=>resp.json())
+      .post("https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products/delete", [{"uuid": itemUuid}], {headers: headers})
+        .map((resp:Response)=>resp)
           .catch((error:any) =>{return Observable.throw(error);});
 
   }
