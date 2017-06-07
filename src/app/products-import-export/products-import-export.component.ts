@@ -109,7 +109,10 @@ export class ProductsImportExportComponent implements OnInit {
   /* processing array
   buffers, only required for readAsArrayBuffer */
 
+send(jsonExcel) {
 
+  console.log("Sended!");
+}
   ngOnInit() {
 
   }
