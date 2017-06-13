@@ -27,14 +27,16 @@ export class EditProductComponent implements OnInit {
 
   path = [];
 
+  tempProduct : any;
+
   oldProduct = {
-    "uuid": 4234234,
-    "code": "",
-    "barCodes": [123123123, 123123, 5555],
+    "uuid": "",
+    "code": 0,
+    "barCodes": [],
     "alcoCodes": [],
-    "name": "ttetst",
-    "price": 5555,
-    "quantity": 234,
+    "name": "",
+    "price": 0,
+    "quantity": 0,
     "costPrice": 0,
     "measureName": "шт",
     "tax": "VAT_0",
@@ -47,24 +49,39 @@ export class EditProductComponent implements OnInit {
     "alcoholByVolume": 0,
     "alcoholProductKindCode": 0,
     "tareVolume": 0
-  }
+  };
 
-  deleteProduct(productUUID) {
-    console.log(productUUID);
+  updateItems() {
+    console.log('test');
+    this.evotorRequests.getItems(this.token, this.storeUUID).subscribe((data : Response) =>  {
+      this.storeProducts = this.evotorRequests.buildObjectTree(data.json(), "uuid", "parentUuid");
 
-    // TODO:
-    // запрос на удаление
-    // удалить товар из массивов тут
-    }
+      if (this.path.length > 0) {
+        this.tableProducts = this.path[this.path.length-1].Children;
+      } else {
+        this.tableProducts = this.storeProducts;
+      }
 
-    openForm(content, product) {
+      console.log(this.tableProducts);
+    });
+  };
+
+  deleteProduct() {
+    let that = this;
+    this.evotorRequests.deleteItem(this.token, this.storeUUID, this.tempProduct.uuid)
+    .subscribe(
+      function() { that.updateItems()  }
+    );
+  };
+
+  openForm(content, product) {
      this.modalService.open(content, {size: "lg"});
      this.oldProduct = Object.assign({}, product);
     }
 
-   openAlert(content, product) {
-     console.log(product.name);
+  openAlert(content, product) {
      this.modalService.open(content, {size: "lg"});
+     this.tempProduct = Object.assign({}, product);
    }
 
    token;
@@ -73,25 +90,26 @@ export class EditProductComponent implements OnInit {
      this.evotorRequests.getItems(this.token, storeUUID).subscribe((data : Response) =>  {
        this.storeProducts = this.evotorRequests.buildObjectTree(data.json(), "uuid", "parentUuid");
        this.tableProducts = this.storeProducts;
-       console.log(this.storeProducts);
      });
-   }
+   };
 
    productClick = function(product, editModal) {
      if (product.group === true) {
-       this.tableProducts = product.Children;
        this.path.push(product);
+       this.tableProducts = product.Children;
+     } else {
+       this.openForm(editModal, product);
      }
-   }
+   };
 
    backClick = function() {
-     if (this.path.length > 2) {
-       this.tableProducts = this.path[this.path.length-1].Children;
+     if (this.path.length > 1) {
+       this.tableProducts = this.path[this.path.length-2].Children;
      } else {
        this.tableProducts = this.storeProducts;
      }
      this.path.length -= 1;
-   }
+   };
 
   constructor(private modalService: NgbModal, private getQueryParam : GetQueryParamService, private evotorRequests : EvotorRequestsService, private route : ActivatedRoute) { }
 
