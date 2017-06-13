@@ -68,7 +68,7 @@
         <h3>Выберете Ваш готовый файл</h3>
         <p>Выберете Ваш файл</p>
         <form id="upload">
-          <label (change)="handleFile($event,jsonExcel)" class="btn btn-primary" >Выбрать<input type="file" id="InputFiles" style="display: none"/></label>
+          <label (change)="handleFile($event)" class="btn btn-primary" >Выбрать<input type="file" id="InputFiles" style="display: none"/></label>
         </form>
       </div>
 
@@ -77,8 +77,41 @@
   </div><!-- .container -->
 <div>
 
-  <div class="container text-center">
-    <button (click)="send(jsonExcel)" class="btn btn-primary">Подтвердить и отправить</button>
+<div *ngIf="1" class="container mt-2">
+  <h3>Cписок товаров:</h3>
+  <div class="row">		
+    <div *ngFor="let product of getJson()" class="col-sm-4 mt-2">
+      <div class="card" style="border-radius: 10px">
+          <div class="card-header" style="background:#ff7800" >
+<!--   	       <h3 class="card-title">{{product["name"]}}</h3>-->
+         <h3 style="color:white">{{product["name"]}}</h3>
+          </div>
+        <div class="card-block" style="background:#eceeef">
+          <p class="card-text"><b>Описание товара:</b> {{ product["description"] }} </p>
+          <p class="card-text"><b>Код товара:</b> {{ product["code"] }} </p>
+          <p class="card-text"><b>Артикул:</b> {{ product["articleNumber"] }} </p>
+          <p class="card-text"><b>Штрихкоды:</b> {{ product["barCodes"] }} </p>
+          <p class="card-text"><b>Отпускная цена:</b> {{ product["price"] }} </p>
+          <p class="card-text"><b>Закупочная цена:</b> {{ product["costPrice"] }} </p>
+          <p class="card-text"><b>Количество товара в наличии(остаток):</b> {{ product["quantity"] }} </p>
+          <p class="card-text"><b>Ставка НДС:</b> {{ getNDS(product["tax"]) }} </p>
+          <p class="card-text"><b>Тип товара:</b> {{ getType(product["type"]) }} </p>
+          <p class="card-text"><b>Единица измерения:</b> {{ product["measureName"] }} </p>
+          <p class="card-text"><b>Доступен к продаже:</b> {{ product["allowToSell"] === true? "Да": "Нет" }} </p>
+          <div *ngIf="product['type'] != 'NORMAL'" class="container mt-2">
+  	      <p class="card-text"><b>Коды алкогольной продукции:</b> {{ product["alcoCodes"] }} </p>
+    	    <p class="card-text"><b>Крепкость алкогольной продукции:</b> {{ product["alcoholByVolume"] }} </p>
+					<p class="card-text"><b>Код вида алкогольной продукции:</b> {{ product["alcoholProductKindCode"] }} </p>
+					<p class="card-text"><b>Ёмкость тары алкогольной продукции:</b> {{ product["tareVolume"] }} </p>
+       		</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+ 	<div class="container text-center" style="margin-top:40px">
+    <button class="btn btn-primary">Подтвердить и отправить</button>
   </div>
 </div>
 
