@@ -22,6 +22,7 @@ export class ProductsImportExportComponent implements OnInit {
 	getJson(){
 		return ProductsImportExportComponent.makeValid();
 	}
+
   onSubmit(form: string) {
     console.log("Нажатие")
     const xhr = new XMLHttpRequest();
@@ -62,28 +63,32 @@ export class ProductsImportExportComponent implements OnInit {
     var reader = new FileReader();
     var name = file.name;
     console.log("file name:" + name);
-    reader.onload = function(event: any) {
+    if (file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.type =="application/vnd.ms-excel") {
+      reader.onload = function(event: any) {
 
-      var data = event.target.result; // Результат чтения объекта ( FileReader сделан по анологии с XMLHttpRequest ( метод send ) )
-      var workbook;
-      if (rABS) {
-        /* if binary string, read with type 'binary' */
-        workbook = XLSX.read(data, {
-          type: 'binary'
-        });
-      } else {
-        /* if array buffer, convert to base64 */
-        let arr = ProductsImportExportComponent.fixdata(data);
-        workbook =  XLSX.read(btoa(arr), {
-          type: 'base64'
-        });
+        var data = event.target.result; // Результат чтения объекта ( FileReader сделан по анологии с XMLHttpRequest ( метод send ) )
+        var workbook;
+        if (rABS) {
+          /* if binary string, read with type 'binary' */
+          workbook = XLSX.read(data, {
+            type: 'binary'
+          });
+        } else {
+          /* if array buffer, convert to base64 */
+          let arr = ProductsImportExportComponent.fixdata(data);
+          workbook =  XLSX.read(btoa(arr), {
+            type: 'base64'
+          });
+        }
+        var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        ProductsImportExportComponent.jsonExcel = XLSX.utils.sheet_to_json(worksheet);
+
+  			// console.log(ProductsImportExportComponent.jsonExcel)
+      };
+      reader.readAsBinaryString(file);
+      }else {
+        alert("Wrong type of file! Please choose the right one");
       }
-      var worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      ProductsImportExportComponent.jsonExcel = XLSX.utils.sheet_to_json(worksheet);
-
-			// console.log(ProductsImportExportComponent.jsonExcel)
-    };
-    reader.readAsBinaryString(file);
   }
 	
 	getType(str) {
@@ -108,53 +113,77 @@ export class ProductsImportExportComponent implements OnInit {
 			console.log(prd);
 			if (num != "0") {
 				let errors = "";
-				
+				let buff;
         let uuid = "testUuid"; // TODO make uniq Uuid
         let code = "";
         if (prd["Код товара"].length <= 10) { code = prd["Код товара"]; }
         else {
           code = "NOT VALLID";
           errors += "Невалидное поле: Код Товара\n";
-//          throw Error;
         }
 				let barCode = prd["Штрихкоды"].replace(/ /g,"").split(",");
 				
+        let articleNumber = "NOT_VALLID"
+        if (prd["Артикул"] == null) articleNumber = "";
+        else {
+          if (prd["Артикул"].length <= 20){
+            articleNumber =  prd["Артикул"];
+          }else { errors += "Невалидное поле: Артикул\n"}
+        }
         let name = "NOT VALLID";
         if (prd["Наименование товара"].length <= 100 &&
           prd["Наименование товара"].length > 0) {
           name = prd["Наименование товара"];
         } else {
           errors += "Невалидное поле: Наименование товара\n";
-//          throw Error;
         }
-        let price = 0;
-        let buff = parseFloat(prd["Отпускная цена"].replace(/,/g, ".").replace(/ /g,""));
-        if (buff >= 0 && buff <= 9999999.99) { price = buff; }
-        else {
-          errors += "Невалидное поле: Отпускная цена\n";
-//          throw Error;
-        }
-        let quantity = 0;
-        let buffStr = prd["Количество товара в наличии(остаток)"];
-				let arrSplit = buffStr.replace(/ /g,"").replace(/,/g, ".");
+
+        let price;
+        let buffStr = prd["Отпускная цена"].replace(/,/g, ".").replace(/ /g,"");
+        let arrSplit = buffStr.split(".");
+        if (arrSplit[1] != undefined) {
+          if (arrSplit[1].length < 3) {
+            buffStr = parseFloat(buffStr);
+            if (buffStr >= 0 && buffStr <= 9999999.99) { price = parseFloat(buffStr); }
+            else {
+              price = "NOT_VALLID";
+              errors += "Невалидное поле: Отпускная цена\n";
+            }
+          }else { 
+            errors += "Невалидное поле: Отпускная цена\n";
+            price = "NOT_VALLID";
+          }
+        }else { price = parseFloat(buffStr); }
+
+        let quantity;
+        buffStr = prd["Количество товара в наличии(остаток)"].replace(/,/g, ".").replace(/ /g,"");
+				arrSplit = buffStr.split(".");
 				if (arrSplit.length != 1) {
 					if (buffStr.split(".")[1].length <= 3) { quantity = parseFloat(buffStr); }
 					else {
+            quantity = "NOT_VALLID";
 						errors += "Невалидное поле: Количество товара в наличи\n";
-//            throw Error;
 					}
 				}else {
           quantity = parseFloat(buffStr);
         }
 				
-        let costPrice = 0;
-        buff = parseFloat(prd["Закупочная цена"].replace(/ /g,"").replace(/,/g, "."));
-        if (buff >= 0 && buff <= 9999999.99) { costPrice = buff; }
-        else {
-          errors += "Невалидное поле: Закупочная цен\n";
-//          throw Error;
-
-        }
+        let costPrice;
+        buffStr = prd["Закупочная цена"].replace(/,/g, ".").replace(/ /g,"");
+        arrSplit = buffStr.split(".");
+        if (arrSplit[1] != undefined) {
+          if (arrSplit[1].length < 3) {
+            buffStr = parseFloat(buffStr);
+            if (buffStr >= 0 && buffStr <= 9999999.99) { costPrice = parseFloat(buffStr); }
+            else {
+              costPrice = "NOT_VALLID";
+              errors += "Невалидное поле: Отпускная цена\n";
+            }
+          }else { 
+            errors += "Невалидное поле: Отпускная цена\n";
+            costPrice = "NOT_VALLID";
+          }
+        }else { costPrice = parseFloat(buffStr); }
 				
         let measureName = "NOT VALLID";
         buffStr = prd["Единица измерения"].replace(/ /g,"").toLowerCase();
@@ -162,7 +191,6 @@ export class ProductsImportExportComponent implements OnInit {
    				measureName = buffStr;
         } else {
 					errors += "Невалидное поле: Единица измерения\n";
-//          throw Error;
         }
         let tax = "NOT VALLID";
         switch (prd["Ставка НДС"].toLowerCase()) {
@@ -235,7 +263,7 @@ export class ProductsImportExportComponent implements OnInit {
           "tax": tax,
           "allowToSell": allowToSell,
           "description": prd["Описание товара"] !== null ? prd["Описание товара"] : "",
-          "articleNumber": prd["Артикул"] !== null? prd["Артикул"] : "",
+          "articleNumber": articleNumber,
           "parentUuid": "",
           "group": false,
           "type": typePrd,
@@ -252,7 +280,6 @@ export class ProductsImportExportComponent implements OnInit {
       }
 		}
   }
-    // console.log(count);
 		return arrJs;
   }
 
