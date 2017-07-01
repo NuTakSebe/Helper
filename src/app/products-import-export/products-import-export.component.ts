@@ -12,19 +12,22 @@ declare var XLSX: any;
   styleUrls: ['./products-import-export.component.css']
 })
 export class ProductsImportExportComponent implements OnInit {
-
+  
+  visible: any;
   XLSX: any;
   form: String = "";
 	static jsonExcel = [];
+  static excel = [];
 
   constructor() {}
 
 	getJson(){
-		return ProductsImportExportComponent.makeValid();
-	}
+ 		return ProductsImportExportComponent.makeValid();	
+  }
 
   onSubmit(form: string) {
     console.log("Нажатие")
+    if (form === "") { alert("Выберете расширение"); stop; } 
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/excel/download?for=' + form, true);
     xhr.responseType = 'blob';
@@ -49,7 +52,7 @@ export class ProductsImportExportComponent implements OnInit {
         window.URL.revokeObjectURL(url);
       } else {
         console.log("Error Appeared while downloading " + xhr.status);
-				alert("Error While Downloading")
+				alert("Error While Downloading");
       }
     };
   }
@@ -90,12 +93,29 @@ export class ProductsImportExportComponent implements OnInit {
         alert("Wrong type of file! Please choose the right one");
       }
   }
-	
+	// Метод, который надо дописать.
+  sendInformation() {
+      let arr = ProductsImportExportComponent.excel;
+      let readyArray = [];
+      let flag;
+      for (let i = 0; i < arr.length; i++) {
+        flag = true;
+        for (let property in arr[i]) {
+          if (arr[i][property] == "NOT_VALID") flag = false;
+        }
+        if (flag == true) readyArray.push(arr[i]);
+      }
+      //Готовый массив, который надо передать.
+      console.log("Ready Array:");
+      console.log(readyArray);
+  }
+
 	getType(str) {
 		if (str === "NORMAL") return "обычный";
 		if (str === "ALCOHOL_MARKED") return "маркированный алкоголь";
 		if (str === "ALCOHOL_NOT_MARKED") return "немаркированный алкоголь";
 	}
+
 	getNDS(str) {
 		if (str === "VAT_0") return "Без НДС";
 		if (str === "VAT_10") return "НДС 10%";
@@ -110,8 +130,8 @@ export class ProductsImportExportComponent implements OnInit {
 		if (ProductsImportExportComponent.jsonExcel.length !== 0) {
     for (let num in ProductsImportExportComponent.jsonExcel) {
       let prd = ProductsImportExportComponent.jsonExcel[num];
-			console.log(prd);
-			if (num != "0") {
+			// console.log(prd);
+			if (num != "0" && num != "1") {
 				let errors = "";
 				let buff;
         let uuid = "testUuid"; // TODO make uniq Uuid
@@ -185,14 +205,14 @@ export class ProductsImportExportComponent implements OnInit {
           }
         }else { costPrice = parseFloat(buffStr); }
 				
-        let measureName = "NOT VALLID";
+        let measureName = "NOT_VALLID";
         buffStr = prd["Единица измерения"].replace(/ /g,"").toLowerCase();
         if (buffStr == "шт" || buffStr == "кг" || buffStr == "л" || buffStr == "м" || buffStr == "км" || buffStr == "м2" || buffStr == "м3" || buffStr == "компл" || buffStr == "упак" || buffStr == "ед" || buffStr == "дроб") {
    				measureName = buffStr;
         } else {
 					errors += "Невалидное поле: Единица измерения\n";
         }
-        let tax = "NOT VALLID";
+        let tax = "NOT_VALLID";
         switch (prd["Ставка НДС"].toLowerCase()) {
           case "0": tax = "VAT_0"; break;
           case "8 б": tax = "VAT_18"; break;
@@ -202,7 +222,7 @@ export class ProductsImportExportComponent implements OnInit {
           default: errors += "Невалидное поле: Ставка НДС\n"; //throw Error;
         }
 				
-        let typePrd = "NOT VALLID";
+        let typePrd = "NOT_VALLID";
         switch (prd["Тип товара"].toLowerCase()) {
           case "обычный": typePrd = "NORMAL"; break;
           case "маркированный алкоголь": typePrd = "ALCOHOL_MARKED"; break;
@@ -222,7 +242,7 @@ export class ProductsImportExportComponent implements OnInit {
 				let alchoholProductKindCode = 0;
 				let tareVolume = 0;
 				if (typePrd !== "NORMAL") {
-					alcoCodes = ["NOT VALLID"];
+					alcoCodes = ["NOT_VALLID"];
 					if (prd["Коды алкогольной продукции ЕГАИС"] !== null) {
 						alcoCodes = prd["Коды алкогольной продукции ЕГАИС"].replace(/ /g,"").replace(/,/g,".").split(".");
 					}else {
@@ -275,11 +295,14 @@ export class ProductsImportExportComponent implements OnInit {
 				if (errors != "") {
 					alert(errors);
 				}
-				 console.log(json);
+				// console.log(json); a
 				arrJs.push(json);
       }
 		}
   }
+    ProductsImportExportComponent.excel = arrJs;
+    // console.log("DONE\n");
+    // console.log(ProductsImportExportComponent.excel);
 		return arrJs;
   }
 
