@@ -41,11 +41,11 @@ TODO: УБРАТЬ
 
   <div class="form-group" [hidden]="this.product.group">
     <label for="barCodes">Штрихкоды</label>
-    <small class="form-text text-muted pb-3">Если оставить штрихкоды пустыми, в терминале будет доступен только визуальный поиск товара</small>
+    <small class="form-text text-muted pb-3">Если товар не имеет штрихкодов, в терминале будет доступен поиск товара только по названию</small>
 
     <div class="form-group row">
       <div class="col-sm-8">
-        <input type="text" class="form-control skip" id="barCodeInput" [(ngModel)]="barCodeInput" [ngModelOptions]="{standalone: true}" placeholder="Не может быть пустой строкой">
+        <input type="text" class="form-control skip" id="barCodeInput" [(ngModel)]="barCodeInput" [ngModelOptions]="{standalone: true}">
       </div>
 
       <div class="col-sm-4">
@@ -96,7 +96,7 @@ TODO: УБРАТЬ
   <div class="form-group" [hidden]="this.product.group">
     <label class="form-check-label">
       <input type="checkbox" id="alcoCheck" class="form-check-input" (change)="isAlco = !isAlco; updateAlco(isAlco)">
-      Это алкогольная продукция?
+      Алкогольная продукция
     </label>
   </div>
 
@@ -158,7 +158,7 @@ TODO: УБРАТЬ
   </section>
 
   <div class="form-group" [hidden]="this.product.group">
-    <label for="quantity">Количество товара в наличии (остаток)</label>
+    <label for="quantity">Количество товара в наличии (остаток на складе). Если товара нет в наличии - 0</label>
     <input type="number" class="form-control" id="quantity" [(ngModel)]="product.quantity" name="quantity" #quantity="ngModel" required step="0.001" pattern="^-?\d{1,}(\.\d{1,3})?$" placeholder="До трёх десятичных знаков">
     <p class="alert alert-danger mt-3" [hidden]="!quantity.hasError('required') || quantity.pristine">Поле не может быть пустым</p>
     <p class="alert alert-danger mt-3" [hidden]="!quantity.hasError('pattern') || quantity.pristine">Поле не может содержать больше трёх десятичных знаков</p>

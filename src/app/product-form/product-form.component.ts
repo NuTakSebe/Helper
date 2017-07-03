@@ -202,7 +202,8 @@ export class ProductFormComponent implements OnInit {
       // на сабмит вешаем отправку
       this.submitFunction = function() {
         this.evotorRequests.postItem(this.token, this.storeUUID, this.product).subscribe((data : Response) => console.log('suc'));
-        // TODO: уведомление
+
+        alert("Товар добавлен");
 
         this.product = Object.assign({}, this.emptyProduct);
         this.isAlco = false;
@@ -225,7 +226,7 @@ export class ProductFormComponent implements OnInit {
 
       // на сабмит навесить удаление и отправку
       this.submitFunction = function() {
-        alert(this.mode);
+        alert("Товар изменён");
       }
     }
   }
