@@ -12,22 +12,24 @@ declare var XLSX: any;
   styleUrls: ['./products-import-export.component.css']
 })
 export class ProductsImportExportComponent implements OnInit {
-  
+
   visible: any;
   XLSX: any;
   form: String = "";
 	static jsonExcel = [];
   static excel = [];
 
+  toggle = false;
+
   constructor() {}
 
 	getJson(){
- 		return ProductsImportExportComponent.makeValid();	
+ 		return ProductsImportExportComponent.makeValid();
   }
 
   onSubmit(form: string) {
     console.log("Нажатие")
-    if (form === "") { alert("Выберете расширение"); stop; } 
+    if (form === "") { alert("Выберете расширение"); stop; }
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/excel/download?for=' + form, true);
     xhr.responseType = 'blob';
@@ -125,7 +127,7 @@ export class ProductsImportExportComponent implements OnInit {
 	}
 
   static makeValid() {
-		
+
 		let arrJs = [];
 		if (ProductsImportExportComponent.jsonExcel.length !== 0) {
     for (let num in ProductsImportExportComponent.jsonExcel) {
@@ -142,7 +144,7 @@ export class ProductsImportExportComponent implements OnInit {
           errors += "Невалидное поле: Код Товара\n";
         }
 				let barCode = prd["Штрихкоды"].replace(/ /g,"").split(",");
-				
+
         let articleNumber = "NOT_VALLID"
         if (prd["Артикул"] == null) articleNumber = "";
         else {
@@ -169,7 +171,7 @@ export class ProductsImportExportComponent implements OnInit {
               price = "NOT_VALLID";
               errors += "Невалидное поле: Отпускная цена\n";
             }
-          }else { 
+          }else {
             errors += "Невалидное поле: Отпускная цена\n";
             price = "NOT_VALLID";
           }
@@ -187,7 +189,7 @@ export class ProductsImportExportComponent implements OnInit {
 				}else {
           quantity = parseFloat(buffStr);
         }
-				
+
         let costPrice;
         buffStr = prd["Закупочная цена"].replace(/,/g, ".").replace(/ /g,"");
         arrSplit = buffStr.split(".");
@@ -199,12 +201,12 @@ export class ProductsImportExportComponent implements OnInit {
               costPrice = "NOT_VALLID";
               errors += "Невалидное поле: Отпускная цена\n";
             }
-          }else { 
+          }else {
             errors += "Невалидное поле: Отпускная цена\n";
             costPrice = "NOT_VALLID";
           }
         }else { costPrice = parseFloat(buffStr); }
-				
+
         let measureName = "NOT_VALLID";
         buffStr = prd["Единица измерения"].replace(/ /g,"").toLowerCase();
         if (buffStr == "шт" || buffStr == "кг" || buffStr == "л" || buffStr == "м" || buffStr == "км" || buffStr == "м2" || buffStr == "м3" || buffStr == "компл" || buffStr == "упак" || buffStr == "ед" || buffStr == "дроб") {
@@ -221,7 +223,7 @@ export class ProductsImportExportComponent implements OnInit {
           case "10 с": tax = "VAT_10_110"; break;
           default: errors += "Невалидное поле: Ставка НДС\n"; //throw Error;
         }
-				
+
         let typePrd = "NOT_VALLID";
         switch (prd["Тип товара"].toLowerCase()) {
           case "обычный": typePrd = "NORMAL"; break;
@@ -254,22 +256,22 @@ export class ProductsImportExportComponent implements OnInit {
 					arrSplit = buffStr.split(".");
 					if (arrSplit.length != 1) {
 						if (arrSplit[1].length <= 3) { alcholByVolume = parseFloat(buffStr);  }
-						else { errors += "Невалидное поле: Крепость алкогольной продукции\n"; } 
+						else { errors += "Невалидное поле: Крепость алкогольной продукции\n"; }
 					}else { alcholByVolume = parseFloat(buffStr); }
-					
-					let buffN = parseInt(prd["Код вида алкогольной продукции ФСРАР"].replace(/ /g,"")); 
+
+					let buffN = parseInt(prd["Код вида алкогольной продукции ФСРАР"].replace(/ /g,""));
 					if ( buffN> 0 && prd["Код вида алкогольной продукции ФСРАР"] < 1000) {alchoholProductKindCode = buffN;}
 					else { errors += "Невалидное поле: Код вида алкогольной продукции ФСРАР\n"}
-					
+
 					tareVolume = -2;
 					buffStr =  prd["Ёмкость тары алкогольной продукции в литрах"].replace(/ /g,"").replace(/,/g,".");
 					arrSplit = buffStr.split(".");
 					if (arrSplit.length != 1) {
 						if (arrSplit[1].length <= 3) { tareVolume = parseFloat(buffStr);  }
-						else { errors += "Невалидное поле: Ёмкость тары алкогольной продукции в литрах\n"; } 
+						else { errors += "Невалидное поле: Ёмкость тары алкогольной продукции в литрах\n"; }
 					}else { alcholByVolume = parseFloat(buffStr); }
 				}
-				
+
         let json = {
           "uuid": uuid,
           "code": code,
@@ -291,7 +293,7 @@ export class ProductsImportExportComponent implements OnInit {
           "alcoholProductKindCode": alchoholProductKindCode,
           "tareVolume": tareVolume
         }
-					
+
 				if (errors != "") {
 					alert(errors);
 				}

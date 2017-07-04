@@ -23,7 +23,7 @@ export class EditProductComponent implements OnInit {
 
   tableProducts = [];
 
-  storeUUID = "333";
+  storeUUID;
 
   path = [];
 
