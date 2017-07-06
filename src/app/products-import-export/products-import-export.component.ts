@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Headers, Response, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 
+import { ActivatedRoute } from '@angular/router';
+
+import { GetQueryParamService } from '../get-query-param.service';
+import { EvotorRequestsService } from '../evotor-requests.service';
 
 
 declare var XLSX: any;
@@ -9,7 +13,8 @@ declare var XLSX: any;
 @Component({
   selector: 'app-products-import-export',
   templateUrl: './products-import-export.component.html',
-  styleUrls: ['./products-import-export.component.css']
+  styleUrls: ['./products-import-export.component.css'],
+  providers: [GetQueryParamService, EvotorRequestsService]
 })
 export class ProductsImportExportComponent implements OnInit {
 
@@ -18,10 +23,11 @@ export class ProductsImportExportComponent implements OnInit {
   form: String = "";
 	static jsonExcel = [];
   static excel = [];
+  static storeUUID;
 
   toggle = false;
 
-  constructor() {}
+  constructor(private modalService: NgbModal, private getQueryParam : GetQueryParamService, private evotorRequests : EvotorRequestsService, private route : ActivatedRoute) {}
 
 	getJson(){
  		return ProductsImportExportComponent.makeValid();
@@ -107,9 +113,11 @@ export class ProductsImportExportComponent implements OnInit {
         }
         if (flag == true) readyArray.push(arr[i]);
       }
-      //Готовый массив, который надо передать.
-      console.log("Ready Array:");
-      console.log(readyArray);
+      this.postItem(this.token, this.storeUUID, readyArray).subscribe(Response:data)=>{
+        console.log("Ready Array:");
+        console.log(readyArray);
+      });
+      
   }
 
 	getType(str) {
@@ -328,7 +336,9 @@ export class ProductsImportExportComponent implements OnInit {
   }
 
   ngOnInit() {
+     this.token = this.getQueryParam.getParamByName(this.route, 'token');
 
+    this.evotorRequests.getStores(this.token).subscribe((data : Response) => this.stores = data.json());
   }
 
 }
