@@ -115,7 +115,7 @@ export class ProductsImportExportComponent implements OnInit {
         }
         if (flag == true) readyArray.push(arr[i]);
       }
-      this.evotorRequests.postItem(this.token, this.storeUUID, readyArray).subscribe((data : Response)=>{
+      this.evotorRequests.postItems(this.token, this.storeUUID, readyArray).subscribe((data : Response)=>{
         console.log("Ready Array:");
         console.log(readyArray);
       });
@@ -143,32 +143,31 @@ export class ProductsImportExportComponent implements OnInit {
       let prd = this.jsonExcel[num];
 
 			if (num != "0" && num != "1") {
-        console.log(prd);
 				let errors = "";
 				let buff;
         let uuid = this.generateUUID4.generate(); // TODO make uniq Uuid
         let code = "";
 
-        if (prd["Код товара"].length <= 10) { code = prd["Код товара"]; }
+        if (prd["Код товара"] && prd["Код товара"].length <= 10) { code = prd["Код товара"]; }
         else {
-          code = "NOT VALLID";
-          errors += "Невалидное поле: Код Товара\n";
+          //code = "NOT_VALID";
+          //errors += "Невалидное поле: Код Товара\n";
         }
 
-        console.log(prd['Штрихкоды']);
-				let barCode = "NOT_VALLID"; 
+				//let barCode = "NOT_VALID";
+        let barCode = [];
         if (prd['Штрихкоды']) {
           prd['Штрихкоды'].replace(/ /g,"").split(",");
         };
 
-        let articleNumber = "NOT_VALLID"
+        let articleNumber = "NOT_VALID"
         if (prd["Артикул"] == null) articleNumber = "";
         else {
           if (prd["Артикул"].length <= 20){
             articleNumber =  prd["Артикул"];
           }else { errors += "Невалидное поле: Артикул\n"}
         }
-        let name = "NOT VALLID";
+        let name = "NOT_VALID";
         if (prd["Наименование товара"].length <= 100 &&
           prd["Наименование товара"].length > 0) {
           name = prd["Наименование товара"];
@@ -184,12 +183,12 @@ export class ProductsImportExportComponent implements OnInit {
             buffStr = parseFloat(buffStr);
             if (buffStr >= 0 && buffStr <= 9999999.99) { price = parseFloat(buffStr); }
             else {
-              price = "NOT_VALLID";
+              price = "NOT_VALID";
               errors += "Невалидное поле: Отпускная цена\n";
             }
           }else {
             errors += "Невалидное поле: Отпускная цена\n";
-            price = "NOT_VALLID";
+            price = "NOT_VALID";
           }
         }else { price = parseFloat(buffStr); }
 
@@ -199,7 +198,7 @@ export class ProductsImportExportComponent implements OnInit {
 				if (arrSplit.length != 1) {
 					if (buffStr.split(".")[1].length <= 3) { quantity = parseFloat(buffStr); }
 					else {
-            quantity = "NOT_VALLID";
+            quantity = "NOT_VALID";
 						errors += "Невалидное поле: Количество товара в наличи\n";
 					}
 				}else {
@@ -214,23 +213,23 @@ export class ProductsImportExportComponent implements OnInit {
             buffStr = parseFloat(buffStr);
             if (buffStr >= 0 && buffStr <= 9999999.99) { costPrice = parseFloat(buffStr); }
             else {
-              costPrice = "NOT_VALLID";
+              costPrice = "NOT_VALID";
               errors += "Невалидное поле: Отпускная цена\n";
             }
           }else {
             errors += "Невалидное поле: Отпускная цена\n";
-            costPrice = "NOT_VALLID";
+            costPrice = "NOT_VALID";
           }
         }else { costPrice = parseFloat(buffStr); }
 
-        let measureName = "NOT_VALLID";
+        let measureName = "NOT_VALID";
         buffStr = prd["Единица измерения"].replace(/ /g,"").toLowerCase();
         if (buffStr == "шт" || buffStr == "кг" || buffStr == "л" || buffStr == "м" || buffStr == "км" || buffStr == "м2" || buffStr == "м3" || buffStr == "компл" || buffStr == "упак" || buffStr == "ед" || buffStr == "дроб") {
    				measureName = buffStr;
         } else {
 					errors += "Невалидное поле: Единица измерения\n";
         }
-        let tax = "NOT_VALLID";
+        let tax = "NOT_VALID";
         switch (prd["Ставка НДС"].toLowerCase()) {
           case "0": tax = "VAT_0"; break;
           case "8 б": tax = "VAT_18"; break;
@@ -240,7 +239,7 @@ export class ProductsImportExportComponent implements OnInit {
           default: errors += "Невалидное поле: Ставка НДС\n"; //throw Error;
         }
 
-        let typePrd = "NOT_VALLID";
+        let typePrd = "NOT_VALID";
         switch (prd["Тип товара"].toLowerCase()) {
           case "обычный": typePrd = "NORMAL"; break;
           case "маркированный алкоголь": typePrd = "ALCOHOL_MARKED"; break;
@@ -260,7 +259,7 @@ export class ProductsImportExportComponent implements OnInit {
 				let alchoholProductKindCode = 0;
 				let tareVolume = 0;
 				if (typePrd !== "NORMAL") {
-					alcoCodes = ["NOT_VALLID"];
+					alcoCodes = ["NOT_VALID"];
 					if (prd["Коды алкогольной продукции ЕГАИС"] !== null) {
 						alcoCodes = prd["Коды алкогольной продукции ЕГАИС"].replace(/ /g,"").replace(/,/g,".").split(".");
 					}else {
@@ -300,7 +299,7 @@ export class ProductsImportExportComponent implements OnInit {
           "measureName": measureName,
           "tax": tax,
           "allowToSell": allowToSell,
-          "description": prd["Описание товара"] !== null ? prd["Описание товара"] : "",
+          "description": prd["Описание товара"] != null ? prd["Описание товара"] : "",
           "articleNumber": articleNumber,
           "parentUuid": "",
           "group": false,

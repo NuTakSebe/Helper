@@ -61,7 +61,18 @@ export class EvotorRequestsService {
       .post("https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products", [item], {headers: headers})
         .map((resp:Response)=>resp)
           .catch((error:any) =>{return Observable.throw(error);});
+  }
 
+  postItems(token: string, storeUuid: string, items: any){
+    console.log(token, storeUuid, items);
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('X-Authorization', token);
+
+    return this.http
+      .post("https://api.evotor.ru/api/v1/inventories/stores/"+storeUuid+"/products", items, {headers: headers})
+        .map((resp:Response)=>resp)
+          .catch((error:any) =>{return Observable.throw(error);});
   }
 
   deleteItem(token: string, storeUuid: string, itemUuid: string){
