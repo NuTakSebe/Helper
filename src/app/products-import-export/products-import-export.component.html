@@ -1,4 +1,4 @@
-<nav class="breadcrumb">
+  <nav class="breadcrumb">
   <a class="breadcrumb-item" routerLink="/" routerLinkActive="active" queryParamsHandling="preserve">Главная</a>
   <span class="breadcrumb-item active">Импорт Excel</span>
 </nav>
@@ -85,7 +85,7 @@
     <span style="color:red">Внимание!</span> Количество символов <span style="color:red">НЕ ПРЕВЫШАЕТ 20</span> символов!<br><br>
 
     <b><li>Штрихкоды</li></b>
-    <br>Это необязательное поле. Если отсавить представленные поля пустыми, то эти товары будут представленытолько визуально в терминале.<br>
+    <br>Это необязательное поле. Если оставить представленные поля пустыми, то эти товары будут представлены только визуально в терминале.<br>
     <span style="color:red">Внимание!</span> Для корректного ввода необходимо <span style="color:red">ПРЕЧИСЛИТЬ КОДЫ ЧЕРЕЗ ЗАПЯТУЮ</span>.<br><br>
 
     <b><li>Отпускная цена</li></b>
@@ -134,7 +134,7 @@
     <br>Это <span style="color:red">ОБЯЗАТЕЛЬНОЕ ПОЛЕ</span>, если Ваш товар принадлежит к алкогольным, его необходимо заполнить! Влияет на результат работы программы.<br>
     Число должно лежать между 1 и 999.<br><br>
     
-    <b><li>Ёмекость тары алкогольной продукции в литрах</li></b>
+    <b><li>Ёмкость тары алкогольной продукции в литрах</li></b>
     <br>Это <span style="color:red">ОБЯЗАТЕЛЬНОЕ ПОЛЕ</span>, если Ваш товар принадлежит к алкогольным, его необходимо заполнить!
     Влияет на результат работы программы.<br>
     Число должно лежать между 0.001 и 99.999 и содержать не более,<span style="color:red"> чем 3 знака после запятой.</span><br><br>
@@ -160,10 +160,12 @@
       </div>
 
       <div class="col-md-6">
-        <h3>Выберете Ваш готовый файл</h3>
-        <p>Выберете Ваш файл</p>
+        <h3>Выберите Ваш готовый файл</h3>
+        <p>Выберите Ваш файл</p>
         <form id="upload">
-          <label (change)="handleFile($event)" class="btn btn-primary" >Выбрать<input type="file" id="InputFiles" style="display: none"/></label>
+          <label (change)="handleFile($event, fileName)" class="btn btn-primary" >Выбрать<input type="file" id="InputFiles" style="display: none"/>
+          </label> 
+          {{getFileName()}}
         </form>
       </div>
 

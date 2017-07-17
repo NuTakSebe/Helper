@@ -13,9 +13,9 @@ declare var XLSX: any;
 })
 export class ProductsImportExportComponent implements OnInit {
 
-  visible: any;
   XLSX: any;
-  form: String = "";
+  form: String = "xlsx";
+  static fileName: String = "Hi";
 	static jsonExcel = [];
   static excel = [];
 
@@ -25,6 +25,10 @@ export class ProductsImportExportComponent implements OnInit {
 
 	getJson(){
  		return ProductsImportExportComponent.makeValid();
+  }
+
+  getFileName() {
+    return ProductsImportExportComponent.fileName;
   }
 
   onSubmit(form: string) {
@@ -67,6 +71,7 @@ export class ProductsImportExportComponent implements OnInit {
     file = files[0];
     var reader = new FileReader();
     var name = file.name;
+    ProductsImportExportComponent.fileName = name;
     console.log("file name:" + name);
     if (file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.type =="application/vnd.ms-excel") {
       reader.onload = function(event: any) {
@@ -132,7 +137,10 @@ export class ProductsImportExportComponent implements OnInit {
 		if (ProductsImportExportComponent.jsonExcel.length !== 0) {
     for (let num in ProductsImportExportComponent.jsonExcel) {
       let prd = ProductsImportExportComponent.jsonExcel[num];
-			// console.log(prd);
+			console.log("product")
+      console.log(prd);
+      console.log("Number")
+      console.log(num);
 			if (num != "0" && num != "1") {
 				let errors = "";
 				let buff;
@@ -224,20 +232,25 @@ export class ProductsImportExportComponent implements OnInit {
           default: errors += "Невалидное поле: Ставка НДС\n"; //throw Error;
         }
 
-        let typePrd = "NOT_VALLID";
-        switch (prd["Тип товара"].toLowerCase()) {
-          case "обычный": typePrd = "NORMAL"; break;
-          case "маркированный алкоголь": typePrd = "ALCOHOL_MARKED"; break;
-          case "немаркированный алкоголь": typePrd = "ALCOHOL_NOT_MARKED"; break;
-          default: errors += "Невалидное поле: Тип товара" + name + "\n"; //throw Error;
+        let typePrd = "NORMAL";
+        if (prd["Тип товара"] != undefined) {
+          switch (prd["Тип товара"].toLowerCase()) {
+            // case "обычный": typePrd = "NORMAL"; break;
+            case "маркированный алкоголь": typePrd = "ALCOHOL_MARKED"; break;
+            case "немаркированный алкоголь": typePrd = "ALCOHOL_NOT_MARKED"; break;
+            default: errors += "Невалидное поле: Тип товара" + name + "\n"; //throw Error;
+          }
         }
 
-        let allowToSell = false;
-        switch (prd["Доступности товара для продажи"].replace(/ /g,"").toLowerCase()) {
-          case "да": allowToSell = true; break;
-          case "нет": allowToSell = false; break;
-          default: errors += "Невалидное поле: Доступность для продажи\n"; //throw Error;
+        let allowToSell = true;
+        if (prd["Доступности товара для продажи"] != undefined) {
+        if (prd["Доступности товара для продажи"].replace(/ /g,"").toLowerCase() == "нет") allowToSell = false;
         }
+        // switch (prd["Доступности товара для продажи"].replace(/ /g,"").toLowerCase()) {
+        //   case "да": allowToSell = true; break;
+        //   case "нет": allowToSell = false; break;
+        //   default: errors += "Невалидное поле: Доступность для продажи\n"; //throw Error;
+        // }
 
 				let alcoCodes = [];
 				let alcholByVolume = 0;
