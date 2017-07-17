@@ -53,7 +53,7 @@
         <th></th>
         <th></th>
       </tr>
-      <template ngFor let-product [ngForOf]="tableProducts">
+      <template ngFor let-product [ngForOf]="tableProducts | sortGroupsAndItems" >
         <tr *ngIf="product" id={{product.uuid}}>
           <th (click)="productClick(product, editModal)"><i class="fa" [class.fa-folder]="product.group" [class.fa-file]="!product.group"></i></th>
           <th (click)="productClick(product, editModal)">{{ product.code }}</th>

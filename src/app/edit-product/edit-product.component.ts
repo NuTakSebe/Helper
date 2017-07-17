@@ -52,7 +52,6 @@ export class EditProductComponent implements OnInit {
   };
 
   updateItems() {
-    console.log('test');
     this.evotorRequests.getItems(this.token, this.storeUUID).subscribe((data : Response) =>  {
       this.storeProducts = this.evotorRequests.buildObjectTree(data.json(), "uuid", "parentUuid");
 
@@ -61,8 +60,7 @@ export class EditProductComponent implements OnInit {
       } else {
         this.tableProducts = this.storeProducts;
       }
-
-      console.log(this.tableProducts);
+      
     });
   };
 

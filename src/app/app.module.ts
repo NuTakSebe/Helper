@@ -15,6 +15,7 @@ import { ProductFormComponent } from './product-form/product-form.component';
 import { ProductsImportExportComponent } from './products-import-export/products-import-export.component';
 import { ProductsExplorerComponent } from './products-explorer/products-explorer.component';
 import { ErrorNotFoundComponent } from './error-not-found/error-not-found.component';
+import { SortGroupsAndItemsPipe } from './sort-groups-and-items.pipe';
 
 const APP_ROUTES = [
   { path: "", "component": HomeComponent },
@@ -33,7 +34,8 @@ const APP_ROUTES = [
     ProductFormComponent,
     ProductsImportExportComponent,
     ProductsExplorerComponent,
-    ErrorNotFoundComponent
+    ErrorNotFoundComponent,
+    SortGroupsAndItemsPipe
   ],
   imports: [
     BrowserModule,

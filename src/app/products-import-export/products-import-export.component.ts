@@ -2,29 +2,36 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Headers, Response, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 
+import { ActivatedRoute } from '@angular/router';
 
+import { GetQueryParamService } from '../get-query-param.service';
+import { EvotorRequestsService } from '../evotor-requests.service';
+import { GenerateUUID4Service } from '../generate-uuid4.service';
 
 declare var XLSX: any;
 
 @Component({
   selector: 'app-products-import-export',
   templateUrl: './products-import-export.component.html',
-  styleUrls: ['./products-import-export.component.css']
+  styleUrls: ['./products-import-export.component.css'],
+  providers: [GetQueryParamService, EvotorRequestsService, GenerateUUID4Service]
 })
 export class ProductsImportExportComponent implements OnInit {
 
   XLSX: any;
   form: String = "xlsx";
-  static fileName: String = "Hi";
-	static jsonExcel = [];
-  static excel = [];
+  static fileName: String = "";
+	jsonExcel = [];
+  excel = [];
+  storeUUID;
 
   toggle = false;
 
-  constructor() {}
+  token;
+  stores;
 
 	getJson(){
- 		return ProductsImportExportComponent.makeValid();
+ 		return this.makeValid();
   }
 
   getFileName() {
@@ -64,6 +71,7 @@ export class ProductsImportExportComponent implements OnInit {
   }
 
   handleFile(event: any) {
+    var _this = this;
     // TODO проверить валидность расширения
     var rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
     var files = event.target.files; // Забираем у event( нажатие ) список выбранных файлов. Возвращает ArrayList of Files
@@ -85,13 +93,13 @@ export class ProductsImportExportComponent implements OnInit {
           });
         } else {
           /* if array buffer, convert to base64 */
-          let arr = ProductsImportExportComponent.fixdata(data);
+          let arr = _this.fixdata(data);
           workbook =  XLSX.read(btoa(arr), {
             type: 'base64'
           });
         }
         var worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        ProductsImportExportComponent.jsonExcel = XLSX.utils.sheet_to_json(worksheet);
+        _this.jsonExcel = XLSX.utils.sheet_to_json(worksheet);
 
   			// console.log(ProductsImportExportComponent.jsonExcel)
       };
@@ -99,10 +107,11 @@ export class ProductsImportExportComponent implements OnInit {
       }else {
         alert("Wrong type of file! Please choose the right one");
       }
+      file = null;
   }
 	// Метод, который надо дописать.
   sendInformation() {
-      let arr = ProductsImportExportComponent.excel;
+      let arr = this.excel;
       let readyArray = [];
       let flag;
       for (let i = 0; i < arr.length; i++) {
@@ -112,9 +121,11 @@ export class ProductsImportExportComponent implements OnInit {
         }
         if (flag == true) readyArray.push(arr[i]);
       }
-      //Готовый массив, который надо передать.
-      console.log("Ready Array:");
-      console.log(readyArray);
+      this.evotorRequests.postItems(this.token, this.storeUUID, readyArray).subscribe((data : Response)=>{
+        console.log("Ready Array:");
+        console.log(readyArray);
+      });
+
   }
 
 	getType(str) {
@@ -131,36 +142,38 @@ export class ProductsImportExportComponent implements OnInit {
 		if (str === "VAT_18_118") return "НДС с расчетной ставкой 18%";
 	}
 
-  static makeValid() {
-
+  makeValid() {
 		let arrJs = [];
-		if (ProductsImportExportComponent.jsonExcel.length !== 0) {
-    for (let num in ProductsImportExportComponent.jsonExcel) {
-      let prd = ProductsImportExportComponent.jsonExcel[num];
-			console.log("product")
-      console.log(prd);
-      console.log("Number")
-      console.log(num);
+		if (this.jsonExcel.length !== 0) {
+    for (let num in this.jsonExcel) {
+      let prd = this.jsonExcel[num];
+
 			if (num != "0" && num != "1") {
 				let errors = "";
 				let buff;
-        let uuid = "testUuid"; // TODO make uniq Uuid
+        let uuid = this.generateUUID4.generate(); // TODO make uniq Uuid
         let code = "";
-        if (prd["Код товара"].length <= 10) { code = prd["Код товара"]; }
-        else {
-          code = "NOT VALLID";
-          errors += "Невалидное поле: Код Товара\n";
-        }
-				let barCode = prd["Штрихкоды"].replace(/ /g,"").split(",");
 
-        let articleNumber = "NOT_VALLID"
+        if (prd["Код товара"] && prd["Код товара"].length <= 10) { code = prd["Код товара"]; }
+        else {
+          //code = "NOT_VALID";
+          //errors += "Невалидное поле: Код Товара\n";
+        }
+
+				//let barCode = "NOT_VALID";
+        let barCode = [];
+        if (prd['Штрихкоды']) {
+          prd['Штрихкоды'].replace(/ /g,"").split(",");
+        };
+
+        let articleNumber = "NOT_VALID"
         if (prd["Артикул"] == null) articleNumber = "";
         else {
           if (prd["Артикул"].length <= 20){
             articleNumber =  prd["Артикул"];
           }else { errors += "Невалидное поле: Артикул\n"}
         }
-        let name = "NOT VALLID";
+        let name = "NOT_VALID";
         if (prd["Наименование товара"].length <= 100 &&
           prd["Наименование товара"].length > 0) {
           name = prd["Наименование товара"];
@@ -176,12 +189,12 @@ export class ProductsImportExportComponent implements OnInit {
             buffStr = parseFloat(buffStr);
             if (buffStr >= 0 && buffStr <= 9999999.99) { price = parseFloat(buffStr); }
             else {
-              price = "NOT_VALLID";
+              price = "NOT_VALID";
               errors += "Невалидное поле: Отпускная цена\n";
             }
           }else {
             errors += "Невалидное поле: Отпускная цена\n";
-            price = "NOT_VALLID";
+            price = "NOT_VALID";
           }
         }else { price = parseFloat(buffStr); }
 
@@ -191,7 +204,7 @@ export class ProductsImportExportComponent implements OnInit {
 				if (arrSplit.length != 1) {
 					if (buffStr.split(".")[1].length <= 3) { quantity = parseFloat(buffStr); }
 					else {
-            quantity = "NOT_VALLID";
+            quantity = "NOT_VALID";
 						errors += "Невалидное поле: Количество товара в наличи\n";
 					}
 				}else {
@@ -206,23 +219,23 @@ export class ProductsImportExportComponent implements OnInit {
             buffStr = parseFloat(buffStr);
             if (buffStr >= 0 && buffStr <= 9999999.99) { costPrice = parseFloat(buffStr); }
             else {
-              costPrice = "NOT_VALLID";
+              costPrice = "NOT_VALID";
               errors += "Невалидное поле: Отпускная цена\n";
             }
           }else {
             errors += "Невалидное поле: Отпускная цена\n";
-            costPrice = "NOT_VALLID";
+            costPrice = "NOT_VALID";
           }
         }else { costPrice = parseFloat(buffStr); }
 
-        let measureName = "NOT_VALLID";
+        let measureName = "NOT_VALID";
         buffStr = prd["Единица измерения"].replace(/ /g,"").toLowerCase();
         if (buffStr == "шт" || buffStr == "кг" || buffStr == "л" || buffStr == "м" || buffStr == "км" || buffStr == "м2" || buffStr == "м3" || buffStr == "компл" || buffStr == "упак" || buffStr == "ед" || buffStr == "дроб") {
    				measureName = buffStr;
         } else {
 					errors += "Невалидное поле: Единица измерения\n";
         }
-        let tax = "NOT_VALLID";
+        let tax = "NOT_VALID";
         switch (prd["Ставка НДС"].toLowerCase()) {
           case "0": tax = "VAT_0"; break;
           case "8 б": tax = "VAT_18"; break;
@@ -257,7 +270,7 @@ export class ProductsImportExportComponent implements OnInit {
 				let alchoholProductKindCode = 0;
 				let tareVolume = 0;
 				if (typePrd !== "NORMAL") {
-					alcoCodes = ["NOT_VALLID"];
+					alcoCodes = ["NOT_VALID"];
 					if (prd["Коды алкогольной продукции ЕГАИС"] !== null) {
 						alcoCodes = prd["Коды алкогольной продукции ЕГАИС"].replace(/ /g,"").replace(/,/g,".").split(".");
 					}else {
@@ -297,7 +310,7 @@ export class ProductsImportExportComponent implements OnInit {
           "measureName": measureName,
           "tax": tax,
           "allowToSell": allowToSell,
-          "description": prd["Описание товара"] !== null ? prd["Описание товара"] : "",
+          "description": prd["Описание товара"] != null ? prd["Описание товара"] : "",
           "articleNumber": articleNumber,
           "parentUuid": "",
           "group": false,
@@ -315,13 +328,13 @@ export class ProductsImportExportComponent implements OnInit {
       }
 		}
   }
-    ProductsImportExportComponent.excel = arrJs;
+    this.excel = arrJs;
     // console.log("DONE\n");
     // console.log(ProductsImportExportComponent.excel);
 		return arrJs;
   }
 
-	static fixdata(data) {
+	fixdata(data) {
     console.log("hi")
     var o = "",
       l = 0,
@@ -340,8 +353,12 @@ export class ProductsImportExportComponent implements OnInit {
     return xhr.status;
   }
 
-  ngOnInit() {
+  constructor(private generateUUID4 : GenerateUUID4Service, private getQueryParam : GetQueryParamService, private evotorRequests : EvotorRequestsService, private route : ActivatedRoute) {}
 
+  ngOnInit() {
+    this.token = this.getQueryParam.getParamByName(this.route, 'token');
+
+    this.evotorRequests.getStores(this.token).subscribe((data : Response) => this.stores = data.json());
   }
 
 }
