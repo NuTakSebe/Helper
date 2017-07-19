@@ -1,6 +1,9 @@
 {
   "name": "lkplus",
   "version": "0.0.0",
+  "engines": {
+    "node": "6.11.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
