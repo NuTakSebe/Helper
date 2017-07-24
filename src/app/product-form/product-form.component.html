@@ -187,5 +187,5 @@ TODO: УБРАТЬ
   </div>
 
   <p class="alert alert-danger mt-3" [hidden]="productForm.form.valid && !(isAlco && !product.alcoCodes[0])">Корректно заполните все поля формы, чтобы продолжить</p>
-  <button type="submit" class="btn btn-primary" (click)="submitFunction()" [disabled]="!productForm.form.valid || !storeUUID || (isAlco && !product.alcoCodes[0])">Добавить</button>
+  <button type="submit" class="btn btn-primary" (click)="submitFunction()" [disabled]="!productForm.form.valid || !storeUUID || (isAlco && !product.alcoCodes[0])">Сохранить</button>
 </form>

@@ -51,16 +51,18 @@ export class EditProductComponent implements OnInit {
     "tareVolume": 0
   };
 
-  updateItems() {
+  updateItems(tmp) {
     this.evotorRequests.getItems(this.token, this.storeUUID).subscribe((data : Response) =>  {
       this.storeProducts = this.evotorRequests.buildObjectTree(data.json(), "uuid", "parentUuid");
 
       if (this.path.length > 0) {
+        let index = this.path[this.path.length-1].Children.indexOf(tmp);
+        this.path[this.path.length-1].Children.splice(index, 1);
         this.tableProducts = this.path[this.path.length-1].Children;
       } else {
         this.tableProducts = this.storeProducts;
       }
-      
+
     });
   };
 
@@ -68,7 +70,7 @@ export class EditProductComponent implements OnInit {
     let that = this;
     this.evotorRequests.deleteItem(this.token, this.storeUUID, this.tempProduct.uuid)
     .subscribe(
-      function() { that.updateItems()  }
+      function() { that.updateItems(this.tempProduct)  }
     );
   };
 
